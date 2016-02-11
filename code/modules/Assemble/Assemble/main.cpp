@@ -120,13 +120,13 @@ int main() // run over and over again
     pthread_attr_setschedparam(&ThreadIMU_UpdateRawDataParaAttr,&ThreadIMU_UpdateRawDataPara);
     pthread_create(&ThreadIMU_UpdateRawData,&ThreadIMU_UpdateRawDataParaAttr,&IMU_UpdateRawDataFunc,NULL);
 
-    while(1){
-        pthread_mutex_lock(& bIMU_Data_StableMutex );
-            if(AssembleDevice.bIMU_Data_Stable){
-                break;
-            }
-        pthread_mutex_unlock(& bIMU_Data_StableMutex );
-    }
+//    while(1){
+//        pthread_mutex_lock(& bIMU_Data_StableMutex );
+//            if(AssembleDevice.bIMU_Data_Stable){
+//                break;
+//            }
+//        pthread_mutex_unlock(& bIMU_Data_StableMutex );
+//    }
 
     pthread_t ThreadSaveIMU_RawData;
     struct sched_param ThreadSaveIMU_RawDataPara;

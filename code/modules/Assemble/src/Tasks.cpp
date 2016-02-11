@@ -243,7 +243,11 @@ void UpdateIMU_RawData(){
       /* Display calibration status for each sensor. */
     uint8_t system, gyro, accel, mag = 0;
 
-    if(!AssembleDevice.bIMU_Data_Stable){
+    pthread_mutex_lock(& bIMU_Data_StableMutex );
+    bool TempbIMU_Data_Stable=AssembleDevice.bIMU_Data_Stable;
+    pthread_mutex_unlock(& bIMU_Data_StableMutex );
+
+    if(!TempbIMU_Data_Stable){
         pthread_mutex_lock(&ReadIMU_Mutex);
         AssembleDevice.IMU_BNO055.getCalibration(&system, &gyro, &accel, &mag);
         pthread_mutex_unlock(&ReadIMU_Mutex);
@@ -334,6 +338,15 @@ void UpdateIMU_RawData(){
 
 void * SaveIMU_RawDataFunc(void *){
     std::cout<<"EnterThread_SaveIMU_RawData"<<std::endl;
+
+    while(1){
+        pthread_mutex_lock(& bIMU_Data_StableMutex );
+            if(AssembleDevice.bIMU_Data_Stable){
+                break;
+            }
+        pthread_mutex_unlock(& bIMU_Data_StableMutex );
+    }
+
     while(1){
         sem_wait(&IMU_RawDataFifoSem);
 
@@ -373,6 +386,15 @@ void CreatAndSaveImag(const FramePtr pFrame ){
 }
 
 void *SaveCamera_IMU_DataToFifoFunc(void *){
+    std::cout<<"Enter SaveCamera_IMU_DataToFifo thread "<<std::endl;
+    while(1){
+        pthread_mutex_lock(& bIMU_Data_StableMutex );
+            if(AssembleDevice.bIMU_Data_Stable){
+                break;
+            }
+        pthread_mutex_unlock(& bIMU_Data_StableMutex );
+    }
+
     while(1){
         pthread_mutex_lock(&SaveCamera_IMU_DataMutex);
         pthread_cond_wait(&SaveCamera_IMU_DataCond,&SaveCamera_IMU_DataMutex);
@@ -452,6 +474,7 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
 
 void * SaveCamera_IMU_DataFunc(void *){
     std::cout<<"EnterThread_SaveCamera_IMU_Data"<<std::endl;
+
     while(1){
         sem_wait(&Camera_IMUDataFifoSem);
 
