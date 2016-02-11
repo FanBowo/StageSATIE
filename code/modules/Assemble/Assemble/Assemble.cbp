@@ -24,6 +24,7 @@
 					<Add directory="../../BNO 055/src/util" />
 					<Add directory="../../CameraMako130/src" />
 					<Add directory="../../CameraMako130/TestCameraMako130TakePhoto" />
+					<Add directory="../../TestSaveJPEG/libjpeg-turbo" />
 				</Compiler>
 				<Linker>
 					<Add option="-lpthread" />
@@ -35,6 +36,7 @@
 					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/libQtSvg.so.4" />
 					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/libQtGui.so.4" />
 					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/libQtCore.so.4" />
+					<Add library="../../TestSaveJPEG/libjpeg-turbo/build/libturbojpeg.a" />
 				</Linker>
 			</Target>
 			<Target title="Release">

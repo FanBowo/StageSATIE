@@ -9,11 +9,16 @@
 #include <iomanip>
 #include <sched.h>
 #include <fcntl.h> //define O_WRONLY and O_RDONLY
+#include <errno.h>
+#include <turbojpeg.h>
 
 #define EnableParseOutput true
 #define GPSECHO false
 #define Nano10_9 1000000000
 extern Assemble AssembleDevice;
+
+extern pthread_mutex_t Write2EmmcMutex;
+extern pthread_mutex_t Write2TerminalMutex;
 
 extern pthread_mutex_t bIMU_Data_StableMutex;
 extern pthread_cond_t bIMU_Data_StableCond;

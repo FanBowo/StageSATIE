@@ -5,7 +5,7 @@
 
 
 #include "Tasks.h"
-#include <turbojpeg.h>
+
 
 
 // Set GPSECHO to 'false' to turn off echoing the GPS data to the Serial console
@@ -157,8 +157,8 @@ int main() // run over and over again
     pthread_t ThreadSaveCamera_IMU_Data2;
     pthread_create(&ThreadSaveCamera_IMU_Data2,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
 
-    pthread_t ThreadSaveCamera_IMU_Data3;
-    pthread_create(&ThreadSaveCamera_IMU_Data3,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
+//    pthread_t ThreadSaveCamera_IMU_Data3;
+//    pthread_create(&ThreadSaveCamera_IMU_Data3,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
 
     pthread_t ThreadSaveCamera_IMU_DataToFifo;
     struct sched_param ThreadSaveCamera_IMU_DataToFifoPara;
@@ -179,7 +179,7 @@ int main() // run over and over again
     pthread_join(ThreadSaveCamera_IMU_Data,NULL);
     pthread_join(ThreadSaveCamera_IMU_Data1,NULL);
     pthread_join(ThreadSaveCamera_IMU_Data2,NULL);
-    pthread_join(ThreadSaveCamera_IMU_Data3,NULL);
+//    pthread_join(ThreadSaveCamera_IMU_Data3,NULL);
     pthread_join(ThreadSaveCamera_IMU_DataToFifo,NULL);
 
     std::cout<<"End of programme"<<std::endl;
