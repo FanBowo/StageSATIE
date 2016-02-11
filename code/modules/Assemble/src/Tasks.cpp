@@ -587,7 +587,7 @@ void CreatAndSaveImag(const FramePtr pFrame ){
     pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
 }
 
-//#define RECORD_IMU_ANG_DATA
+#define RECORD_IMU_ANG_DATA
 #define UseDefaultPhotoFormat
 void *SaveCamera_IMU_DataToFifoFunc(void *){
     std::cout<<"Enter SaveCamera_IMU_DataToFifo thread "<<std::endl;
@@ -618,11 +618,11 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
         TempCamera_IMU_Data.timestamp=AssembleDevice.DeviceTimeStamp;
         pthread_mutex_unlock(&RW_Device_TimeStampMutex);
 
-        if((TempCamera_IMU_Data.timestamp-OldTimeStamp)<0.005f){
-            pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
-            continue;
-        }
-        OldTimeStamp=TempCamera_IMU_Data.timestamp;
+//        if((TempCamera_IMU_Data.timestamp-OldTimeStamp)<0.005f){
+//            pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
+//            continue;
+//        }
+//        OldTimeStamp=TempCamera_IMU_Data.timestamp;
 
         #ifdef RECORD_IMU_ANG_DATA
         sensors_event_t event;
