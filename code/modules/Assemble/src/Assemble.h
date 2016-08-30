@@ -35,6 +35,7 @@ typedef struct{
 typedef struct{
     float timestamp;                /**< time is in seconds */
     sensors_event_t   CameraPose;  /**< orientation values are in degrees *//**< orientation values are in degrees */
+    uint8_t Sys_cali_level;
     VmbUchar_t pImage[Default_Size];/*Pointer of image data*/
 } Camera_IMU_Data_t;
 

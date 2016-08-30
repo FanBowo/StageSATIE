@@ -337,7 +337,7 @@ void OpenCSVfile(){
     pthread_mutex_lock(&Write2EmmcMutex);
 
     AssembleDevice.pSaveCamera_IMU_Data.open(pCamera_IMU_CSV_FileName,std::ios::out|std::ios::trunc);
-    AssembleDevice.pSaveCamera_IMU_Data<<"timestamp"<<","\
+    AssembleDevice.pSaveCamera_IMU_Data<<"timestamp"<<","<<"SystèmeCaliLevel"<<","\
                     <<"x"<<","<<"y"<<","<<"z"<<std::endl;
 
     pthread_mutex_unlock(&Write2EmmcMutex);
@@ -603,6 +603,19 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
         TempCamera_IMU_Data.CameraPose.orientation.y=(float)event.orientation.y;
         TempCamera_IMU_Data.CameraPose.orientation.z=(float)event.orientation.z;
 
+        uint8_t Temp_Sys_cali_level,Temp_Gyro_cali_level,Temp_Acc_cali_level,Temp_Magn_cali_level=0;
+
+        pthread_mutex_lock(&ReadIMU_Mutex);
+    //    std::cout<<"CreatAndSaveImag event get ReadIMU_Mutex"<<std::endl;
+        AssembleDevice.IMU_BNO055.getCalibration(&Temp_Sys_cali_level,
+                                                    &Temp_Gyro_cali_level,
+                                                    &Temp_Acc_cali_level,
+                                                    &Temp_Magn_cali_level
+                                                    );
+        pthread_mutex_unlock(&ReadIMU_Mutex);
+
+        TempCamera_IMU_Data.Sys_cali_level=Temp_Sys_cali_level;
+
         VmbErrorType    err         = VmbErrorSuccess;
         //VmbPixelFormatType ePixelFormat = VmbPixelFormatMono8;
 
@@ -725,6 +738,7 @@ void * SaveCamera_IMU_DataFunc(void *){
 
         AssembleDevice.pSaveCamera_IMU_Data
                         <<std::to_string((unsigned long long int)(TempCamera_IMU_Data.timestamp*Nano10_9))<<"," \
+                        << (int) TempCamera_IMU_Data.Sys_cali_level<<","\
                         <<std::setiosflags(std::ios::fixed)\
                         <<std::setprecision(4)\
                         << TempCamera_IMU_Data.CameraPose.orientation.x<<","\

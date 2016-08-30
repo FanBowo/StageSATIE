@@ -54,6 +54,9 @@ void setup(void)
 
     while(1);
   }
+//    bno.setAxisRemap(Adafruit_BNO055::REMAP_CONFIG_P1);
+//    bno.setAxisSign(Adafruit_BNO055::REMAP_SIGN_P6);
+    // Tested repere
     bno.setAxisRemap(Adafruit_BNO055::REMAP_CONFIG_P0);
     bno.setAxisSign(Adafruit_BNO055::REMAP_SIGN_P4);
   delay(1000);
@@ -91,11 +94,11 @@ void loop(void)
   // - VECTOR_LINEARACCEL   - m/s^2
   // - VECTOR_GRAVITY       - m/s^2
   sensors_event_t event;
-//  bno.getEvent(& event);
-//  std::cout<<"Orientation :"<<(float)event.orientation.x<<\
-//                       " "<<(float)event.orientation.y<<\
-//                       " "<<(float)event.orientation.z\
-//                       <<" "<<(float)bno.bInitWithCaliProfileCompleted<<std::endl;
+  bno.getEvent(& event);
+  std::cout<<"Orientation :"<<(float)event.orientation.x<<\
+                       " "<<(float)event.orientation.y<<\
+                       " "<<(float)event.orientation.z\
+                       <<std::endl;
 
 //  bno.getEvent(& event,Adafruit_BNO055::VECTOR_GYROSCOPE);
 //  std::cout<<"omega :"<<(float)event.gyro.x<<\
