@@ -16,6 +16,10 @@
 extern Assemble AssembleDevice;
 
 extern pthread_mutex_t bIMU_Data_StableMutex;
+extern pthread_cond_t bIMU_Data_StableCond;
+
+extern pthread_mutex_t bCSV_PointerPreparedMutex;
+extern pthread_cond_t bCSV_PointerPreparedCond;
 
 extern pthread_mutex_t Camera_IMU_DataFifoMutex;
 extern pthread_mutex_t IMU_RawDataFifoMutex;
@@ -51,6 +55,7 @@ void InitTimerIMU();//IMU data frequncy 50hz
 void TimerIMU_Feedback(union sigval sv);
 void * IMU_UpdateRawDataFunc(void *);
 void UpdateIMU_RawData();
+void OpenCSVfile();
 void * SaveIMU_RawDataFunc(void *);
 //void * SaveIMU_RawDataToFifoFunc(void *);
 //extern pthread_mutex_t SaveIMU_RawDataMutex;

@@ -3,6 +3,10 @@
 Assemble AssembleDevice;
 
 pthread_mutex_t bIMU_Data_StableMutex=PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t bIMU_Data_StableCond=PTHREAD_COND_INITIALIZER;
+
+pthread_mutex_t bCSV_PointerPreparedMutex=PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t bCSV_PointerPreparedCond=PTHREAD_COND_INITIALIZER;
 
 pthread_mutex_t Camera_IMU_DataFifoMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t IMU_RawDataFifoMutex=PTHREAD_MUTEX_INITIALIZER;
@@ -211,6 +215,7 @@ void TimerIMU_Feedback(union sigval sv){
 
 void * IMU_UpdateRawDataFunc(void *){
     std::cout<<"EnterThread_IMU_UpdateRawData"<<std::endl;
+
     while(1){
 
         pthread_mutex_lock(&IMU_RawDataMutex);
@@ -229,6 +234,38 @@ void * IMU_UpdateRawDataFunc(void *){
         pthread_mutex_unlock(&IMU_RawDataMutex);
     }
 
+}
+
+void OpenCSVfile(){
+
+    pthread_mutex_lock(& bCSV_PointerPreparedMutex );
+
+    pthread_mutex_lock(&RW_Device_TimeStampMutex);
+    double timestamp=AssembleDevice.DeviceTimeStamp;
+    pthread_mutex_unlock(&RW_Device_TimeStampMutex);
+
+    std::string pIMU_CSV_FileNameTemp=std::to_string((long)(timestamp*Nano10_9))\
+                        + "imu0.csv";
+    const char *pIMU_CSV_FileName=pIMU_CSV_FileNameTemp.c_str();
+
+
+    AssembleDevice.pSaveRawIMU_Data.open(pIMU_CSV_FileName,std::ios::out|std::ios::trunc);
+    AssembleDevice.pSaveRawIMU_Data<<"timestamp"<<","\
+                    <<"omega_x"<<","<<"omega_y"<<","<<"omega_z"<<","\
+                    <<"alpha_x"<<","<<"alpha_y"<<","<<"alpha_z"<<std::endl;
+
+    std::string pCamera_IMU_CSV_FileNameTemp=std::to_string((long)(timestamp*Nano10_9))\
+                        + "Camera_IMU.csv";
+    const char *pCamera_IMU_CSV_FileName=pCamera_IMU_CSV_FileNameTemp.c_str();
+
+    AssembleDevice.pSaveCamera_IMU_Data.open(pCamera_IMU_CSV_FileName,std::ios::out|std::ios::trunc);
+    AssembleDevice.pSaveCamera_IMU_Data<<"timestamp"<<","\
+                    <<"x"<<","<<"y"<<","<<"z"<<std::endl;
+
+    AssembleDevice.bCSV_PointerPrepared=true;
+    pthread_cond_broadcast(&bCSV_PointerPreparedCond);
+    std::cout<<"broadcast bCSV_PointerPreparedCond signal"<<std::endl;
+    pthread_mutex_unlock(& bCSV_PointerPreparedMutex );
 }
 
 
@@ -259,9 +296,9 @@ void UpdateIMU_RawData(){
 
             pthread_mutex_lock(& bIMU_Data_StableMutex );
             AssembleDevice.bIMU_Data_Stable=true;
+            pthread_cond_broadcast(&bIMU_Data_StableCond);
+            std::cout<<"broadcast bIMU_Data_StableCond signal"<<std::endl;
             pthread_mutex_unlock(& bIMU_Data_StableMutex );
-
-
         }
     }
     else{
@@ -299,6 +336,14 @@ void UpdateIMU_RawData(){
         pthread_mutex_unlock(&IMU_RawDataFifoMutex);
 
         sem_post(&IMU_RawDataFifoSem);
+
+        pthread_mutex_lock(& bCSV_PointerPreparedMutex );
+        bool TempbCSV_PointerPreparedMutex=AssembleDevice.bCSV_PointerPrepared;
+        pthread_mutex_unlock(& bCSV_PointerPreparedMutex );
+
+        if(!TempbCSV_PointerPreparedMutex){
+            OpenCSVfile();
+        }
     }
 
 
@@ -339,13 +384,12 @@ void UpdateIMU_RawData(){
 void * SaveIMU_RawDataFunc(void *){
     std::cout<<"EnterThread_SaveIMU_RawData"<<std::endl;
 
-    while(1){
-        pthread_mutex_lock(& bIMU_Data_StableMutex );
-            if(AssembleDevice.bIMU_Data_Stable){
-                break;
-            }
-        pthread_mutex_unlock(& bIMU_Data_StableMutex );
-    }
+    pthread_mutex_lock(& bCSV_PointerPreparedMutex );
+    pthread_cond_wait(&bCSV_PointerPreparedCond,&bCSV_PointerPreparedMutex);
+    std::cout<<"Wait for bCSV_PointerPreparedCond signal"<<std::endl;
+    pthread_mutex_unlock(& bCSV_PointerPreparedMutex );
+
+    std::cout<<"Get bCSV_PointerPreparedCond signal"<<std::endl;
 
     while(1){
         sem_wait(&IMU_RawDataFifoSem);
@@ -387,13 +431,12 @@ void CreatAndSaveImag(const FramePtr pFrame ){
 
 void *SaveCamera_IMU_DataToFifoFunc(void *){
     std::cout<<"Enter SaveCamera_IMU_DataToFifo thread "<<std::endl;
-    while(1){
-        pthread_mutex_lock(& bIMU_Data_StableMutex );
-            if(AssembleDevice.bIMU_Data_Stable){
-                break;
-            }
-        pthread_mutex_unlock(& bIMU_Data_StableMutex );
-    }
+
+    pthread_mutex_lock(& bIMU_Data_StableMutex );
+    pthread_cond_wait(&bIMU_Data_StableCond,&bIMU_Data_StableMutex);
+    std::cout<<"wait bIMU_Data_StableCond Signal"<<std::endl;
+    pthread_mutex_unlock(& bIMU_Data_StableMutex );
+    std::cout<<"Reiceived IMU_Data_Stable condition signal"<<std::endl;
 
     while(1){
         pthread_mutex_lock(&SaveCamera_IMU_DataMutex);
@@ -474,6 +517,13 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
 
 void * SaveCamera_IMU_DataFunc(void *){
     std::cout<<"EnterThread_SaveCamera_IMU_Data"<<std::endl;
+
+    pthread_mutex_lock(& bCSV_PointerPreparedMutex );
+    pthread_cond_wait(&bCSV_PointerPreparedCond,&bCSV_PointerPreparedMutex);
+    std::cout<<"Wait for bCSV_PointerPreparedCond signal"<<std::endl;
+    pthread_mutex_unlock(& bCSV_PointerPreparedMutex );
+
+    std::cout<<"Get bCSV_PointerPreparedCond signal"<<std::endl;
 
     while(1){
         sem_wait(&Camera_IMUDataFifoSem);

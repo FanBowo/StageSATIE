@@ -7,15 +7,10 @@ Assemble::Assemble()
 //    // Connect to the GPS on the hardware port
 //    Adafruit_GPS GPS(&_GPSSerialPort);
     bIMU_Data_Stable=false;
+    bCSV_PointerPrepared=false;
 //    IMU_TimeStamp=0.0;
     DeviceTimeStamp=0.0;
-    pSaveRawIMU_Data.open("imu0.csv",std::ios::out|std::ios::trunc);
-    pSaveRawIMU_Data<<"timestamp"<<","\
-                    <<"omega_x"<<","<<"omega_y"<<","<<"omega_z"<<","\
-                    <<"alpha_x"<<","<<"alpha_y"<<","<<"alpha_z"<<std::endl;
-    pSaveCamera_IMU_Data.open("Camera_IMU.csv",std::ios::out|std::ios::trunc);
-    pSaveCamera_IMU_Data<<"timestamp"<<","\
-                    <<"x"<<","<<"y"<<","<<"z"<<std::endl;
+
 }
 
 Assemble::~Assemble(){
