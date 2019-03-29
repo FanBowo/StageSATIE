@@ -1,0 +1,49 @@
+# depslib dependency file v1.0
+1553857312 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/GPS/TestGPS/main.cpp
+	"Adafruit_GPS.h"
+	<iostream>
+	<unistd.h>
+
+1553857484 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/GPS/src/util/SerialPort.h
+	"SerialPortConstants.h"
+	<ios>
+	<memory>
+
+1551325617 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/GPS/src/util/SerialPortConstants.h
+	<limits>
+	<stdexcept>
+	<string>
+	<termios.h>
+	<vector>
+
+1553363435 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/GPS/src/util/SerialStream.h
+	"SerialPortConstants.h"
+	"SerialStreamBuf.h"
+	<istream>
+	<memory>
+
+1553363456 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/GPS/src/util/SerialStreamBuf.h
+	"SerialPortConstants.h"
+	<memory>
+	<streambuf>
+	<vector>
+
+1553853557 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/GPS/src/Adafruit_GPS.cpp
+	<SoftwareSerial.h>
+	"Adafruit_GPS.h"
+	<cstring>
+	<cctype>
+	<unistd.h>
+	<math.h>
+
+1553857512 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/GPS/src/Adafruit_GPS.h
+	"LinuxSerialPackage.h"
+	<SoftwareSerial.h>
+
+1553854546 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/GPS/src/util/LinuxSerialPackage.h
+	"SerialPort.h"
+	<iostream>
+
+1553857631 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/GPS/src/util/LinuxSerialPackage.cpp
+	"LinuxSerialPackage.h"
+

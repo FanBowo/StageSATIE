@@ -1,0 +1,74 @@
+# depslib dependency file v1.0
+1553693825 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/SparkFunMPU9250-DMP.cpp
+	"SparkFunMPU9250-DMP.h"
+	"MPU9250_RegisterMap.h"
+	<math.h>
+	"util/inv_mpu.h"
+
+1553693542 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/SparkFunMPU9250-DMP.h
+	"util/inv_mpu.h"
+	"util/inv_mpu_dmp_motion_driver.h"
+
+1541777778 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/util/inv_mpu.h
+
+1541777778 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/util/inv_mpu_dmp_motion_driver.h
+
+1541777778 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/MPU9250_RegisterMap.h
+
+1553696515 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/util/I2Cdev.cpp
+	<stdio.h>
+	<stdint.h>
+	<stdlib.h>
+	<fcntl.h>
+	<unistd.h>
+	<string.h>
+	<errno.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<linux/i2c-dev.h>
+	"I2Cdev.h"
+
+1553696712 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/util/I2Cdev.h
+	<stdbool.h>
+
+1553696969 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/util/inv_mpu.c
+	<stdio.h>
+	<stdint.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	"inv_mpu.h"
+	"I2Cdev.h"
+	"LinuxClk.h"
+
+1553697223 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/util/LinuxClk.h
+	<unistd.h>
+	<sys/time.h>
+
+1553697712 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/util/inv_mpu_dmp_motion_driver.c
+	<stdio.h>
+	<stdint.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	"inv_mpu.h"
+	"inv_mpu_dmp_motion_driver.h"
+	"dmpKey.h"
+	"dmpmap.h"
+	"I2Cdev.h"
+	"LinuxClk.h"
+
+1541777778 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/util/dmpKey.h
+
+1541777778 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/util/dmpmap.h
+
+1553697018 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/util/LinuxClk.cpp
+	"LinuxClk.h"
+
+1553697407 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/test_MPU9250/main.cpp
+	"SparkFunMPU9250-DMP.h"
+	<stdio.h>
+	<iostream>
+	<unistd.h>
+

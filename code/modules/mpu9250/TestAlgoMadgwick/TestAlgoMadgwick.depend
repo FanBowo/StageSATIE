@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1553768157 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/util/DataCalibration.cpp
+	"DataCalibration.h"
+
+1553768308 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/util/DataCalibration.h
+	<eigen3/Eigen/Dense>
+	<vector>
+
+1422442728 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/util/MadgwickAHRS.cpp
+	"MadgwickAHRS.h"
+
+1422305958 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/src/util/MadgwickAHRS.h
+	<math.h>
+
+1553769642 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/TestAlgoMadgwick/main.cpp
+	<iostream>
+
