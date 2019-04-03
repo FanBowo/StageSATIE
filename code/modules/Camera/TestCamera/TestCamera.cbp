@@ -18,8 +18,13 @@
 					<Add directory="../src/util" />
 				</Compiler>
 				<Linker>
+					<Add option="-lpthread" />
 					<Add library="../src/util/libImagelib.a" />
 					<Add library="../src/util/libPvAPI.a" />
+					<Add library="../src/util/libPvJNI.so" />
+					<Add library="../src/util/libPvAPI.so" />
+					<Add library="../src/util/librt.so" />
+					<Add library="../src/util/libtiff.so.5.3.0" />
 				</Linker>
 			</Target>
 			<Target title="Release">

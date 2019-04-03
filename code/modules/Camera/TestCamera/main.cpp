@@ -1,20 +1,19 @@
 /*
   ==============================================================================
-  Copyright (C) 2006-2014 Allied Vision Technologies.  All Rights Reserved.
+  Copyright (C) 2006-2011 Allied Vision Technologies.  All Rights Reserved.
 
   This code may be used in part, or in whole for your application development.
 
  ==============================================================================
 
-  SoftTrigger
+  HardTrigger
 
-  -Opens the first camera found.
-  -Frame queued.
-  -Sets camera to software trigger mode.
-  -Acquisition start readies camera to receive triggers.
-  -Once user presses 's' on keyboard, software trigger command is sent,
-  camera returns image to host.
-  -Host waits for frame to be return from queue, save images, and requeues frame.
+  Similar to SoftTrigger, except instead of:
+    PvAttrEnumSet(Camera->Handle,"FrameStartTriggerMode","Software")
+  this code sets:
+    PvAttrEnumSet(GCamera.Handle,"FrameStartTriggerMode","SyncIn1")
+    and waits for a trigger input on SyncIn1 instead of a FrameStartTriggerSoftware
+    command.
 
  ==============================================================================
 
@@ -31,6 +30,8 @@
 
  ==============================================================================
 */
+
+#define _LINUX
 
 #ifdef _WINDOWS
 #include "StdAfx.h"
@@ -56,10 +57,18 @@
 #if defined(_LINUX) || defined(_QNX) || defined(_OSX)
 #include <unistd.h>
 #include <time.h>
+#include <signal.h>
 #endif
 
 #include <PvApi.h>
 #include <ImageLib.h>
+
+#ifdef _WINDOWS
+#define _STDCALL __stdcall
+#else
+#define _STDCALL
+#define TRUE     0
+#endif
 
 // camera's data
 typedef struct
@@ -69,8 +78,12 @@ typedef struct
     tPvFrame        Frame;
     tPvUint32       Counter;
     char            Filename[20];
+	bool            Abort;
 
 } tCamera;
+
+// global camera data
+tCamera GCamera;
 
 #if defined(_LINUX) || defined(_QNX) || defined(_OSX)
 void Sleep(unsigned int time)
@@ -83,13 +96,38 @@ void Sleep(unsigned int time)
     while(nanosleep(&t,&r)==-1)
         t = r;
 }
+
+//Define function equivalent to Windows SetConsoleCtrlHandler
+void SetConsoleCtrlHandler(void (*func)(int), int junk)
+{
+    signal(SIGINT, func);
+}
 #endif
+
+// CTRL+C handler
+#ifdef _WINDOWS
+BOOL WINAPI CtrlCHandler(DWORD dwCtrlType)
+#else
+void CtrlCHandler(int Signo)
+#endif
+{
+    printf("\nCtrl+C interrupt received, stopping camera.\n");
+
+	//Set flag to exit WaitForEver
+    GCamera.Abort = true;
+
+    #ifndef _WINDOWS
+    signal(SIGINT, CtrlCHandler);
+    #else
+    return true;
+    #endif
+}
 
 // wait for camera to be plugged in
 void WaitForCamera()
 {
     printf("Waiting for a camera ");
-    while(PvCameraCount() == 0)
+    while((PvCameraCount() == 0) && !GCamera.Abort)
     {
         printf(".");
         Sleep(250);
@@ -97,24 +135,9 @@ void WaitForCamera()
     printf("\n");
 }
 
-// wait for the user to press q
-// return value: true == snap, false == quit
-bool WaitForUserToQuitOrSnap()
-{
-    char c;
-
-    do
-    {
-        c = getc(stdin);
-
-    } while(c != 'q' && c != 's');
-
-    return c == 's';
-}
-
 // get the first camera found
 // return value: true == success, false == fail
-bool CameraGet(tCamera* Camera)
+bool CameraGet()
 {
     tPvUint32 count,connected;
     tPvCameraInfoEx list;
@@ -123,7 +146,7 @@ bool CameraGet(tCamera* Camera)
 	count = PvCameraListEx(&list,1,&connected, sizeof(tPvCameraInfoEx));
     if(count == 1)
     {
-        Camera->UID = list.UniqueId;
+        GCamera.UID = list.UniqueId;
         printf("Got camera %s\n",list.SerialNumber);
         return true;
     }
@@ -136,13 +159,13 @@ bool CameraGet(tCamera* Camera)
 
 // open camera, allocate memory
 // return value: true == success, false == fail
-bool CameraSetup(tCamera* Camera)
+bool CameraSetup()
 {
     tPvErr errCode;
 	unsigned long FrameSize = 0;
 
 	//open camera
-	if ((errCode = PvCameraOpen(Camera->UID,ePvAccessMaster,&(Camera->Handle))) != ePvErrSuccess)
+	if ((errCode = PvCameraOpen(GCamera.UID,ePvAccessMaster,&(GCamera.Handle))) != ePvErrSuccess)
 	{
 		if (errCode == ePvErrAccessDenied)
 			printf("PvCameraOpen returned ePvErrAccessDenied:\nCamera already open as Master, or camera wasn't properly closed and still waiting to HeartbeatTimeout.");
@@ -152,31 +175,31 @@ bool CameraSetup(tCamera* Camera)
 	}
 
 	// Calculate frame buffer size
-    if((errCode = PvAttrUint32Get(Camera->Handle,"TotalBytesPerFrame",&FrameSize)) != ePvErrSuccess)
+    if((errCode = PvAttrUint32Get(GCamera.Handle,"TotalBytesPerFrame",&FrameSize)) != ePvErrSuccess)
 	{
 		printf("CameraSetup: Get TotalBytesPerFrame err: %u\n", errCode);
 		return false;
 	}
 
     // allocate image buffer
-    Camera->Frame.ImageBuffer = new char[FrameSize];
-    if(!Camera->Frame.ImageBuffer)
+    GCamera.Frame.ImageBuffer = new char[FrameSize];
+    if(!GCamera.Frame.ImageBuffer)
 	{
 		printf("CameraSetup: Failed to allocate buffers.\n");
 		return false;
 	}
-	Camera->Frame.ImageBufferSize = FrameSize;
+	GCamera.Frame.ImageBufferSize = FrameSize;
 
 	return true;
 }
 
 // close camera, free memory.
-void CameraUnsetup(tCamera* Camera)
+void CameraUnsetup()
 {
     tPvErr errCode;
 
 	// always close an opened camera even if it was unplugged before
-    if((errCode = PvCameraClose(Camera->Handle)) != ePvErrSuccess)
+    if((errCode = PvCameraClose(GCamera.Handle)) != ePvErrSuccess)
 	{
 		printf("CameraUnSetup: PvCameraClose err: %u\n", errCode);
 	}
@@ -186,12 +209,12 @@ void CameraUnsetup(tCamera* Camera)
 	}
 
 	// free image buffer
-    delete [] (char*)Camera->Frame.ImageBuffer;
+    delete [] (char*)GCamera.Frame.ImageBuffer;
 }
 
 // setup and start streaming
 // return value: true == success, false == fail
-bool CameraStart(tCamera* Camera)
+bool CameraStart()
 {
     tPvErr errCode;
 
@@ -199,38 +222,38 @@ bool CameraStart(tCamera* Camera)
 	// on network card. Some MS VISTA network card drivers become unresponsive if test packet fails.
 	// Use PvUint32Set(handle, "PacketSize", MaxAllowablePacketSize) instead. See network card properties
 	// for max allowable PacketSize/MTU/JumboFrameSize.
-	if((errCode = PvCaptureAdjustPacketSize(Camera->Handle,8228)) != ePvErrSuccess)
+	if((errCode = PvCaptureAdjustPacketSize(GCamera.Handle,8228)) != ePvErrSuccess)
 	{
 		printf("CameraStart: PvCaptureAdjustPacketSize err: %u\n", errCode);
 		return false;
 	}
 
     // start driver capture stream
-	if((errCode = PvCaptureStart(Camera->Handle)) != ePvErrSuccess)
+	if((errCode = PvCaptureStart(GCamera.Handle)) != ePvErrSuccess)
 	{
 		printf("CameraStart: PvCaptureStart err: %u\n", errCode);
 		return false;
 	}
 
     // queue frame
-	if((errCode = PvCaptureQueueFrame(Camera->Handle,&(Camera->Frame),NULL)) != ePvErrSuccess)
+	if((errCode = PvCaptureQueueFrame(GCamera.Handle,&(GCamera.Frame),NULL)) != ePvErrSuccess)
 	{
 		printf("CameraStart: PvCaptureQueueFrame err: %u\n", errCode);
 		// stop driver capture stream
-		PvCaptureEnd(Camera->Handle);
+		PvCaptureEnd(GCamera.Handle);
 		return false;
 	}
 
-	// set the camera in software trigger, continuous mode, and start camera receiving triggers
-	if((PvAttrEnumSet(Camera->Handle,"FrameStartTriggerMode","Software") != ePvErrSuccess) ||
-		(PvAttrEnumSet(Camera->Handle,"AcquisitionMode","Continuous") != ePvErrSuccess) ||
-		(PvCommandRun(Camera->Handle,"AcquisitionStart") != ePvErrSuccess))
+	// set the camera in hardware trigger, continuous mode, and start camera receiving triggers
+	if((PvAttrEnumSet(GCamera.Handle,"FrameStartTriggerMode","SyncIn1") != ePvErrSuccess) ||
+		(PvAttrEnumSet(GCamera.Handle,"AcquisitionMode","Continuous") != ePvErrSuccess) ||
+		(PvCommandRun(GCamera.Handle,"AcquisitionStart") != ePvErrSuccess))
 	{
 		printf("CameraStart: failed to set camera attributes\n");
 		// clear queued frame
-		PvCaptureQueueClear(Camera->Handle);
+		PvCaptureQueueClear(GCamera.Handle);
 		// stop driver capture stream
-		PvCaptureEnd(Camera->Handle);
+		PvCaptureEnd(GCamera.Handle);
 		return false;
 	}
 
@@ -238,24 +261,24 @@ bool CameraStart(tCamera* Camera)
 }
 
 // stop streaming
-void CameraStop(tCamera* Camera)
+void CameraStop()
 {
     tPvErr errCode;
 
 	//stop camera receiving triggers
-	if ((errCode = PvCommandRun(Camera->Handle,"AcquisitionStop")) != ePvErrSuccess)
+	if ((errCode = PvCommandRun(GCamera.Handle,"AcquisitionStop")) != ePvErrSuccess)
 		printf("AcquisitionStop command err: %u\n", errCode);
 	else
 		printf("Camera stopped.\n");
 
     //clear queued frames. will block until all frames dequeued
-	if ((errCode = PvCaptureQueueClear(Camera->Handle)) != ePvErrSuccess)
+	if ((errCode = PvCaptureQueueClear(GCamera.Handle)) != ePvErrSuccess)
 		printf("PvCaptureQueueClear err: %u\n", errCode);
 	else
 		printf("Queue cleared.\n");
 
 	//stop driver stream
-	if ((errCode = PvCaptureEnd(Camera->Handle)) != ePvErrSuccess)
+	if ((errCode = PvCaptureEnd(GCamera.Handle)) != ePvErrSuccess)
 		printf("PvCaptureEnd err: %u\n", errCode);
 	else
 		printf("Driver stream stopped.\n");
@@ -263,47 +286,49 @@ void CameraStop(tCamera* Camera)
 
 // trigger and save a frame from the camera
 // return value: true == success, false == fail
-bool CameraSnap(tCamera* Camera)
+bool CameraSnap()
 {
-    tPvErr errCode;
+    tPvErr errCode = ePvErrSuccess;
 
-	//software trigger camera
-	printf("Triggering camera.\n");
-	if((errCode = PvCommandRun(Camera->Handle,"FrameStartTriggerSoftware")) != ePvErrSuccess)
-	{
-		printf("CameraSnap: FrameStartTriggerSoftware err: %u\n", errCode);
+    //wait for frame to return from camera to host
+    printf("Waiting for SyncIn1 trigger input");
+	while(!GCamera.Abort && ((errCode = PvCaptureWaitForFrameDone(GCamera.Handle,&(GCamera.Frame),800)) == ePvErrTimeout))
+        printf(".");
+	printf("\n");
+
+	if(errCode != ePvErrSuccess  || GCamera.Abort)
+    {
+		//likely camera unplugged
+		GCamera.Abort = true;
 		return false;
 	}
 
-    //wait for frame to return from camera to host. short timeout here to show ~time for return.
-    while(PvCaptureWaitForFrameDone(Camera->Handle,&(Camera->Frame),10) == ePvErrTimeout)
-        printf("Waiting for frame to return to host...\n");
-
-    //check returned Frame.Status
-	if(Camera->Frame.Status == ePvErrSuccess)
+	//check returned Frame.Status
+	if(GCamera.Frame.Status == ePvErrSuccess)
     {
-		sprintf_s(Camera->Filename,sizeof(Camera->Filename),"./snap%04lu.tiff",++Camera->Counter);
+		sprintf_s(GCamera.Filename,sizeof(GCamera.Filename),"./snap%04lu.tiff",++GCamera.Counter);
 		//save image
-		if(!ImageWriteTiff(Camera->Filename,&(Camera->Frame)))
+		if(!ImageWriteTiff(GCamera.Filename,&(GCamera.Frame)))
 		{
 			printf("ImageWriteTiff fail.\n");
+			GCamera.Abort = true;
 			return false;
 		}
-
-		printf("snap%04lu.tiff saved.\n", Camera->Counter);
+		printf("snap%04lu.tiff saved.\n", GCamera.Counter);
 	}
     else
 	{
-		if (Camera->Frame.Status == ePvErrDataMissing)
+		if (GCamera.Frame.Status == ePvErrDataMissing)
 			printf("Dropped packets. Possible improper network card settings:\nSee GigE Installation Guide.");
 		else
-			printf("Frame.Status error: %u\n",Camera->Frame.Status);
+			printf("Frame.Status error: %u\n",GCamera.Frame.Status);
 	}
 
 	//requeue frame
-	if((errCode = PvCaptureQueueFrame(Camera->Handle,&(Camera->Frame),NULL)) != ePvErrSuccess)
+	if((errCode = PvCaptureQueueFrame(GCamera.Handle,&(GCamera.Frame),NULL)) != ePvErrSuccess)
 	{
-        printf("CameraSnap: PvCaptureQueueFrame err: %u\n", errCode);
+        printf("PvCaptureQueueFrame err: %u\n", errCode);
+		GCamera.Abort = true;
 		return false;
 	}
 	return true;
@@ -320,36 +345,37 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		tCamera Camera;
 
         //IMPORTANT: Initialize camera structure. See tPvFrame in PvApi.h for more info.
-		memset(&Camera,0,sizeof(tCamera));
+		memset(&GCamera,0,sizeof(tCamera));
+
+		//Set function to handle ctrl+C
+		SetConsoleCtrlHandler(CtrlCHandler, TRUE);
+
+		printf("Press CTRL-C to terminate\n");
 
         // wait for a camera to be plugged in
         WaitForCamera();
 
         // get first camera found
-        if(CameraGet(&Camera))
+        if(CameraGet())
         {
             // open camera
-            if(CameraSetup(&Camera))
+            if(CameraSetup())
             {
                 // start camera streaming
-                if(CameraStart(&Camera))
+                if(CameraStart())
                 {
-					printf("\nPress q to quit or s to take a picture.\n");
-                    // snap or quit
-                    while(WaitForUserToQuitOrSnap() &&
-						CameraSnap(&Camera))
-                    {
-                        printf("\nPress q to quit or s to take a picture.\n");
-                    }
+
+                   while(GCamera.Abort == false)
+                        CameraSnap();
+
                     // stop camera streaming
-                    CameraStop(&Camera);
+                    CameraStop();
                 }
 
                 // close camera
-                CameraUnsetup(&Camera);
+                CameraUnsetup();
             }
         }
 

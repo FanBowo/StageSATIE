@@ -1,56 +1,56 @@
 /*
  ==============================================================================
   Copyright (C) 2005-2014 Allied Vision Technologies.  All Rights Reserved.
- 
+
   Redistribution of this header file, in original or modified form, without
   prior written consent of Allied Vision Technologies is prohibited.
- 
+
  =============================================================================
- 
+
   File:         PvApi.h
- 
+
   Project/lib:  PvAPI
- 
+
   Targets:      Win32, Linux, QNX, OSX
- 
+
   Description:  Main header file for PvAPI, the programming interface for
                 Prosilica Series and Manta cameras.
- 
- 
+
+
  ------------------------------------------------------------------------------
- 
+
   Example basic functions:
- 
+
         PvInitialize()          - load and initialize the PvApi module
         PvUnInitialize()        - shut down the module
- 
+
         PvCameraList()          - list the cameras available
- 
+
         PvCameraOpen()          - open & close your cameras
         PvCameraClose()
- 
+
         PvCaptureStart()        - start & end image capture
         PvCaptureEnd()
- 
+
         PvCaptureQueueFrame()   - queue a frame buffer for image capture
- 
+
         PvCaptureQueueClear()   - clear all frames off the queue (i.e. abort)
- 
+
         PvAttrList()            - list all attributes for this camera
         PvAttrInfo()            - get information on an attribute
- 
+
   Example basic attributes:
- 
+
         Width              - Uint32 - RW : image width in pixels
         Height             - Uint32 - RW : image height in pixels
         PixelFormat        - Enum   - RW : image data format. Eg. mono8, mono16
         TotalBytesPerFrame - Uint32 - R  : number of bytes per image
         ExposureValue      - Uint32 - RW : camera exposure time
- 
+
   See AVT "GigE Camera and Driver Attributes" document for full attribute description
- 
+
  ==============================================================================
- 
+
   THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF TITLE,
   NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR  PURPOSE ARE
@@ -61,7 +61,7 @@
   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  ==============================================================================
   dd/mon/yy     Notes
  ------------------------------------------------------------------------------
@@ -131,7 +131,7 @@ typedef enum
     ePvErrDataMissing   = 16,       // Some data in the frame is missing
     ePvErrTimeout       = 17,       // Timeout during wait
     ePvErrOutOfRange    = 18,       // Attribute value is out of the expected range
-    ePvErrWrongType     = 19,       // Attribute is not this type (wrong access function) 
+    ePvErrWrongType     = 19,       // Attribute is not this type (wrong access function)
     ePvErrForbidden     = 20,       // Attribute write forbidden at this time
     ePvErrUnavailable   = 21,       // Attribute is not available at this time
     ePvErrFirewall      = 22,       // A firewall is blocking the traffic (Windows only)
@@ -252,7 +252,7 @@ typedef enum
 {
     ePvLinkAdd          = 1, // A camera was plugged in
     ePvLinkRemove       = 2, // A camera was unplugged
-    _ePvLink_reserved1  = 3, 
+    _ePvLink_reserved1  = 3,
     __ePvLink_force_32  = 0xFFFFFFFF
 
 } tPvLinkEvent;
@@ -323,7 +323,7 @@ typedef enum
     ePvFmtBgr24         = 9,            // BGR, 8 bits x 3
     ePvFmtRgba32        = 10,           // RGBA, 8 bits x 4
     ePvFmtBgra32        = 11,           // BGRA, 8 bits x 4
-    ePvFmtMono12Packed  = 12,           // Monochrome, 12 bits, 
+    ePvFmtMono12Packed  = 12,           // Monochrome, 12 bits,
     ePvFmtBayer12Packed = 13,           // Bayer-color, 12 bits, packed
     __ePvFmt_force_32   = 0xFFFFFFFF
 
@@ -347,9 +347,9 @@ typedef enum
 
 //
 // The frame structure passed to PvQueueFrame().
-// NOTE: Memset structure to 0 when allocated. 
-//       Prosilica filter driver reads AncillaryBuffer pointer.  
-//       If pointer location random/invalid this will cause issues. 
+// NOTE: Memset structure to 0 when allocated.
+//       Prosilica filter driver reads AncillaryBuffer pointer.
+//       If pointer location random/invalid this will cause issues.
 //
 typedef struct
 {
@@ -413,7 +413,7 @@ typedef void (PVDECL *tPvFrameCallback)(tPvFrame* Frame);
 
 
 //----- Attributes ------------------------------------------------------------
-
+#define _x64
 
 #if defined(_M_IX86) || defined(_x86) || defined(_WIN64) || defined(_x64)
 typedef long            tPvInt32;   // 32-bit signed integer
@@ -495,7 +495,7 @@ typedef struct
  *
  * Purpose:   Retreive the version number of PvAPI
  *
- * Arguments: 
+ * Arguments:
  *
  * [OUT] unsigned long* pMajor, major version number
  * [OUT] unsigned long* pMinor, minor version number
@@ -522,7 +522,7 @@ void PVDECL PvVersion(unsigned long* pMajor,unsigned long* pMinor);
  *            following error codes:
  *
  *               ePvErrResources,       resources requested from the OS were not
- *                                      available           
+ *                                      available
  *               ePvErrInternalFault,   an internal fault occurred
  */
 tPvErr PVDECL PvInitialize(void);
@@ -540,7 +540,7 @@ tPvErr PVDECL PvInitialize(void);
  *            following error codes:
  *
  *               ePvErrResources,       resources requested from the OS were not
- *                                      available           
+ *                                      available
  *               ePvErrInternalFault,   an internal fault occurred
  */
 tPvErr PVDECL PvInitializeNoDiscovery(void);
@@ -1075,13 +1075,13 @@ tPvErr PVDECL PvCameraForceIP(const char* pMAC,unsigned long Address,unsigned lo
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,      Handle to the camera 
+ * [ IN] tPvHandle Camera,      Handle to the camera
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrResources,       resources requested from the OS were not
  *                                      available
  *               ePvErrInternalFault,   an internal fault occurred
@@ -1101,11 +1101,11 @@ tPvErr PVDECL PvCaptureStart(tPvHandle Camera);
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,      Handle to the camera 
+ * [ IN] tPvHandle Camera,      Handle to the camera
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
  *               ePvErrInternalFault,   an internal fault occurred
  *               ePvErrBadSequence,     API isn't initialized or capture already stopped
@@ -1123,12 +1123,12 @@ tPvErr PVDECL PvCaptureEnd(tPvHandle Camera);
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
+ * [ IN] tPvHandle Camera,          Handle to the camera
  * [OUT] unsigned long* pIsStarted, Result returned here: 1=started, 0=disabled
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
  *               ePvBadParameter,       a valid pointer for pIsStarted was not supplied
  *               ePvErrInternalFault,   an internal fault occurred
@@ -1143,15 +1143,15 @@ tPvErr PVDECL PvCaptureQuery(tPvHandle Camera, unsigned long* pIsStarted);
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,                   Handle to the camera 
+ * [ IN] tPvHandle Camera,                   Handle to the camera
  * [ IN] unsigned long MaximumPacketSize     Upper limit: the packet size will
  *                                             not be set higher than this value.
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrResources,       resources requested from the OS were not
  *                                      available
  *               ePvErrInternalFault,   an internal fault occurred
@@ -1171,16 +1171,16 @@ tPvErr PVDECL PvCaptureAdjustPacketSize(tPvHandle Camera,unsigned long MaximumPa
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
+ * [ IN] tPvHandle Camera,          Handle to the camera
  * [ IN] tPvFrame* pFrame,          Frame to queue
  * [ IN] tPvFrameCallback Callback, Callback to run when the frame is done;
  *                                    may be NULL for no callback
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrQueueFull,       the frame queue is full
  *               ePvErrResources,       resources requested from the OS were not
  *                                      available
@@ -1215,11 +1215,11 @@ tPvErr PVDECL PvCaptureQueueFrame(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
+ * [ IN] tPvHandle Camera,          Handle to the camera
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
  *               ePvErrInternalFault,   an internal fault occurred
  *               ePvErrBadSequence,     API isn't initialized
@@ -1241,21 +1241,21 @@ tPvErr PVDECL PvCaptureQueueClear(tPvHandle Camera);
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
+ * [ IN] tPvHandle Camera,          Handle to the camera
  * [ IN] tPvFrame* pFrame,          Frame to wait upon
  * [ IN] unsigned long Timeout,     Wait timeout (in milliseconds); use
  *                                    PVINFINITE for no timeout
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrTimeout,         timeout while waiting for the frame
  *               ePvErrBadHandle,       the handle of the camera is invalid
  *               ePvErrInternalFault,   an internal fault occurred
  *               ePvErrBadSequence,     API isn't initialized
  *
  * This function cannot be called from the frame-done callback.
- * 
+ *
  * When this function returns, the frame structure is no longer in use and you
  * are free to do with it as you please (for example, reuse or deallocation).
  *
@@ -1289,9 +1289,9 @@ tPvErr PVDECL PvCaptureWaitForFrameDone(tPvHandle Camera,
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvBadParameter,       a valid pointer for pListPtr was not supplied
  *               ePvErrInternalFault,   an internal fault occurred
  *               ePvErrBadSequence,     API isn't initialized
@@ -1312,15 +1312,15 @@ tPvErr PVDECL PvAttrList(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [OUT] tPvAttributeInfo* pInfo,   The information is copied here
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvBadParameter,       a valid pointer for pInfo was not supplied
  *               ePvErrInternalFault,   an internal fault occurred
@@ -1338,16 +1338,16 @@ tPvErr PVDECL PvAttrInfo(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
+ * [ IN] tPvHandle Camera,          Handle to the camera
  * [ IN] const char* Name,          Attribute name
  *
  * Return:       ePvErrSuccess,         the attribute exists
  *               ePvErrNotFound,        the attribute does not exist
  *
  *            The following error codes may also occur:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrInternalFault,   an internal fault occurred
  *               ePvErrBadSequence,     API isn't initialized
  */
@@ -1361,8 +1361,8 @@ tPvErr PVDECL PvAttrExists(tPvHandle Camera, const char* Name);
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,              Handle to the camera 
- * [ IN] const char* Name,              Attribute name 
+ * [ IN] tPvHandle Camera,              Handle to the camera
+ * [ IN] const char* Name,              Attribute name
  *
  * Return:       ePvErrSuccess,         the attribute is available
  *               ePvErrUnavailable,     the attribute is not available
@@ -1370,7 +1370,7 @@ tPvErr PVDECL PvAttrExists(tPvHandle Camera, const char* Name);
  *            The following error codes may also occur:
  *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrInternalFault,   an internal fault occurred
  *               ePvErrBadSequence,     API isn't initialized
@@ -1383,10 +1383,10 @@ tPvErr PVDECL PvAttrIsAvailable(tPvHandle Camera, const char* Name);
  *
  * Purpose:   Check if an attribute's value is valid.
  *
- * Arguments: 
+ * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  *
  * Return:       ePvErrSuccess,         the attribute is valid
  *               ePvErrOutOfRange,      the attribute is not valid
@@ -1394,7 +1394,7 @@ tPvErr PVDECL PvAttrIsAvailable(tPvHandle Camera, const char* Name);
  *            The following error codes may also occur:
  *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrOutOfRange,      the requested attribute is not valid
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrInternalFault,   an internal fault occurred
@@ -1412,8 +1412,8 @@ tPvErr PVDECL PvAttrIsValid(tPvHandle Camera, const char* Name);
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [OUT] char* pBuffer,             Caller-allocated buffer; the string is
  *                                    copied here
  * [ IN] unsigned long BufferSize,  Size of buffer, in bytes
@@ -1423,9 +1423,9 @@ tPvErr PVDECL PvAttrIsValid(tPvHandle Camera, const char* Name);
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvBadParameter,       a valid pointer for pBuffer was not supplied
@@ -1449,16 +1449,16 @@ tPvErr PVDECL PvAttrRangeEnum(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [OUT] tPvUint32* pMin,           Minimum value returned here
  * [OUT] tPvUint32* pMax,           Maximum value returned here
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvBadParameter,       a valid pointer for pMin or pMax was not supplied
@@ -1478,16 +1478,16 @@ tPvErr PVDECL PvAttrRangeUint32(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
- * [OUT] tPvFloat32* pMin,          Minimum value returned here           
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
+ * [OUT] tPvFloat32* pMin,          Minimum value returned here
  * [OUT] tPvFloat32* pMax,          Maximum value returned here
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvBadParameter,       a valid pointer for pMin or pMax was not supplied
@@ -1506,16 +1506,16 @@ tPvErr PVDECL PvAttrRangeFloat32(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [OUT] tPvInt64* pMin,            Minimum value returned here
  * [OUT] tPvInt64* pMax,            Maximum value returned here
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvBadParameter,       a valid pointer for pMin or pMax was not supplied
@@ -1534,14 +1534,14 @@ tPvErr PVDECL PvAttrRangeInt64(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvErrInternalFault,   an internal fault occurred
@@ -1557,8 +1557,8 @@ tPvErr PVDECL PvCommandRun(tPvHandle Camera, const char* Name);
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [OUT] char* pBuffer,             Caller-allocated buffer; the string is
  *                                    copied here
  * [ IN] unsigned long BufferSize,  Size of buffer, in bytes
@@ -1568,9 +1568,9 @@ tPvErr PVDECL PvCommandRun(tPvHandle Camera, const char* Name);
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvBadParameter,       a valid pointer for pBuffer was not supplied
@@ -1591,15 +1591,15 @@ tPvErr PVDECL PvAttrStringGet(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [ IN] const char* Value,  Value to set
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvErrForbidden,       the requested attribute forbid this operation
@@ -1619,8 +1619,8 @@ tPvErr PVDECL PvAttrStringSet(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [OUT] char* pBuffer,             Caller-allocated buffer; the string is
  *                                    copied here
  * [ IN] unsigned long BufferSize,  Size of buffer, in bytes
@@ -1630,9 +1630,9 @@ tPvErr PVDECL PvAttrStringSet(tPvHandle Camera,
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvBadParameter,       a valid pointer for pBuffer was not supplied
@@ -1654,15 +1654,15 @@ tPvErr PVDECL PvAttrEnumGet(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [ IN] const char* Value,         Value to set
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvErrForbidden,       the requested attribute forbid this operation
@@ -1682,15 +1682,15 @@ tPvErr PVDECL PvAttrEnumSet(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [OUT] tPvUint32* pValue,         Value is returned here
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvBadParameter,       a valid pointer for pValue was not supplied
@@ -1709,15 +1709,15 @@ tPvErr PVDECL PvAttrUint32Get(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [ IN] tPvUint32 Value,           Value to set
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvErrForbidden,       the requested attribute forbid this operation
@@ -1737,15 +1737,15 @@ tPvErr PVDECL PvAttrUint32Set(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [OUT] tPvFloat32* pValue,        Value is returned here
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvBadParameter,       a valid pointer for pValue was not supplied
@@ -1764,15 +1764,15 @@ tPvErr PVDECL PvAttrFloat32Get(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [ IN] tPvFloat32 Value,          Value to set
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvErrForbidden,       the requested attribute forbid this operation
@@ -1791,15 +1791,15 @@ tPvErr PVDECL PvAttrFloat32Set(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [OUT] tPvInt64* pValue,          Value is returned here
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvBadParameter,       a valid pointer for pValue was not supplied
@@ -1818,15 +1818,15 @@ tPvErr PVDECL PvAttrInt64Get(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [ IN] tPvInt64 Value,            Value to set
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvErrForbidden,       the requested attribute forbid this operation
@@ -1837,7 +1837,7 @@ tPvErr PVDECL PvAttrInt64Get(tPvHandle Camera,
 tPvErr PVDECL PvAttrInt64Set(tPvHandle Camera,
                               const char* Name,
                               tPvInt64 Value);
-                              
+
 /*
  * Function:  PvAttrBooleanGet()
  *
@@ -1845,15 +1845,15 @@ tPvErr PVDECL PvAttrInt64Set(tPvHandle Camera,
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [OUT] tPvBoolean* pValue,        Value is returned here
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvBadParameter,       a valid pointer for pValue was not supplied
@@ -1870,15 +1870,15 @@ tPvErr PVDECL PvAttrBooleanGet(tPvHandle Camera,const char* Name,tPvBoolean* pVa
  *
  * Arguments:
  *
- * [ IN] tPvHandle Camera,          Handle to the camera 
- * [ IN] const char* Name,          Attribute name 
+ * [ IN] tPvHandle Camera,          Handle to the camera
+ * [ IN] const char* Name,          Attribute name
  * [ IN] tPvBoolean Value,          Value to set
  *
  * Return:    ePvErrSuccess if no error, otherwise likely to be any of the
  *            following error codes:
- *              
+ *
  *               ePvErrBadHandle,       the handle of the camera is invalid
- *               ePvErrUnplugged,       the camera has been unplugged 
+ *               ePvErrUnplugged,       the camera has been unplugged
  *               ePvErrNotFound,        the requested attribute doesn't exist
  *               ePvErrWrongType,       the requested attribute is not of the correct type
  *               ePvErrForbidden,       the requested attribute forbid this operation

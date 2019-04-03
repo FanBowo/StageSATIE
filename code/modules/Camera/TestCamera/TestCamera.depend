@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1554128316 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/Camera/src/StdAfx.cpp
+	"StdAfx.h"
+
+1424852874 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/Camera/src/StdAfx.h
+
+1554132627 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/Camera/TestCamera/main.cpp
+	"StdAfx.h"
+	<stdio.h>
+	<string.h>
+	<Windows.h>
+	<unistd.h>
+	<time.h>
+	"PvApi.h"
+	"ImageLib.h"
+
+1554128413 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/Camera/src/util/PvApi.h
+
+1424852878 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/Camera/src/util/ImageLib.h
+	<PvApi.h>
+
