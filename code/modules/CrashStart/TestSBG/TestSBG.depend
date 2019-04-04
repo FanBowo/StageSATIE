@@ -1,0 +1,102 @@
+# depslib dependency file v1.0
+1554310462 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/TestSBG/main.cpp
+	<stdio.h>
+	<time.h>
+	<stdlib.h>
+	"sbgCom.h"
+	<sys/time.h>
+
+1437648442 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/sbgCom.h
+	"sbgCommon.h"
+	"time/sbgTime.h"
+	"protocol/protocol.h"
+	"protocol/protocolOutputMode.h"
+	"protocol/protocolOutput.h"
+	"protocol/commands.h"
+	"protocol/commandsCalib.h"
+	"protocol/commandsFilter.h"
+	"protocol/commandsOrientation.h"
+	"protocol/commandsOutput.h"
+	"protocol/commandsNav.h"
+	"protocol/commandsIg30.h"
+	"protocol/commandsExt.h"
+	"protocol/commandsSync.h"
+	"protocol/commandsOdo.h"
+	"protocol/extDevices/extIg.h"
+	"protocol/extDevices/extNmea.h"
+
+1437648443 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/sbgCommon.h
+	<sys/types.h>
+
+1437648462 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/time/sbgTime.h
+	"../sbgCommon.h"
+
+1437648454 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/protocol/protocol.h
+	"../sbgCommon.h"
+	"../comWrapper/comWrapper.h"
+	"protocolOutput.h"
+
+1437648460 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/comWrapper/comWrapper.h
+	"../sbgCommon.h"
+
+1437648447 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/protocol/protocolOutput.h
+	"../sbgCommon.h"
+
+1437648446 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/protocol/protocolOutputMode.h
+	"../sbgCommon.h"
+
+1437648455 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/protocol/commands.h
+	"../sbgCommon.h"
+	"protocol.h"
+	"protocolOutput.h"
+
+1437648448 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/protocol/commandsCalib.h
+	"../sbgCommon.h"
+	"protocol.h"
+	"commands.h"
+
+1437648454 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/protocol/commandsFilter.h
+	"../sbgCommon.h"
+	"protocol.h"
+
+1437648451 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/protocol/commandsOrientation.h
+	"../sbgCommon.h"
+	"protocol.h"
+	"commands.h"
+
+1437648444 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/protocol/commandsOutput.h
+	"../sbgCommon.h"
+	"protocol.h"
+
+1437648445 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/protocol/commandsNav.h
+	"../sbgCommon.h"
+	"protocol.h"
+	"commands.h"
+
+1437648455 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/protocol/commandsIg30.h
+	"../sbgCommon.h"
+	"protocol.h"
+	"commands.h"
+
+1437648452 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/protocol/commandsExt.h
+	"../sbgCommon.h"
+	"protocol.h"
+	"commands.h"
+
+1437648446 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/protocol/commandsSync.h
+	"../sbgCommon.h"
+	"protocol.h"
+
+1437648450 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/protocol/commandsOdo.h
+	"../sbgCommon.h"
+	"protocol.h"
+	"commands.h"
+
+1437648457 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/protocol/extDevices/extIg.h
+	"../../sbgCommon.h"
+	"../protocol.h"
+
+1437648458 /home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/CrashStart/CompileForExternalTrigger/sbgCom/src/protocol/extDevices/extNmea.h
+	"../../sbgCommon.h"
+	"../protocol.h"
+
