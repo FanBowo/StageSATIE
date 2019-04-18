@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1555574292 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/RTC/testRTC/main.cpp
+	<iostream>
+	<stdio.h>
+	<linux/rtc.h>
+	<sys/ioctl.h>
+	<sys/time.h>
+	<sys/types.h>
+	<fcntl.h>
+	<unistd.h>
+	<errno.h>
+	<stdlib.h>
+
