@@ -34,7 +34,7 @@ void init()
     // uncomment this line to turn on RMC (recommended minimum) and GGA (fix data) including altitude
     GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
     // uncomment this line to turn on only the "minimum recommended" data
-    //GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
+    GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
     // For parsing data, we don't suggest using anything but either RMC only or RMC+GGA since
     // the parser doesn't care about other sentences at this time
     // Set the update rate
@@ -43,7 +43,7 @@ void init()
     // print it out we don't suggest using anything higher than 1 Hz
 
     // Request updates on antenna status, comment out to keep quiet
-    GPS.sendCommand(PGCMD_ANTENNA);
+    //GPS.sendCommand(PGCMD_ANTENNA);
 
     delay(1000);
 
@@ -66,6 +66,11 @@ int main() // run over and over again
     while(1){
         if(RevNewPack){
             RevNewPack=false;
+        if (!GPS.parse(GPS.lastNMEA())){
+        // this also sets the newNMEAreceived() flag to false
+            continue;
+        }
+
 
             if(EnableParseOutput){
                 // if millis() or timer wraps around, we'll just reset it
@@ -95,11 +100,11 @@ int main() // run over and over again
     }
 
 }
-
+long tempCounter=0;
 void signal_handler_IO (int status)
 {
     // read data from the GPS in the 'main loop'
-    //long tempCounter=0;
+
     char c = GPS.read();
     // if you want to debug, this is a good time to do it!
     if (GPSECHO)
@@ -109,15 +114,11 @@ void signal_handler_IO (int status)
         // a tricky thing here is if we print the NMEA sentence, or data
         // we end up not listening and catching other sentences!
         // so be very wary if using OUTPUT_ALLDATA and trytng to print out data
-        std::cout<<GPS.lastNMEA()<<std::endl; // this also sets the newNMEAreceived() flag to false
-        if (!GPS.parse(GPS.lastNMEA())) // this also sets the newNMEAreceived() flag to false
-            RevNewPack=false;
-        else{
-            RevNewPack=false;
-        }
+    std::cout<<GPS.lastNMEA()<<std::endl; // this also sets the newNMEAreceived() flag to false
+        //RevNewPack=true;
             //continue; // we can fail to parse a sentence in which case we should just wait for another
-    //tempCounter++;
-    //std::cout<<"TempCounter"<<tempCounter<<std::endl;
+    tempCounter++;
+    std::cout<<"TempCounter"<<tempCounter<<std::endl;
     }
     //printf("received data from UART.\n");
 }
