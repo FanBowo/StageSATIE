@@ -43,6 +43,7 @@ class LinuxSerialPackage : public LibSerial::SerialPort
 
         void close();
 
+        int SerialPortFilefileDescriptor;
 
     private:
         std::string _PortName;

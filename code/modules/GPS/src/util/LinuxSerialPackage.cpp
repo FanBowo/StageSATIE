@@ -18,6 +18,7 @@ char LinuxSerialPackage::read(){
 void LinuxSerialPackage::begin(uint32_t BaudRateVal){
     Open(_PortName);
     std::cout<<"Open Serial Port Succeded"<<std::endl;
+      SerialPortFilefileDescriptor=GetFileDescriptor();
     LibSerial::BaudRate TempBaudRate;
     switch (BaudRateVal){
         case 9600: TempBaudRate=LibSerial::BaudRate::BAUD_9600;break;
