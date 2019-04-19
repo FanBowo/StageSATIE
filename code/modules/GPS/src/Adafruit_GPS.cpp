@@ -47,7 +47,29 @@ volatile uint8_t lineidx=0;         ///< our index into filling the current line
 volatile char *currentline;         ///< Pointer to current line buffer
 volatile char *lastline;            ///< Pointer to previous line buffer
 volatile boolean recvdflag;         ///< Received flag
+volatile boolean recvdRMCflag;         ///< Received RMC flag
 volatile boolean inStandbyMode;     ///< In standby flag
+
+/***********************************************/
+/*!
+	@brief Return if Recommended Minimum Specific GPS/TRANSIT Data RMC Get 
+	@param Non
+	@return True if one new RMC frame get, false if not
+*/
+/***********************************************/
+boolean Adafruit_GPS::bRecvdRMCflag(){
+	return recvdRMCflag;
+}
+
+/*!
+	@brief Reset RMCflag when one RMC flag was used, for example, display
+ 	@param Non
+	@return Non
+*/
+/***********************************************/
+void Adafruit_GPS::ResetRecvdRMCflag(){
+	recvdRMCflag=false;
+}
 
 /**************************************************************************/
 /*!
@@ -282,6 +304,8 @@ boolean Adafruit_GPS::parse(char *nmea) {
       month = (fulldate % 10000) / 100;
       year = (fulldate % 100);
     }
+	
+	recvdRMCflag=true;
     // we dont parse the remaining, yet!
     return true;
   }
@@ -378,6 +402,7 @@ void Adafruit_GPS::common_init(void) {
 #endif
   gpsHwSerial = NULL; // port pointer in corresponding constructor
   recvdflag   = false;
+  recvdRMCflag=false;
   paused      = false;
   lineidx     = 0;
   currentline = line1;
@@ -455,6 +480,17 @@ char *Adafruit_GPS::lastNMEA(void) {
   recvdflag = false;
   return (char *)lastline;
 }
+
+/**************************************************************************/
+/*!
+    @brief Reset new pack received flag, recvdflag
+*/
+/**************************************************************************/
+void Adafruit_GPS::ResetRecvdflag(void) {
+  recvdflag = false;
+}
+
+
 
 /**************************************************************************/
 /*!

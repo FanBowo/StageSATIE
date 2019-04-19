@@ -115,7 +115,9 @@ class Adafruit_GPS {
 
   char read(void);
   boolean parse(char *);
-
+  boolean bRecvdRMCflag();
+  void ResetRecvdRMCflag();
+  void ResetRecvdflag();
   boolean wakeup(void);
   boolean standby(void);
 

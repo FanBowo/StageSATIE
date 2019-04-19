@@ -19,7 +19,7 @@ Adafruit_GPS GPS(&GPSSerial);
 
 // Set GPSECHO to 'false' to turn off echoing the GPS data to the Serial console
 // Set to 'true' if you want to debug and listen to the raw GPS sentences
-#define GPSECHO false
+#define GPSECHO true
 
 void signal_handler_IO (int status);   /* definition of signal handler */
 
@@ -34,11 +34,11 @@ void init()
     // uncomment this line to turn on RMC (recommended minimum) and GGA (fix data) including altitude
     GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
     // uncomment this line to turn on only the "minimum recommended" data
-    GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
+    //GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
     // For parsing data, we don't suggest using anything but either RMC only or RMC+GGA since
     // the parser doesn't care about other sentences at this time
     // Set the update rate
-    GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ); // 1 Hz update rate
+    GPS.sendCommand(PMTK_SET_NMEA_UPDATE_5HZ); // 1 Hz update rate
     // For the parsing code to work nicely and have time to sort thru the data, and
     // print it out we don't suggest using anything higher than 1 Hz
 
@@ -66,13 +66,14 @@ int main() // run over and over again
     while(1){
         if(RevNewPack){
             RevNewPack=false;
-        if (!GPS.parse(GPS.lastNMEA())){
+        if (!( GPS.parse(GPS.lastNMEA()) && GPS.bRecvdRMCflag() )){
         // this also sets the newNMEAreceived() flag to false
             continue;
         }
 
 
-            if(EnableParseOutput){
+        if(EnableParseOutput){
+                GPS.ResetRecvdRMCflag();
                 // if millis() or timer wraps around, we'll just reset it
                 std::cout<<"\nTime: "<<std::endl;
                 std::cout<<(int)GPS.hour<<":"<<(int)GPS.minute<<":"<<(int)GPS.seconds<<":"<<GPS.milliseconds<<std::endl;
@@ -100,7 +101,7 @@ int main() // run over and over again
     }
 
 }
-long tempCounter=0;
+//long tempCounter=0;
 void signal_handler_IO (int status)
 {
     // read data from the GPS in the 'main loop'
@@ -108,17 +109,18 @@ void signal_handler_IO (int status)
     char c = GPS.read();
     // if you want to debug, this is a good time to do it!
     if (GPSECHO)
-        if (c) std::cout<<c<<std::endl;
+        if (c) std::cout<<c;
     // if a sentence is received, we can check the checksum, parse it...
     if (GPS.newNMEAreceived()) {
         // a tricky thing here is if we print the NMEA sentence, or data
         // we end up not listening and catching other sentences!
         // so be very wary if using OUTPUT_ALLDATA and trytng to print out data
-    std::cout<<GPS.lastNMEA()<<std::endl; // this also sets the newNMEAreceived() flag to false
-        //RevNewPack=true;
+    //std::cout<<GPS.lastNMEA()<<std::endl; // this also sets the newNMEAreceived() flag to false
+        RevNewPack=true;
             //continue; // we can fail to parse a sentence in which case we should just wait for another
-    tempCounter++;
-    std::cout<<"TempCounter"<<tempCounter<<std::endl;
+    //tempCounter++;
+    //std::cout<<"TempCounter"<<tempCounter<<std::endl;
+        GPS.ResetRecvdflag();
     }
     //printf("received data from UART.\n");
 }
