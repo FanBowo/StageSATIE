@@ -87,3 +87,41 @@
 	<sys/signal.h>
 	<fcntl.h>
 
+1556195432 source:/home/firefly/Desktop/StageSATIE/code/modules/GPS/src/Adafruit_GPS.cpp
+	<SoftwareSerial.h>
+	"Adafruit_GPS.h"
+	<cstring>
+	<cctype>
+	<unistd.h>
+	<math.h>
+
+1556195432 /home/firefly/Desktop/StageSATIE/code/modules/GPS/src/Adafruit_GPS.h
+	"LinuxSerialPackage.h"
+	<SoftwareSerial.h>
+
+1556195432 /home/firefly/Desktop/StageSATIE/code/modules/GPS/src/util/LinuxSerialPackage.h
+	"SerialPort.h"
+	<iostream>
+
+1556195432 /home/firefly/Desktop/StageSATIE/code/modules/GPS/src/util/SerialPort.h
+	"SerialPortConstants.h"
+	<ios>
+	<memory>
+
+1556195432 /home/firefly/Desktop/StageSATIE/code/modules/GPS/src/util/SerialPortConstants.h
+	<limits>
+	<stdexcept>
+	<string>
+	<termios.h>
+	<vector>
+
+1556195432 source:/home/firefly/Desktop/StageSATIE/code/modules/GPS/src/util/LinuxSerialPackage.cpp
+	"LinuxSerialPackage.h"
+
+1556195768 source:/home/firefly/Desktop/StageSATIE/code/modules/GPS/TestGPS/main.cpp
+	"Adafruit_GPS.h"
+	<iostream>
+	<unistd.h>
+	<sys/signal.h>
+	<fcntl.h>
+
