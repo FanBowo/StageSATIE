@@ -15,3 +15,13 @@
 1553769642 source:/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/TestAlgoMadgwick/main.cpp
 	<iostream>
 
+1556195432 source:/home/firefly/Desktop/StageSATIE/code/modules/mpu9250/src/util/MadgwickAHRS.cpp
+	"MadgwickAHRS.h"
+
+1556195432 /home/firefly/Desktop/StageSATIE/code/modules/mpu9250/src/util/MadgwickAHRS.h
+	<math.h>
+
+1556195432 source:/home/firefly/Desktop/StageSATIE/code/modules/mpu9250/TestAlgoMadgwick/main.cpp
+	<iostream>
+	"src/util/MadgwickAHRS.h"
+

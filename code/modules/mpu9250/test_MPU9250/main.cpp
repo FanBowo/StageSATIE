@@ -60,6 +60,7 @@ int main(){
 	  // is available. It will return a boolean true or false
 	  // (New magnetometer data cannot be checked, as the library
 	  //  runs that sensor in single-conversion mode.)
+     InitMPU9250();
 	 if ( imu.dataReady() ){
 		// Call update() to update the imu objects sensor data.
 		// You can specify which sensors to update by combining
