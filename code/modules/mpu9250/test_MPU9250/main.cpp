@@ -45,12 +45,12 @@ void InitMPU9250()
 
   // The sample rate of the accel/gyro can be set using
   // setSampleRate. Acceptable values range from 4Hz to 1kHz
-  imu.setSampleRate(10); // Set sample rate to 10Hz
+  imu.setSampleRate(50); // Set sample rate to 10Hz
 
   // Likewise, the compass (magnetometer) sample rate can be
   // set using the setCompassSampleRate() function.
   // This value can range between: 1-100Hz
-  imu.setCompassSampleRate(10); // Set mag rate to 10Hz
+  imu.setCompassSampleRate(50); // Set mag rate to 10Hz
 }
 
 void printIMUData(void);
@@ -61,16 +61,20 @@ int main(){
 	  // (New magnetometer data cannot be checked, as the library
 	  //  runs that sensor in single-conversion mode.)
      InitMPU9250();
-	 if ( imu.dataReady() ){
-		// Call update() to update the imu objects sensor data.
-		// You can specify which sensors to update by combining
-		// UPDATE_ACCEL, UPDATE_GYRO, UPDATE_COMPASS, and/or
-		// UPDATE_TEMPERATURE.
-		// (The update function defaults to accel, gyro, compass,
-		//  so you don't have to specify these values.)
-		imu.update(UPDATE_ACCEL | UPDATE_GYRO | UPDATE_COMPASS);
-		printIMUData();
-	 }
+     while(1){
+        if ( imu.dataReady() ){
+            // Call update() to update the imu objects sensor data.
+            // You can specify which sensors to update by combining
+            // UPDATE_ACCEL, UPDATE_GYRO, UPDATE_COMPASS, and/or
+            // UPDATE_TEMPERATURE.
+            // (The update function defaults to accel, gyro, compass,
+            //  so you don't have to specify these values.)
+            imu.update(UPDATE_ACCEL | UPDATE_GYRO | UPDATE_COMPASS);
+            printIMUData();
+        }
+
+     }
+
 	return 0;
 }
 

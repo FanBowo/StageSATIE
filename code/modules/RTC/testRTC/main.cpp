@@ -22,7 +22,7 @@ int main()
         int i;
 
         for(i = 0 ; i < 100; i++)
-                setTimer(0, 100);
+                setTimer(1, 0);
 
         return 0;
 }

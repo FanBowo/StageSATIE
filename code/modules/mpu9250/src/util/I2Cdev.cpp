@@ -70,7 +70,7 @@ THE SOFTWARE.
  */
  bool LinuxReadBytes(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint8_t *data){
 	int8_t count = 0;
-    int fd = open("/dev/i2c-0", O_RDWR);
+    int fd = open("/dev/i2c-1", O_RDWR);
 
     if (fd < 0) {
         fprintf(stderr, "Failed to open device: %s\n", strerror(errno));
@@ -120,7 +120,7 @@ bool LinuxWriteBytes(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint8_t* 
         return(I2cErrorExisted);
     }
 
-    fd = open("/dev/i2c-0", O_RDWR);
+    fd = open("/dev/i2c-1", O_RDWR);
     if (fd < 0) {
         fprintf(stderr, "Failed to open device: %s\n", strerror(errno));
         return(I2cErrorExisted);
