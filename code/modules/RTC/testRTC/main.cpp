@@ -21,8 +21,10 @@ int main()
 {
         int i;
 
-        for(i = 0 ; i < 100; i++)
-                setTimer(1, 0);
+        for(i = 0 ; i < 100; i++){
+            setTimer(1, 0);
+            printf("timer space \n");
+        }
 
         return 0;
 }

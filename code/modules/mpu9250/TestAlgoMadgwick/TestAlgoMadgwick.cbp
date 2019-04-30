@@ -12,9 +12,11 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add directory="/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/TestAlgoMadgwick/" />
 					<Add directory="../../mpu9250" />
+					<Add directory="../src/util" />
 				</Compiler>
 			</Target>
 			<Target title="Release">

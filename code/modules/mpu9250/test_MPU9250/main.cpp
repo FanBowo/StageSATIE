@@ -3,6 +3,11 @@
 #include <stdio.h>
 #include <iostream>
 #include <unistd.h>
+
+#include <sys/time.h>
+#include <sys/select.h>
+#include <time.h>
+
 ImuModule imu;
 
 void InitMPU9250()
@@ -12,7 +17,7 @@ void InitMPU9250()
   // initialize the MPU-9250 to it's default values.
   // Most functions return an error code - INV_SUCCESS (0)
   // indicates the IMU was present and successfully set up
-  if (imu.begin() != INV_SUCCESS)
+  if (imu.MPU9250_DMP::begin() != INV_SUCCESS)
   {
     while (1)
     {
@@ -55,6 +60,7 @@ void InitMPU9250()
 }
 
 void printIMUData(void);
+void setTimer(int seconds, int mseconds);
 
 int main(){
 		// dataReady() checks to see if new accel/gyro data
@@ -62,7 +68,13 @@ int main(){
 	  // (New magnetometer data cannot be checked, as the library
 	  //  runs that sensor in single-conversion mode.)
     InitMPU9250();
-    imu.CollectDataAndCali();
+    //imu.CollectDataAndCali();
+
+    long i;
+    imu.Madgwick::begin(50);
+    for(i = 0 ; i < 10000; i++){
+            setTimer(0, 200);
+    }
 	return 0;
 }
 
@@ -76,18 +88,31 @@ void printIMUData(void)
   // Use the calcAccel, calcGyro, and calcMag functions to
   // convert the raw sensor readings (signed 16-bit values)
   // to their respective units.
-  float accelX = imu.calcAccel(imu.ax);
-  float accelY = imu.calcAccel(imu.ay);
-  float accelZ = imu.calcAccel(imu.az);
-  float gyroX = imu.calcGyro(imu.gx);
-  float gyroY = imu.calcGyro(imu.gy);
-  float gyroZ = imu.calcGyro(imu.gz);
-  float magX = imu.calcMag(imu.mx);
-  float magY = imu.calcMag(imu.my);
-  float magZ = imu.calcMag(imu.mz);
-  std::cout<<"Accel: "<<" X :"<<accelX<<" Y :"<<accelY<<" Z :"<<accelZ<<std::endl;
-  std::cout<<"Gyro: "<<" X :"<<gyroX<<" Y :"<<gyroY<<" Z :"<<gyroZ<<std::endl;
-  std::cout<<"Mag: " <<" X :"<<magX<<" Y :"<<magY<<" Z :"<<magZ<<std::endl;
+  imu.CalMoveData();
+  std::cout<<"Accel: "<<" X :"<<imu.move_data.accelX<<" Y :"<<imu.move_data.accelY<<" Z :"<<imu.move_data.accelZ<<std::endl;
+  std::cout<<"Gyro: "<<" X :"<<imu.move_data.gyroX<<" Y :"<<imu.move_data.gyroY<<" Z :"<<imu.move_data.gyroZ<<std::endl;
+  std::cout<<"Mag: " <<" X :"<<imu.move_data.magX<<" Y :"<<imu.move_data.magY<<" Z :"<<imu.move_data.magZ<<std::endl;
   std::cout<<"Time: "<<imu.time<<std::endl;
+}
+
+void setTimer(int seconds, int mseconds)
+{
+        struct timeval temp;
+
+        temp.tv_sec = seconds;
+        temp.tv_usec = mseconds;
+
+        select(0, NULL, NULL, NULL, &temp);
+
+        while(!imu.dataReady()){
+            ;
+        }
+        imu.MPU9250_DMP::update(UPDATE_ACCEL | UPDATE_GYRO | UPDATE_COMPASS);
+        imu.CalMoveData();
+        imu.EstimationPose();
+        std::cout<<"Roll: "<<imu.getRoll()<<std::endl;
+        std::cout<<"Pitch: "<<imu.getPitch()<<std::endl;
+        std::cout<<"Yaw: "<<imu.getYaw() <<std::endl;
+        return ;
 }
 
