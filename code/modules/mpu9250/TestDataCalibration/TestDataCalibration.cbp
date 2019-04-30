@@ -12,6 +12,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add directory="/home/fanzhuzhi/Desktop/STAGE_SATIE/code/modules/mpu9250/TestDataCalibration/" />
 					<Add directory="../../mpu9250" />
@@ -34,6 +35,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="../src/imu_module.cpp" />
 		<Unit filename="../src/util/DataCalibration.cpp" />
 		<Unit filename="../src/util/DataCalibration.h" />
 		<Unit filename="main.cpp" />

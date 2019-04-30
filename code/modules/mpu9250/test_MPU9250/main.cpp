@@ -1,8 +1,9 @@
-#include "SparkFunMPU9250-DMP.h"
+#include "imu_module.hpp"
+
 #include <stdio.h>
 #include <iostream>
 #include <unistd.h>
-MPU9250_DMP imu;
+ImuModule imu;
 
 void InitMPU9250()
 {
@@ -60,21 +61,8 @@ int main(){
 	  // is available. It will return a boolean true or false
 	  // (New magnetometer data cannot be checked, as the library
 	  //  runs that sensor in single-conversion mode.)
-     InitMPU9250();
-     while(1){
-        if ( imu.dataReady() ){
-            // Call update() to update the imu objects sensor data.
-            // You can specify which sensors to update by combining
-            // UPDATE_ACCEL, UPDATE_GYRO, UPDATE_COMPASS, and/or
-            // UPDATE_TEMPERATURE.
-            // (The update function defaults to accel, gyro, compass,
-            //  so you don't have to specify these values.)
-            imu.update(UPDATE_ACCEL | UPDATE_GYRO | UPDATE_COMPASS);
-            printIMUData();
-        }
-
-     }
-
+    InitMPU9250();
+    imu.CollectDataAndCali();
 	return 0;
 }
 

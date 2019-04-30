@@ -37,14 +37,23 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="../src/SparkFunMPU9250-DMP.cpp" />
+		<Unit filename="../src/SparkFunMPU9250-DMP.h" />
+		<Unit filename="../src/imu_module.cpp" />
+		<Unit filename="../src/imu_module.hpp" />
+		<Unit filename="../src/util/DataCalibration.cpp" />
+		<Unit filename="../src/util/DataCalibration.h" />
 		<Unit filename="../src/util/I2Cdev.cpp" />
+		<Unit filename="../src/util/I2Cdev.h" />
 		<Unit filename="../src/util/LinuxClk.cpp" />
+		<Unit filename="../src/util/LinuxClk.h" />
 		<Unit filename="../src/util/inv_mpu.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../src/util/inv_mpu.h" />
 		<Unit filename="../src/util/inv_mpu_dmp_motion_driver.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../src/util/inv_mpu_dmp_motion_driver.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

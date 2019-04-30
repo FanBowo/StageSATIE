@@ -1,5 +1,5 @@
 #include <iostream>
-#include "src/util/MadgwickAHRS.h"
+#include "MadgwickAHRS.h"
 using namespace std;
 
 int main()
