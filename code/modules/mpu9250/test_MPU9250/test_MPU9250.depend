@@ -139,11 +139,14 @@
 1556611489 source:/home/firefly/Desktop/StageSATIE/code/modules/mpu9250/src/util/LinuxClk.cpp
 	"LinuxClk.h"
 
-1556629485 source:/home/firefly/Desktop/StageSATIE/code/modules/mpu9250/test_MPU9250/main.cpp
+1556635068 source:/home/firefly/Desktop/StageSATIE/code/modules/mpu9250/test_MPU9250/main.cpp
 	"imu_module.hpp"
 	<stdio.h>
 	<iostream>
 	<unistd.h>
+	<sys/time.h>
+	<sys/select.h>
+	<time.h>
 
 1556608225 source:/home/firefly/Desktop/StageSATIE/code/modules/mpu9250/src/util/DataCalibration.cpp
 	"DataCalibration.h"

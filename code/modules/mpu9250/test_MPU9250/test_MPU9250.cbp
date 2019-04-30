@@ -46,6 +46,8 @@
 		<Unit filename="../src/util/I2Cdev.h" />
 		<Unit filename="../src/util/LinuxClk.cpp" />
 		<Unit filename="../src/util/LinuxClk.h" />
+		<Unit filename="../src/util/MadgwickAHRS.cpp" />
+		<Unit filename="../src/util/MadgwickAHRS.h" />
 		<Unit filename="../src/util/inv_mpu.c">
 			<Option compilerVar="CC" />
 		</Unit>

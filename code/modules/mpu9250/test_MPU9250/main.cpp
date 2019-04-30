@@ -68,13 +68,13 @@ int main(){
 	  // (New magnetometer data cannot be checked, as the library
 	  //  runs that sensor in single-conversion mode.)
     InitMPU9250();
-    //imu.CollectDataAndCali();
+    imu.CollectDataAndCali();
 
-    long i;
-    imu.Madgwick::begin(50);
-    for(i = 0 ; i < 10000; i++){
-            setTimer(0, 200);
-    }
+//    long i;
+//    imu.Madgwick::begin(50);
+//    for(i = 0 ; i < 10000; i++){
+//            setTimer(0, 200);
+//    }
 	return 0;
 }
 

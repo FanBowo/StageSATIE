@@ -26,6 +26,7 @@ void ImuModule::CollectDataAndCali(){
         XaxisData.push_back(calcMag(mx));
         YaxisData.push_back(calcMag(mx));
         ZaxisData.push_back(calcMag(my));
+        std::cout<<XaxisData.back()<<"   "<<YaxisData.back()<<"   "<<ZaxisData.back()<<"   "<<std::endl;
     }
     std::cout << _DataMagnCollected << "/" << NUM_DATA_NEEDED << "collected"<<std::endl;
     //std::cout<<"XaxisData Size"<<XaxisData.size()<<std::endl;
