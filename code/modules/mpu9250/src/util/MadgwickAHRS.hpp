@@ -18,35 +18,35 @@
 class Madgwick_cpp{
 	private :
 	 static float invSqrt(float x);
-	 float beta, q0, q1, q2, q3,sampleFreq;	
-	 
+	 float beta, q0, q1, q2, q3,sampleFreq;
+
 	 float roll, pitch, yaw;
-	 
+
 	 char anglesComputed;
 	 void computeAngles();
-	 
+
 	 public:
-	 
+
 	Madgwick_cpp();
 	void begin (float sampleFrequency);
     void update(float gx, float gy, float gz, float ax, float ay, float az, float mx, float my, float mz);
     void updateIMU(float gx, float gy, float gz, float ax, float ay, float az);
-	
+
 	float getRoll(){
 		if(!anglesComputed)computeAngles();
 			return roll * 57.29578f;
 	}
-	
+
 	float getPitch(){
 		if(!anglesComputed)computeAngles();
 			return pitch * 57.29578f;
 	}
-	
+
 	float getYaw(){
 		if(!anglesComputed)computeAngles();
 			return yaw * 57.29578f;
 	}
-	
+
 };
 
 //---------------------------------------------------------------------------------------------------
