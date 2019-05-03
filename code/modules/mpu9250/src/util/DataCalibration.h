@@ -18,14 +18,21 @@ public:
     std::vector<float> XaxisData;
     std::vector<float> YaxisData;
     std::vector<float> ZaxisData;
-    CentreAfterCali_t CentreAfterCali;
-    void Calibration();
+    CentreAfterCali_t MagneCentreAfterCali;
+    CentreAfterCali_t AcceCentreAfterCali;
+    CentreAfterCali_t GyroCentreAfterCali;
+    Eigen::Matrix<float, 1, 3> CentreAfterCaliData;
+
+    void MagnAcceCalibration();
+    float XaxisGyroDataSum;
+    float YaxisGyroDataSum;
+    float ZaxisGyroDataSum;
+    void GyroCalibration();
 
 private:
      Eigen::MatrixXf XaxisDataM;
      Eigen::MatrixXf YaxisDataM;
      Eigen::MatrixXf ZaxisDataM;
-     Eigen::Matrix<float, 1, 3> CentreAfterCaliData;
      void ConvertStdType2EigenType();
 };
 

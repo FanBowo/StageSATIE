@@ -24,7 +24,9 @@ class ImuModule :public MPU9250_DMP, public DataCalibration,public Madgwick{
     public :
     ImuModule();
 
-    void CollectDataAndCali();
+    void CollectMagDataAndCali();
+
+    void CollectAccGyrDataAndCali();
 
     void CalMoveData();
     MovData_t move_data;
@@ -33,6 +35,6 @@ class ImuModule :public MPU9250_DMP, public DataCalibration,public Madgwick{
 
     private:
 
-    long _DataMagnCollected;
+    long _DataCaliCollected;
 };
 #endif // IMU_MODULE

@@ -1,4 +1,5 @@
 #include "DataCalibration.h"
+#include <fstream>
 
 DataCalibration::DataCalibration(){
     ;
@@ -11,7 +12,7 @@ void DataCalibration::ConvertStdType2EigenType(){
     ZaxisDataM=Eigen::Map<Eigen::Matrix<float, NUM_DATA_NEEDED, 1> >(ZaxisData.data());
 }
 
-void DataCalibration::Calibration(){
+void DataCalibration::MagnAcceCalibration(){
     ConvertStdType2EigenType();
     Eigen::Matrix<float, NUM_DATA_NEEDED, 9> DataOriProduct;
     DataOriProduct.col(0)=XaxisDataM.cwiseProduct(XaxisDataM);
@@ -33,7 +34,11 @@ void DataCalibration::Calibration(){
     Eigen::Matrix<float, 1, 3> TempData;
     TempData<<(-0.5*NineParas(6,0)),(-0.5*NineParas(7,0)),(-0.5*NineParas(8,0));
     CentreAfterCaliData=TempData*NineParasM.inverse();
-    CentreAfterCali.XaxisData=CentreAfterCaliData(0,0);
-    CentreAfterCali.YaxisData=CentreAfterCaliData(0,1);
-    CentreAfterCali.ZaxisData=CentreAfterCaliData(0,2);
+
+}
+
+void DataCalibration::GyroCalibration(){
+    GyroCentreAfterCali.XaxisData=XaxisGyroDataSum/float (NUM_DATA_NEEDED);
+    GyroCentreAfterCali.YaxisData=YaxisGyroDataSum/float (NUM_DATA_NEEDED);
+    GyroCentreAfterCali.ZaxisData=ZaxisGyroDataSum/float (NUM_DATA_NEEDED);
 }

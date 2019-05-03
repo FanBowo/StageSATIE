@@ -1,8 +1,9 @@
 #include "imu_module.hpp"
 #include <iostream>
+#include <fstream>
 ImuModule::ImuModule()
 {
-    _DataMagnCollected=0;
+    _DataCaliCollected=0;
     move_data.accelX =0;
     move_data.accelY =0;
     move_data.accelZ =0;
@@ -16,27 +17,84 @@ ImuModule::ImuModule()
 
 }
 
-void ImuModule::CollectDataAndCali(){
 
-    for (_DataMagnCollected =0;_DataMagnCollected<NUM_DATA_NEEDED;_DataMagnCollected++){
+//std::ofstream MagneCaliData;
+
+void ImuModule::CollectMagDataAndCali(){
+    // MagneCaliData.open("./MagneCaliData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
+
+    for (_DataCaliCollected =0;_DataCaliCollected<NUM_DATA_NEEDED;_DataCaliCollected++){
         while(!dataReady()){
             ;
         }
         MPU9250_DMP::update(UPDATE_ACCEL | UPDATE_GYRO | UPDATE_COMPASS);
-        XaxisData.push_back(calcMag(mx));
-        YaxisData.push_back(calcMag(mx));
-        ZaxisData.push_back(calcMag(my));
+        XaxisData.clear();
+        YaxisData.clear();
+        ZaxisData.clear();
+        XaxisData.push_back(calcMag(mx)/100.0);
+        YaxisData.push_back(calcMag(my)/100.0);
+        ZaxisData.push_back(calcMag(mz)/100.0);
         std::cout<<XaxisData.back()<<"   "<<YaxisData.back()<<"   "<<ZaxisData.back()<<"   "<<std::endl;
+        //MagneCaliData<<XaxisData.back()<<" "<<YaxisData.back()<<" "<<ZaxisData.back()<<"\n";
     }
-    std::cout << _DataMagnCollected << "/" << NUM_DATA_NEEDED << "collected"<<std::endl;
+    //MagneCaliData.close();
+    std::cout << _DataCaliCollected << "/" << NUM_DATA_NEEDED << "collected"<<std::endl;
     //std::cout<<"XaxisData Size"<<XaxisData.size()<<std::endl;
     std::cout << "Magnetic Data collected finished, start of calcule bias"<<std::endl;
-    Calibration();
-    std::cout<<"X bias"<<CentreAfterCali.XaxisData<<std::endl;
-    std::cout<<"Y bias"<<CentreAfterCali.YaxisData<<std::endl;
-    std::cout<<"Z bias"<<CentreAfterCali.ZaxisData<<std::endl;
+    MagnAcceCalibration();
+    MagneCentreAfterCali.XaxisData=CentreAfterCaliData(0,0);
+    MagneCentreAfterCali.YaxisData=CentreAfterCaliData(0,1);
+    MagneCentreAfterCali.ZaxisData=CentreAfterCaliData(0,2);
+    std::cout << "Magnetic bias:"<<std::endl;
+    std::cout<<"X bias"<<MagneCentreAfterCali.XaxisData<<std::endl;
+    std::cout<<"Y bias"<<MagneCentreAfterCali.YaxisData<<std::endl;
+    std::cout<<"Z bias"<<MagneCentreAfterCali.ZaxisData<<std::endl;
 
 }
+
+void ImuModule::CollectAccGyrDataAndCali(){
+    // MagneCaliData.open("./MagneCaliData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
+
+    XaxisGyroDataSum=0.0;
+    YaxisGyroDataSum=0.0;
+    ZaxisGyroDataSum=0.0;
+
+    for (_DataCaliCollected =0;_DataCaliCollected<NUM_DATA_NEEDED;_DataCaliCollected++){
+        while(!dataReady()){
+            ;
+        }
+        MPU9250_DMP::update(UPDATE_ACCEL | UPDATE_GYRO | UPDATE_COMPASS);
+        XaxisData.clear();
+        YaxisData.clear();
+        ZaxisData.clear();
+        XaxisData.push_back(calcAccel(ax));
+        YaxisData.push_back(calcAccel(ay));
+        ZaxisData.push_back(calcAccel(az));
+        XaxisGyroDataSum+=calcGyro(gx);
+        YaxisGyroDataSum+=calcGyro(gy);
+        ZaxisGyroDataSum+=calcGyro(gz);
+        std::cout<<XaxisData.back()<<"   "<<YaxisData.back()<<"   "<<ZaxisData.back()<<"   "<<std::endl;
+        //MagneCaliData<<XaxisData.back()<<" "<<YaxisData.back()<<" "<<ZaxisData.back()<<"\n";
+    }
+    //MagneCaliData.close();
+    std::cout << _DataCaliCollected << "/" << NUM_DATA_NEEDED << "collected"<<std::endl;
+    //std::cout<<"XaxisData Size"<<XaxisData.size()<<std::endl;
+    std::cout << "Acc qnd Gyro Data collected finished, start of calcule bias"<<std::endl;
+    MagnAcceCalibration();
+    AcceCentreAfterCali.XaxisData=CentreAfterCaliData(0,0);
+    AcceCentreAfterCali.YaxisData=CentreAfterCaliData(0,1);
+    AcceCentreAfterCali.ZaxisData=CentreAfterCaliData(0,2);
+    std::cout << "Acc bias:"<<std::endl;
+    std::cout<<"X bias"<<AcceCentreAfterCali.XaxisData<<std::endl;
+    std::cout<<"Y bias"<<AcceCentreAfterCali.YaxisData<<std::endl;
+    std::cout<<"Z bias"<<AcceCentreAfterCali.ZaxisData<<std::endl;
+    GyroCalibration();
+    std::cout << "Gyro bias:"<<std::endl;
+    std::cout<<"X bias"<<GyroCentreAfterCali.XaxisData<<std::endl;
+    std::cout<<"Y bias"<<GyroCentreAfterCali.YaxisData<<std::endl;
+    std::cout<<"Z bias"<<GyroCentreAfterCali.ZaxisData<<std::endl;
+}
+
 
 void ImuModule::CalMoveData(){
     move_data.accelX = calcAccel(ax);
@@ -45,16 +103,16 @@ void ImuModule::CalMoveData(){
     move_data.gyroX = calcGyro(gx);
     move_data.gyroY = calcGyro(gy);
     move_data.gyroZ = calcGyro(gz);
-    move_data.magX = calcMag(mx);
-    move_data.magY = calcMag(my);
-    move_data.magZ = calcMag(mz);
+    move_data.magX = calcMag(mx)/100.0-MagneCentreAfterCali.XaxisData;
+    move_data.magY = calcMag(my)/100.0-MagneCentreAfterCali.YaxisData;
+    move_data.magZ = calcMag(mz)/100.0-MagneCentreAfterCali.ZaxisData;
 
 }
 
 void ImuModule::EstimationPose(){
     Madgwick::update(move_data.accelX,move_data.accelY,move_data.accelZ, \
-                        move_data.gyroX,move_data.gyroY,move_data.gyroZ,\
-                        move_data.magX,move_data.magY,move_data.magZ \
+                        move_data.gyroX,move_data.gyroY,move_data.gyroZ, \
+                        move_data.magX,move_data.magY, move_data.magZ
     );
 
 }
