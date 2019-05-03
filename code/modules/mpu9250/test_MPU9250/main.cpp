@@ -69,22 +69,31 @@ int main(){
 	  // (New magnetometer data cannot be checked, as the library
 	  //  runs that sensor in single-conversion mode.)
     InitMPU9250();
-    imu.CollectMagDataAndCali();
-    std::cout<<"Magn Cali Completed?yes or not"<<std::endl;
-    std::string bMagnCalicompleted;
-    std::cin>>bMagnCalicompleted;
-    std::cout<<"Do Acc and Gyr Calibration?yes or not"<<std::endl;
-    std::cout<<"if yes,Please keep IMU stable "<<std::endl;
-    std::string bAccGyrCalibration;
-    std::cin>>bAccGyrCalibration;
     std::string bAccGyrCalicompleted="yes";
-    if (bAccGyrCalibration=="yes"){
-        bAccGyrCalicompleted="not";
-        std::cout<<"Please keep IMU stable"<<std::endl;
-        imu.CollectAccGyrDataAndCali();
+    std::string bMagnCalicompleted="yes";
+    std::cout<<"Do Magn Calibration?yes or not"<<std::endl;
+    std::cout<<"if yes,Please turn IMU around differents axis "<<std::endl;
+    std::string bMagnCalibration;
+    std::cin>>bMagnCalibration;
+    if (bMagnCalibration=="yes"){
+        bMagnCalicompleted="not";
+        imu.CollectMagDataAndCali();
+        std::cout<<"Magn Cali Completed?yes or not"<<std::endl;
+        std::string bMagnCalicompleted;
+        std::cin>>bMagnCalicompleted;
+        std::cout<<"Do Acc and Gyr Calibration?yes or not"<<std::endl;
+        std::cout<<"if yes,Please keep IMU stable "<<std::endl;
+        std::string bAccGyrCalibration;
+        std::cin>>bAccGyrCalibration;
+        if (bAccGyrCalibration=="yes"){
+            bAccGyrCalicompleted="not";
+            std::cout<<"Please keep IMU stable"<<std::endl;
+            imu.CollectAccGyrDataAndCali();
 
-        std::cout<<"Acc and Gyro Cali Completed?yes or not"<<std::endl;
-        std::cin>>bAccGyrCalicompleted;
+            std::cout<<"Acc and Gyro Cali Completed?yes or not"<<std::endl;
+            std::cin>>bAccGyrCalicompleted;
+        }
+
     }
 
 

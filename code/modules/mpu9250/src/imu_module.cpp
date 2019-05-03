@@ -108,9 +108,10 @@ void ImuModule::CalMoveData(){
 
 }
 
+#define PI 3.141592654f
 void ImuModule::EstimationPose(){
-    Madgwick_cpp::update(move_data.accelX,move_data.accelY,move_data.accelZ, \
-                        move_data.gyroX,move_data.gyroY,move_data.gyroZ, \
+    Madgwick_cpp::update(move_data.gyroX*PI/180.0f,move_data.gyroY*PI/180.0f,move_data.gyroZ*PI/180.0f, \
+                        move_data.accelX,move_data.accelY,move_data.accelZ, \
                         move_data.magX,move_data.magY, move_data.magZ
     );
 

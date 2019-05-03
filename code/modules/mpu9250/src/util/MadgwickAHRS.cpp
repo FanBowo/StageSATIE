@@ -145,6 +145,7 @@ void Madgwick_cpp::update(float gx, float gy, float gz, float ax, float ay, floa
 	q1 *= recipNorm;
 	q2 *= recipNorm;
 	q3 *= recipNorm;
+	anglesComputed=0;
 }
 
 //---------------------------------------------------------------------------------------------------
@@ -216,6 +217,8 @@ void Madgwick_cpp::updateIMU(float gx, float gy, float gz, float ax, float ay, f
 	q1 *= recipNorm;
 	q2 *= recipNorm;
 	q3 *= recipNorm;
+
+	anglesComputed=0;
 }
 
 //---------------------------------------------------------------------------------------------------
