@@ -109,7 +109,7 @@ void ImuModule::CalMoveData(){
 }
 
 void ImuModule::EstimationPose(){
-    Madgwick::update(move_data.accelX,move_data.accelY,move_data.accelZ, \
+    Madgwick_cpp::update(move_data.accelX,move_data.accelY,move_data.accelZ, \
                         move_data.gyroX,move_data.gyroY,move_data.gyroZ, \
                         move_data.magX,move_data.magY, move_data.magZ
     );

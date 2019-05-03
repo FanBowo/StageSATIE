@@ -139,7 +139,7 @@
 1556611489 source:/home/firefly/Desktop/StageSATIE/code/modules/mpu9250/src/util/LinuxClk.cpp
 	"LinuxClk.h"
 
-1556811116 source:/home/firefly/Desktop/StageSATIE/code/modules/mpu9250/test_MPU9250/main.cpp
+1556869017 source:/home/firefly/Desktop/StageSATIE/code/modules/mpu9250/test_MPU9250/main.cpp
 	"imu_module.hpp"
 	<stdio.h>
 	<iostream>
@@ -157,20 +157,22 @@
 	<eigen3/Eigen/Dense>
 	<vector>
 
-1556867630 source:/home/firefly/Desktop/StageSATIE/code/modules/mpu9250/src/imu_module.cpp
+1556877237 source:/home/firefly/Desktop/StageSATIE/code/modules/mpu9250/src/imu_module.cpp
 	"imu_module.hpp"
 	<iostream>
 	<fstream>
 
-1556812973 /home/firefly/Desktop/StageSATIE/code/modules/mpu9250/src/imu_module.hpp
+1556877197 /home/firefly/Desktop/StageSATIE/code/modules/mpu9250/src/imu_module.hpp
 	"SparkFunMPU9250-DMP.h"
 	"DataCalibration.h"
-	"MadgwickAHRS.h"
+	"MadgwickAHRS.hpp"
 
-1556620142 /home/firefly/Desktop/StageSATIE/code/modules/mpu9250/src/util/MadgwickAHRS.h
+1556877052 /home/firefly/Desktop/StageSATIE/code/modules/mpu9250/src/util/MadgwickAHRS.h
 	<math.h>
 
-1556783391 source:/home/firefly/Desktop/StageSATIE/code/modules/mpu9250/src/util/MadgwickAHRS.cpp
-	"MadgwickAHRS.h"
+1556877113 source:/home/firefly/Desktop/StageSATIE/code/modules/mpu9250/src/util/MadgwickAHRS.cpp
+	"MadgwickAHRS.hpp"
 	<math.h>
+
+1556875652 /home/firefly/Desktop/StageSATIE/code/modules/mpu9250/src/util/MadgwickAHRS.hpp
 

@@ -95,7 +95,7 @@ int main(){
         TimeData.open("./TimeData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
         PoseData.open("./PoseData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
         long i;
-        imu.Madgwick::begin(100.0);
+        imu.Madgwick_cpp::begin(100.0);
         for(i = 0 ; i < 6000; i++){
                 setTimer(0, 10);
         }
