@@ -71,10 +71,24 @@ int main(){
     InitMPU9250();
     imu.CollectMagDataAndCali();
     std::cout<<"Magn Cali Completed?yes or not"<<std::endl;
-    std::string MagnCalicompleted;
-    std::cin>>MagnCalicompleted;
+    std::string bMagnCalicompleted;
+    std::cin>>bMagnCalicompleted;
+    std::cout<<"Do Acc and Gyr Calibration?yes or not"<<std::endl;
+    std::cout<<"if yes,Please keep IMU stable "<<std::endl;
+    std::string bAccGyrCalibration;
+    std::cin>>bAccGyrCalibration;
+    std::string bAccGyrCalicompleted="yes";
+    if (bAccGyrCalibration=="yes"){
+        bAccGyrCalicompleted="not";
+        std::cout<<"Please keep IMU stable"<<std::endl;
+        imu.CollectAccGyrDataAndCali();
 
-    if (MagnCalicompleted=="yes"){
+        std::cout<<"Acc and Gyro Cali Completed?yes or not"<<std::endl;
+        std::cin>>bAccGyrCalicompleted;
+    }
+
+
+    if (bMagnCalicompleted=="yes" && bAccGyrCalicompleted=="yes"){
         AccData.open("./AccData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
         GyrData.open("./GyrData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
         MagData.open("./MagData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);

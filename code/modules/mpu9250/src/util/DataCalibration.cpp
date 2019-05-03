@@ -2,6 +2,18 @@
 #include <fstream>
 
 DataCalibration::DataCalibration(){
+    MagneCentreAfterCali.XaxisData=0.0;
+    MagneCentreAfterCali.YaxisData=0.0;
+    MagneCentreAfterCali.ZaxisData=0.0;
+    AcceCentreAfterCali.XaxisData=0.0;
+    AcceCentreAfterCali.YaxisData=0.0;
+    AcceCentreAfterCali.ZaxisData=0.0;
+    GyroCentreAfterCali.XaxisData=0.0;
+    GyroCentreAfterCali.YaxisData=0.0;
+    GyroCentreAfterCali.ZaxisData=0.0;
+    CentreAfterCaliData(0,0)=0.0;
+    CentreAfterCaliData(0,1)=0.0;
+    CentreAfterCaliData(0,2)=0.0;
     ;
 }
 void DataCalibration::ConvertStdType2EigenType(){

@@ -23,14 +23,14 @@ ImuModule::ImuModule()
 void ImuModule::CollectMagDataAndCali(){
     // MagneCaliData.open("./MagneCaliData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
 
+    XaxisData.clear();
+    YaxisData.clear();
+    ZaxisData.clear();
     for (_DataCaliCollected =0;_DataCaliCollected<NUM_DATA_NEEDED;_DataCaliCollected++){
         while(!dataReady()){
             ;
         }
         MPU9250_DMP::update(UPDATE_ACCEL | UPDATE_GYRO | UPDATE_COMPASS);
-        XaxisData.clear();
-        YaxisData.clear();
-        ZaxisData.clear();
         XaxisData.push_back(calcMag(mx)/100.0);
         YaxisData.push_back(calcMag(my)/100.0);
         ZaxisData.push_back(calcMag(mz)/100.0);
@@ -40,7 +40,7 @@ void ImuModule::CollectMagDataAndCali(){
     //MagneCaliData.close();
     std::cout << _DataCaliCollected << "/" << NUM_DATA_NEEDED << "collected"<<std::endl;
     //std::cout<<"XaxisData Size"<<XaxisData.size()<<std::endl;
-    std::cout << "Magnetic Data collected finished, start of calcule bias"<<std::endl;
+    std::cout << "Data collected finished, start of calcule bias"<<std::endl;
     MagnAcceCalibration();
     MagneCentreAfterCali.XaxisData=CentreAfterCaliData(0,0);
     MagneCentreAfterCali.YaxisData=CentreAfterCaliData(0,1);
@@ -58,15 +58,14 @@ void ImuModule::CollectAccGyrDataAndCali(){
     XaxisGyroDataSum=0.0;
     YaxisGyroDataSum=0.0;
     ZaxisGyroDataSum=0.0;
-
+    XaxisData.clear();
+    YaxisData.clear();
+    ZaxisData.clear();
     for (_DataCaliCollected =0;_DataCaliCollected<NUM_DATA_NEEDED;_DataCaliCollected++){
         while(!dataReady()){
             ;
         }
         MPU9250_DMP::update(UPDATE_ACCEL | UPDATE_GYRO | UPDATE_COMPASS);
-        XaxisData.clear();
-        YaxisData.clear();
-        ZaxisData.clear();
         XaxisData.push_back(calcAccel(ax));
         YaxisData.push_back(calcAccel(ay));
         ZaxisData.push_back(calcAccel(az));
@@ -100,9 +99,9 @@ void ImuModule::CalMoveData(){
     move_data.accelX = calcAccel(ax);
     move_data.accelY = calcAccel(ay);
     move_data.accelZ = calcAccel(az);
-    move_data.gyroX = calcGyro(gx);
-    move_data.gyroY = calcGyro(gy);
-    move_data.gyroZ = calcGyro(gz);
+    move_data.gyroX = calcGyro(gx)-GyroCentreAfterCali.XaxisData;
+    move_data.gyroY = calcGyro(gy)-GyroCentreAfterCali.YaxisData;
+    move_data.gyroZ = calcGyro(gz)-GyroCentreAfterCali.ZaxisData;
     move_data.magX = calcMag(mx)/100.0-MagneCentreAfterCali.XaxisData;
     move_data.magY = calcMag(my)/100.0-MagneCentreAfterCali.YaxisData;
     move_data.magZ = calcMag(mz)/100.0-MagneCentreAfterCali.ZaxisData;
