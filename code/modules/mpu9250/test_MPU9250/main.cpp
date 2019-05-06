@@ -52,12 +52,12 @@ void InitMPU9250()
 
   // The sample rate of the accel/gyro can be set using
   // setSampleRate. Acceptable values range from 4Hz to 1kHz
-  imu.setSampleRate(100); // Set sample rate to 10Hz
+  imu.setSampleRate(20); // Set sample rate to 10Hz
 
   // Likewise, the compass (magnetometer) sample rate can be
   // set using the setCompassSampleRate() function.
   // This value can range between: 1-100Hz
-  imu.setCompassSampleRate(100); // Set mag rate to 10Hz
+  imu.setCompassSampleRate(20); // Set mag rate to 10Hz
 }
 
 void printIMUData(void);
@@ -79,7 +79,6 @@ int main(){
         bMagnCalicompleted="not";
         imu.CollectMagDataAndCali();
         std::cout<<"Magn Cali Completed?yes or not"<<std::endl;
-        std::string bMagnCalicompleted;
         std::cin>>bMagnCalicompleted;
         std::cout<<"Do Acc and Gyr Calibration?yes or not"<<std::endl;
         std::cout<<"if yes,Please keep IMU stable "<<std::endl;
@@ -87,7 +86,6 @@ int main(){
         std::cin>>bAccGyrCalibration;
         if (bAccGyrCalibration=="yes"){
             bAccGyrCalicompleted="not";
-            std::cout<<"Please keep IMU stable"<<std::endl;
             imu.CollectAccGyrDataAndCali();
 
             std::cout<<"Acc and Gyro Cali Completed?yes or not"<<std::endl;
@@ -96,7 +94,7 @@ int main(){
 
     }
 
-
+    std::cout<< bMagnCalicompleted << bAccGyrCalicompleted<< std::endl;
     if (bMagnCalicompleted=="yes" && bAccGyrCalicompleted=="yes"){
         AccData.open("./AccData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
         GyrData.open("./GyrData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
@@ -104,9 +102,9 @@ int main(){
         TimeData.open("./TimeData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
         PoseData.open("./PoseData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
         long i;
-        imu.Madgwick_cpp::begin(100.0);
+        imu.Mahony_cpp::begin(20.0);
         for(i = 0 ; i < 6000; i++){
-                setTimer(0, 10);
+                setTimer(0, 50);
         }
     }
 

@@ -3,7 +3,7 @@
 
 #include "SparkFunMPU9250-DMP.h"
 #include "DataCalibration.h"
-#include "MadgwickAHRS.hpp"
+#include "MahonyAHRS.hpp"
 
 typedef struct{
     float accelX ;
@@ -19,7 +19,7 @@ typedef struct{
 
 
 
-class ImuModule :public MPU9250_DMP, public DataCalibration,public Madgwick_cpp{
+class ImuModule :public MPU9250_DMP, public DataCalibration,public Mahony_cpp{
 
     public :
     ImuModule();

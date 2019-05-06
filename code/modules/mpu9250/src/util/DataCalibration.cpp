@@ -2,6 +2,16 @@
 #include <fstream>
 
 DataCalibration::DataCalibration(){
+//    MagneCentreAfterCali.XaxisData=0.0f;
+//    MagneCentreAfterCali.YaxisData=0.0f;
+//    MagneCentreAfterCali.ZaxisData=0.0f;
+//    AcceCentreAfterCali.XaxisData=0.0f;
+//    AcceCentreAfterCali.YaxisData=0.0f;
+//    AcceCentreAfterCali.ZaxisData=0.0f;
+//    GyroCentreAfterCali.XaxisData=0.0f;
+//    GyroCentreAfterCali.YaxisData=0.0f;
+//    GyroCentreAfterCali.ZaxisData=0.0f;
+
     MagneCentreAfterCali.XaxisData=-0.75f;
     MagneCentreAfterCali.YaxisData=0.41f;
     MagneCentreAfterCali.ZaxisData=1.23f;
