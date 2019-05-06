@@ -8,7 +8,7 @@ typedef struct{
     float ZaxisData;
 }CentreAfterCali_t;
 
-#define NUM_DATA_NEEDED 1000
+#define NUM_DATA_NEEDED 3000
 //typedef Matrix<float, Dynamic, 9> MatrixDataProduct;
 
 class DataCalibration

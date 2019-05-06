@@ -52,12 +52,12 @@ void InitMPU9250()
 
   // The sample rate of the accel/gyro can be set using
   // setSampleRate. Acceptable values range from 4Hz to 1kHz
-  imu.setSampleRate(20); // Set sample rate to 10Hz
+  imu.setSampleRate(200); // Set sample rate to 10Hz
 
   // Likewise, the compass (magnetometer) sample rate can be
   // set using the setCompassSampleRate() function.
   // This value can range between: 1-100Hz
-  imu.setCompassSampleRate(20); // Set mag rate to 10Hz
+  imu.setCompassSampleRate(5); // Set mag rate to 10Hz
 }
 
 void printIMUData(void);
@@ -102,9 +102,9 @@ int main(){
         TimeData.open("./TimeData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
         PoseData.open("./PoseData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
         long i;
-        imu.Mahony_cpp::begin(20.0);
+        imu.Mahony_cpp::begin(200.0);
         for(i = 0 ; i < 6000; i++){
-                setTimer(0, 50);
+                setTimer(0, 5);
         }
     }
 
@@ -133,8 +133,8 @@ void printIMUData(void)
   std::cout<<"Time: "<<imu.time<<std::endl;
 
   AccData<<imu.move_data.accelX<<" "<<imu.move_data.accelY<<" "<<imu.move_data.accelZ<<"\n";
-  GyrData<<imu.move_data.gyroX<<" "<<imu.move_data.gyroY<<" "<<imu.move_data.gyroZ<<"\n";
-  MagData<<imu.move_data.magX<<" "<<imu.move_data.magY<<" "<<imu.move_data.magZ<<"\n";
+  GyrData<<imu.move_data.gyroX+imu.GyroCentreAfterCali.XaxisData<<" "<<imu.move_data.gyroY+imu.GyroCentreAfterCali.YaxisData<<" "<<imu.move_data.gyroZ+imu.GyroCentreAfterCali.ZaxisData<<"\n";
+  MagData<<imu.move_data.magX+imu.MagneCentreAfterCali.XaxisData<<" "<<imu.move_data.magY+imu.MagneCentreAfterCali.YaxisData<<" "<<imu.move_data.magZ+imu.MagneCentreAfterCali.ZaxisData<<"\n";
   TimeData<<imu.time<<"\n";
 }
 

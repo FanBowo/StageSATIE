@@ -18,10 +18,10 @@ ImuModule::ImuModule()
 }
 
 
-//std::ofstream MagneCaliData;
+std::ofstream MagneCaliData;
 
 void ImuModule::CollectMagDataAndCali(){
-    // MagneCaliData.open("./MagneCaliData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
+     MagneCaliData.open("./MagneCaliData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
 
     XaxisData.clear();
     YaxisData.clear();
@@ -35,9 +35,9 @@ void ImuModule::CollectMagDataAndCali(){
         YaxisData.push_back(calcMag(my)/100.0);
         ZaxisData.push_back(calcMag(mz)/100.0);
         std::cout<<XaxisData.back()<<"   "<<YaxisData.back()<<"   "<<ZaxisData.back()<<"   "<<std::endl;
-        //MagneCaliData<<XaxisData.back()<<" "<<YaxisData.back()<<" "<<ZaxisData.back()<<"\n";
+        MagneCaliData<<XaxisData.back()<<" "<<YaxisData.back()<<" "<<ZaxisData.back()<<"\n";
     }
-    //MagneCaliData.close();
+    MagneCaliData.close();
     std::cout << _DataCaliCollected << "/" << NUM_DATA_NEEDED << "collected"<<std::endl;
     //std::cout<<"XaxisData Size"<<XaxisData.size()<<std::endl;
     std::cout << "Data collected finished, start of calcule bias"<<std::endl;
