@@ -2,25 +2,25 @@
 #include <fstream>
 
 DataCalibration::DataCalibration(){
-    MagneCentreAfterCali.XaxisData=0.0f;
-    MagneCentreAfterCali.YaxisData=0.0f;
-    MagneCentreAfterCali.ZaxisData=0.0f;
-    AcceCentreAfterCali.XaxisData=0.0f;
-    AcceCentreAfterCali.YaxisData=0.0f;
-    AcceCentreAfterCali.ZaxisData=0.0f;
-    GyroCentreAfterCali.XaxisData=0.0f;
-    GyroCentreAfterCali.YaxisData=0.0f;
-    GyroCentreAfterCali.ZaxisData=0.0f;
-
-//    MagneCentreAfterCali.XaxisData=-0.75f;
-//    MagneCentreAfterCali.YaxisData=0.41f;
-//    MagneCentreAfterCali.ZaxisData=1.23f;
+//    MagneCentreAfterCali.XaxisData=0.0f;
+//    MagneCentreAfterCali.YaxisData=0.0f;
+//    MagneCentreAfterCali.ZaxisData=0.0f;
 //    AcceCentreAfterCali.XaxisData=0.0f;
 //    AcceCentreAfterCali.YaxisData=0.0f;
 //    AcceCentreAfterCali.ZaxisData=0.0f;
-//    GyroCentreAfterCali.XaxisData=-1.03f;
-//    GyroCentreAfterCali.YaxisData=0.96f;
-//    GyroCentreAfterCali.ZaxisData=-0.26f;
+//    GyroCentreAfterCali.XaxisData=0.0f;
+//    GyroCentreAfterCali.YaxisData=0.0f;
+//    GyroCentreAfterCali.ZaxisData=0.0f;
+
+    MagneCentreAfterCali.XaxisData=-0.81f;
+    MagneCentreAfterCali.YaxisData=0.29f;
+    MagneCentreAfterCali.ZaxisData=1.19f;
+    AcceCentreAfterCali.XaxisData=0.0f;
+    AcceCentreAfterCali.YaxisData=0.0f;
+    AcceCentreAfterCali.ZaxisData=0.0f;
+    GyroCentreAfterCali.XaxisData=-1.50f;
+    GyroCentreAfterCali.YaxisData=1.08f;
+    GyroCentreAfterCali.ZaxisData=-0.22f;
     CentreAfterCaliData(0,0)=0.0;
     CentreAfterCaliData(0,1)=0.0;
     CentreAfterCaliData(0,2)=0.0;

@@ -68,6 +68,9 @@ void Mahony_cpp:: update(float gx, float gy, float gz, float ax, float ay, float
 	float halfex, halfey, halfez;
 	float qa, qb, qc;
 
+    _gx=gx;_gy=gy;_gz=gz;
+    _ax=ax;_ay=ay;_az=az;
+    _mx=mx;_my=my;_mz=mz;
 	// Use IMU algorithm if magnetometer measurement invalid (avoids NaN in magnetometer normalisation)
 	if((mx == 0.0f) && (my == 0.0f) && (mz == 0.0f)) {
 		updateIMU(gx, gy, gz, ax, ay, az);
@@ -250,7 +253,10 @@ void Mahony_cpp::computeAngles()
 {
 	roll=atan2f(q0*q1+q2*q3, 0.5f -q1*q1-q2*q2);
 	pitch= asinf(-2.0f*(q1*q3-q0*q2));
-	yaw=atan2f(q1*q2+q0*q3, 0.5f -q2*q2 -q3*q3);
+	//yaw=atan2f(q1*q2+q0*q3, 0.5f -q2*q2 -q3*q3);
+	yaw=atan2(-_my,_mx);
+	//yaw=atan2((-_my*cos(roll)+_mz*sin(roll)),\
+              (_mx*cos(pitch)+_mz*sin(pitch)*(sin(roll)+cos(roll))));
 	anglesComputed = 1;
 }
 

@@ -18,6 +18,7 @@ class Mahony_cpp {
 	static float invSqrt(float x);
 	volatile float twoKp, twoKi, q0, q1, q2, q3,sampleFreq;
     volatile float integralFBx ,integralFBy,integralFBz ;
+    volatile float _gx,_gy,_gz,_ax,_ay,_az,_mx,_my,_mz;
 
 	float roll, pitch, yaw;
 

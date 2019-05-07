@@ -103,7 +103,7 @@ int main(){
         PoseData.open("./PoseData.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
         long i;
         imu.Mahony_cpp::begin(200.0);
-        for(i = 0 ; i < 6000; i++){
+        for(i = 0 ; i < 30000; i++){
                 setTimer(0, 5);
         }
     }
