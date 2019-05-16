@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Test_BNO055" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Test_BNO055" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+					<Add directory="/home/fanzhuzhi/Bureau/BNO 055/Test_BNO055/" />
+					<Add directory="../utility" />
+					<Add directory="../" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Test_BNO055" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="../Adafruit_BNO055.cpp" />
+		<Unit filename="../Adafruit_BNO055.h" />
+		<Unit filename="../Adafruit_Sensor.h" />
+		<Unit filename="../utility/I2Cdev.cpp" />
+		<Unit filename="../utility/I2Cdev.h" />
+		<Unit filename="../utility/LinuxClk.cpp" />
+		<Unit filename="../utility/LinuxClk.h" />
+		<Unit filename="../utility/imumaths.h" />
+		<Unit filename="../utility/matrix.h" />
+		<Unit filename="../utility/quaternion.h" />
+		<Unit filename="../utility/twi.h" />
+		<Unit filename="../utility/vector.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
