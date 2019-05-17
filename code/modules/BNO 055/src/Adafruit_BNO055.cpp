@@ -97,8 +97,8 @@ bool Adafruit_BNO055::begin(adafruit_bno055_opmode_t mode) {
   }
 
   /* Switch to config mode (just in case since this is the default) */
-  setMode(OPERATION_MODE_CONFIG);
-
+  //setMode(OPERATION_MODE_CONFIG);
+  setMode(OPERATION_MODE_NDOF);
   /* Reset */
   write8(BNO055_SYS_TRIGGER_ADDR, 0x20);
   while (read8(BNO055_CHIP_ID_ADDR) != BNO055_ID) {

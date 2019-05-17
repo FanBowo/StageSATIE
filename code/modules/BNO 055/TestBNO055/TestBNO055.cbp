@@ -38,6 +38,10 @@
 		<Unit filename="../src/Adafruit_BNO055.cpp" />
 		<Unit filename="../src/Adafruit_BNO055.h" />
 		<Unit filename="../src/Adafruit_Sensor.h" />
+		<Unit filename="../src/BNO055_Cali.cpp" />
+		<Unit filename="../src/BNO055_Cali.h" />
+		<Unit filename="../src/util/DataCalibration.cpp" />
+		<Unit filename="../src/util/DataCalibration.h" />
 		<Unit filename="../src/util/I2Cdev.cpp" />
 		<Unit filename="../src/util/I2Cdev.h" />
 		<Unit filename="../src/util/LinuxClk.cpp" />

@@ -3,6 +3,7 @@
 //#include <Wire.h>
 #include "Adafruit_Sensor.h"
 #include "Adafruit_BNO055.h"
+#include "BNO055_Cali.h"
 #include "imumaths.h"
 #include "LinuxClk.h"
 #define delay(a) Linux_delay_ms(a)
@@ -23,7 +24,7 @@
 /* Set the delay between fresh samples */
 #define BNO055_SAMPLERATE_DELAY_MS (100)
 
-Adafruit_BNO055 bno = Adafruit_BNO055();
+BNO055_Cali bno = BNO055_Cali();
 
 /**************************************************************************/
 /*
