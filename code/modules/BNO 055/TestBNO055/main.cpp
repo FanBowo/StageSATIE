@@ -23,7 +23,10 @@
 
 /* Set the delay between fresh samples */
 #define BNO055_SAMPLERATE_DELAY_MS (100)
+#define CaliMagneDataNUM (3000)
 
+
+void CaliMagneDataCollectAndCali();
 BNO055_Cali bno = BNO055_Cali();
 
 /**************************************************************************/
@@ -38,7 +41,7 @@ void setup(void)
   std::cout<<"Orientation Sensor Raw Data Test"<<std::endl;
 
   /* Initialise the sensor */
-  if(!bno.begin())
+  if(!bno.begin(BNO055_Cali::OPERATION_MODE_NDOF))
   {
     /* There was a problem detecting the BNO055 ... check your connections */
     //Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
@@ -128,6 +131,7 @@ void loop(void)
 /**************************************************************************/
 
 int main(){
+    bno.CaliMagneDataCollectAndCali();
     setup();
     while(1){
         loop();
@@ -135,3 +139,5 @@ int main(){
 
 return 0;
 }
+
+

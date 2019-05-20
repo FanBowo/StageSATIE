@@ -8,7 +8,7 @@ class BNO055_Cali:public Adafruit_BNO055, public DataCalibration{
     public:
     BNO055_Cali();
     long DataCollectedCount;
-    void CollectMagneDataAndCali();
+    void CaliMagneDataCollectAndCali();
 
 
 };

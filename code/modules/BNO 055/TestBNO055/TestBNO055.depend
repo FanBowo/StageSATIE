@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1557994316 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/Adafruit_BNO055.cpp
+1558364372 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/Adafruit_BNO055.cpp
 	<math.h>
 	<iostream>
 	"LinuxClk.h"
@@ -62,7 +62,7 @@
 1557936600 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/LinuxClk.cpp
 	"LinuxClk.h"
 
-1558087723 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/TestBNO055/main.cpp
+1558367993 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/TestBNO055/main.cpp
 	<iostream>
 	"Adafruit_Sensor.h"
 	"Adafruit_BNO055.h"
@@ -74,14 +74,17 @@
 	"DataCalibration.h"
 	<fstream>
 
-1557149129 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/DataCalibration.h
+1558368472 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/DataCalibration.h
 	<eigen3/Eigen/Dense>
 	<vector>
 
-1558081475 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/BNO055_Cali.cpp
+1558367938 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/BNO055_Cali.cpp
 	"BNO055_Cali.h"
+	<iostream>
+	"LinuxClk.h"
+	<fstream>
 
-1558087418 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/BNO055_Cali.h
+1558365926 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/BNO055_Cali.h
 	"Adafruit_BNO055.h"
 	"util/DataCalibration.h"
 
