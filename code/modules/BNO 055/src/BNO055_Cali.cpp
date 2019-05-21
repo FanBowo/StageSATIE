@@ -8,6 +8,7 @@
 
 BNO055_Cali::BNO055_Cali(){
     DataCollectedCount=0;
+    bInitWithCaliProfileCompleted=false;
 }
 //We collecte data in interrupt and do calibration directely with
 
@@ -77,3 +78,37 @@ void BNO055_Cali::WriteMagneBias(){
     bMagnBiasGeted=true;
 }
 
+void BNO055_Cali::InitWithCaliProfile(){
+    adafruit_bno055_offsets_t CaliProfileDataGetFromTxt;
+    int16_t CaliProfileOriDataGetFromTxt[11];
+    std::ifstream CaliProfileTxt;
+    CaliProfileTxt.open("./CaliProfile.txt");
+    if(!CaliProfileTxt) {
+        std::cout<<"Open Cali profile txt failed"<<std::endl;
+        exit(-1);
+    }
+    for(int i=0;i<11;i++){
+        CaliProfileTxt>>CaliProfileOriDataGetFromTxt[i];
+        //std::cout<< i <<"th: "<<CaliProfileOriDataGetFromTxt[i]<<std::endl;
+    }
+
+    CaliProfileDataGetFromTxt.accel_offset_x=CaliProfileOriDataGetFromTxt[0];
+    CaliProfileDataGetFromTxt.accel_offset_y=CaliProfileOriDataGetFromTxt[1];
+    CaliProfileDataGetFromTxt.accel_offset_z=CaliProfileOriDataGetFromTxt[2];
+    CaliProfileDataGetFromTxt.accel_radius=CaliProfileOriDataGetFromTxt[3];
+    CaliProfileDataGetFromTxt.gyro_offset_x=CaliProfileOriDataGetFromTxt[4];
+    CaliProfileDataGetFromTxt.gyro_offset_y=CaliProfileOriDataGetFromTxt[5];
+    CaliProfileDataGetFromTxt.gyro_offset_z=CaliProfileOriDataGetFromTxt[6];
+    CaliProfileDataGetFromTxt.mag_offset_x=CaliProfileOriDataGetFromTxt[7];
+    CaliProfileDataGetFromTxt.mag_offset_y=CaliProfileOriDataGetFromTxt[8];
+    CaliProfileDataGetFromTxt.mag_offset_z=CaliProfileOriDataGetFromTxt[9];
+    CaliProfileDataGetFromTxt.mag_radius=CaliProfileOriDataGetFromTxt[10];
+    setMode(BNO055_Cali::OPERATION_MODE_CONFIG);
+    delay(20);
+    setSensorOffsets(CaliProfileDataGetFromTxt);
+    delay(20);
+    setMode(BNO055_Cali::OPERATION_MODE_NDOF);
+    delay(20);
+    bInitWithCaliProfileCompleted=true;
+
+}

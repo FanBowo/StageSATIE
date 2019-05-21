@@ -131,6 +131,13 @@ void loop(void)
     }
     #endif // Debug
 
+//  if((system>=2&&gyro>=3&&mag>=3&& !(bno.bInitWithCaliProfileCompleted))){
+//    bno.InitWithCaliProfile();
+//  }
+
+//  if(system<=0){
+//    bno.bInitWithCaliProfileCompleted=false;//Need re-calibration
+//  }
 
   delay(BNO055_SAMPLERATE_DELAY_MS);
 }
@@ -158,6 +165,7 @@ int main(){
     #ifdef Debug
     CaliProfile.open("./CaliProfile.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
     #endif // Debug
+    bno.InitWithCaliProfile();
     while(1){
         loop();
     #ifdef Debug
