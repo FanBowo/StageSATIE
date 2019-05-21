@@ -16,6 +16,7 @@ BNO055_Cali::BNO055_Cali(){
 //    MagnAcceCalibration();
 //}
 void BNO055_Cali::CaliMagneDataCollectAndCali(){
+  bMagnBiasGeted=false;
   std::cout<<"Magne Sensor Calibration"<<std::endl;
 
   /* Initialise the sensor */
@@ -58,7 +59,10 @@ void BNO055_Cali::CaliMagneDataCollectAndCali(){
     std::cout<<"Y bias"<<MagneCentreAfterCali.YaxisData<<std::endl;
     std::cout<<"Z bias"<<MagneCentreAfterCali.ZaxisData<<std::endl;
 
-    adafruit_bno055_offsets_t OffsetToWriteToRegister;
+}
+
+void BNO055_Cali::WriteMagneBias(){
+
     OffsetToWriteToRegister.accel_offset_x=0;
     OffsetToWriteToRegister.accel_offset_y=0;
     OffsetToWriteToRegister.accel_offset_z=0;
@@ -66,6 +70,10 @@ void BNO055_Cali::CaliMagneDataCollectAndCali(){
     OffsetToWriteToRegister.gyro_offset_x=0;
     OffsetToWriteToRegister.gyro_offset_y=0;
     OffsetToWriteToRegister.gyro_offset_z=0;
-
-
+    OffsetToWriteToRegister.mag_offset_x=(int16_t)(MagneCentreAfterCali.XaxisData*16);
+    OffsetToWriteToRegister.mag_offset_y=(int16_t)(MagneCentreAfterCali.YaxisData*16);
+    OffsetToWriteToRegister.mag_offset_z=(int16_t)(MagneCentreAfterCali.ZaxisData*16);
+    OffsetToWriteToRegister.mag_radius=0;
+    bMagnBiasGeted=true;
 }
+

@@ -9,7 +9,10 @@ class BNO055_Cali:public Adafruit_BNO055, public DataCalibration{
     BNO055_Cali();
     long DataCollectedCount;
     void CaliMagneDataCollectAndCali();
-
+    void WriteMagneBias();
+    volatile bool bMagnBiasGeted;
+    adafruit_bno055_offsets_t OffsetToWriteToRegister;
+    //bool begin(adafruit_bno055_opmode_t mode);
 
 };
 

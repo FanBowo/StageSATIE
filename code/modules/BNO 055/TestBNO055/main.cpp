@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <fstream>
 //#include <Wire.h>
 #include "Adafruit_Sensor.h"
 #include "Adafruit_BNO055.h"
@@ -41,6 +41,7 @@ void setup(void)
   std::cout<<"Orientation Sensor Raw Data Test"<<std::endl;
 
   /* Initialise the sensor */
+
   if(!bno.begin(BNO055_Cali::OPERATION_MODE_NDOF))
   {
     /* There was a problem detecting the BNO055 ... check your connections */
@@ -51,7 +52,15 @@ void setup(void)
   }
 
   delay(1000);
-
+  #ifdef Debug
+  if(bno.bMagnBiasGeted){
+    std::cout<<"Rewrite magn bias"<<std::endl;
+    bno.setMode(BNO055_Cali::OPERATION_MODE_CONFIG);
+    bno.setSensorOffsets(bno.OffsetToWriteToRegister);
+    bno.setMode(BNO055_Cali::OPERATION_MODE_NDOF);
+    delay(1000);
+  }
+  #endif // Debug
   /* Display the current temperature */
   int8_t temp = bno.getTemp();
   std::cout<<"Current Temperature: "<<temp<<" C"<<std::endl;
@@ -64,7 +73,9 @@ void setup(void)
     std::cout<<"Calibration status values: 0=uncalibrated, 3=fully calibrated"<<std::endl;
   //Serial.println("Calibration status values: 0=uncalibrated, 3=fully calibrated");
 }
-
+#ifdef Dehug
+std::ofstream Magnedata,Oriendata;
+#endif // Dehug
 void loop(void)
 {
   // Possible vector values can be:
@@ -76,7 +87,7 @@ void loop(void)
   // - VECTOR_GRAVITY       - m/s^2
   sensors_event_t event;
   bno.getEvent(& event);
-  std::cout<<"Orientation"<<(float)event.orientation.x<<\
+  std::cout<<"Orientation :"<<(float)event.orientation.x<<\
                        " "<<(float)event.orientation.y<<\
                        " "<<(float)event.orientation.z<<std::endl;
 
@@ -110,14 +121,16 @@ void loop(void)
   bno.getCalibration(&system, &gyro, &accel, &mag);
   std::cout<<"System "<<(int)system<<"gyro "<<(int)gyro << \
             "accel "<<(int)accel<<"mag "<<(int)mag<<std::endl;
-//  Serial.print("CALIBRATION: Sys=");
-//  Serial.print(system, DEC);
-//  Serial.print(" Gyro=");
-//  Serial.print(gyro, DEC);
-//  Serial.print(" Accel=");
-//  Serial.print(accel, DEC);
-//  Serial.print(" Mag=");
-//  Serial.println(mag, DEC);
+  #ifdef Debug
+    if(system>=1){
+        imu::Vector<3> magn = bno.getVector(Adafruit_BNO055::VECTOR_MAGNETOMETER);
+        Magnedata<<magn.x()<<" "<<magn.y()<<" "<<magn.z()<<"\n";
+        Oriendata<<(float)event.orientation.x<<\
+                       " "<<(float)event.orientation.y<<\
+                       " "<<(float)event.orientation.z<<"\n";
+    }
+    #endif // Debug
+
 
   delay(BNO055_SAMPLERATE_DELAY_MS);
 }
@@ -129,12 +142,36 @@ void loop(void)
     should go here)
 */
 /**************************************************************************/
-
+#ifdef Debug
+bool CaliProfileGeted=false;
+std::ofstream CaliProfile;
+adafruit_bno055_offsets_t CaliProfileData;
+#endif // Debug
 int main(){
+    #ifdef Debug
     bno.CaliMagneDataCollectAndCali();
+
+    Magnedata.open("./Magnedata.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
+    Oriendata.open("./Oriendata.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
+    #endif // Debug
     setup();
+    #ifdef Debug
+    CaliProfile.open("./CaliProfile.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
+    #endif // Debug
     while(1){
         loop();
+    #ifdef Debug
+        if(bno.isFullyCalibrated()&& !CaliProfileGeted){
+           bno.getSensorOffsets(CaliProfileData);
+        CaliProfile<<CaliProfileData.accel_offset_x<<" "<<CaliProfileData.accel_offset_y<<" "<<CaliProfileData.accel_offset_z<<"\n"\
+                    << CaliProfileData.accel_radius<<"\n"\
+                    << CaliProfileData.gyro_offset_x<<" "<<CaliProfileData.gyro_offset_y<<" "<<CaliProfileData.gyro_offset_z<<"\n" \
+                    << CaliProfileData.mag_offset_x<<" "<<CaliProfileData.mag_offset_y<<" "<<CaliProfileData.mag_offset_z<<"\n"\
+                    << CaliProfileData.mag_radius<<"\n";
+        CaliProfileGeted=true;
+        CaliProfile.close();
+        }
+    #endif // Debug
     }
 
 return 0;
