@@ -1,6 +1,7 @@
 #ifndef _DATACALIBRATION_H_
 #define _DATACALIBRATION_H_
 #include <eigen3/Eigen/Dense>
+#include <eigen3/Eigen/Eigenvalues>
 #include <vector>
 typedef struct{
     float XaxisData;
@@ -19,9 +20,12 @@ public:
     std::vector<float> YaxisData;
     std::vector<float> ZaxisData;
     CentreAfterCali_t MagneCentreAfterCali;
+    float MagnRadiuAvg;
     CentreAfterCali_t AcceCentreAfterCali;
     CentreAfterCali_t GyroCentreAfterCali;
     Eigen::Matrix<float, 1, 3> CentreAfterCaliData;
+    CentreAfterCali_t RadiuAfterCaliData;
+    float RadiuAvg;
 
     void MagnAcceCalibration();
     float XaxisGyroDataSum;

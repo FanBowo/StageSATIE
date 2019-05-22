@@ -1,6 +1,7 @@
 #include "DataCalibration.h"
 #include <fstream>
-
+#include <iostream>
+#include <math.h>
 DataCalibration::DataCalibration(){
 //    MagneCentreAfterCali.XaxisData=0.0f;
 //    MagneCentreAfterCali.YaxisData=0.0f;
@@ -56,7 +57,20 @@ void DataCalibration::MagnAcceCalibration(){
     Eigen::Matrix<float, 1, 3> TempData;
     TempData<<(-0.5*NineParas(6,0)),(-0.5*NineParas(7,0)),(-0.5*NineParas(8,0));
     CentreAfterCaliData=TempData*NineParasM.inverse();
-
+    Eigen::EigenSolver<Eigen::Matrix3f> es(NineParasM);
+    std::cout<<"The eigen values of M Matrix are: "<<std::endl<<es.eigenvalues()<<std::endl;
+    std::complex <double> eign1,eign2,eign3;
+    eign1=es.eigenvalues()[0];
+    eign2=es.eigenvalues()[1];
+    eign3=es.eigenvalues()[2];
+    Eigen::Matrix<float, 3, 1> CentreAfterCaliDataT=CentreAfterCaliData.transpose();
+    double SS= CentreAfterCaliData*NineParasM*CentreAfterCaliDataT+1.0;
+    RadiuAfterCaliData.XaxisData=std::sqrt(std::abs(SS/eign1.real()));
+    RadiuAfterCaliData.YaxisData=std::sqrt(std::abs(SS/eign2.real()));
+    RadiuAfterCaliData.ZaxisData=std::sqrt(std::abs(SS/eign3.real()));
+    RadiuAvg=(RadiuAfterCaliData.XaxisData+RadiuAfterCaliData.YaxisData\
+                +RadiuAfterCaliData.ZaxisData)/3.0;
+    std::cout<<"RadiuAvg"<<RadiuAvg<<std::endl;
 }
 
 void DataCalibration::GyroCalibration(){

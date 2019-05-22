@@ -23,9 +23,14 @@
 
 /* Set the delay between fresh samples */
 #define BNO055_SAMPLERATE_DELAY_MS (100)
-#define CaliMagneDataNUM (3000)
 
 
+#define ManuCaliMagn
+#ifdef ManuCaliMagn
+    #define UsingProfileConfig
+#endif // ManuCaliMagn
+#define EXCUTE
+//#define Debug
 void CaliMagneDataCollectAndCali();
 BNO055_Cali bno = BNO055_Cali();
 
@@ -73,9 +78,9 @@ void setup(void)
     std::cout<<"Calibration status values: 0=uncalibrated, 3=fully calibrated"<<std::endl;
   //Serial.println("Calibration status values: 0=uncalibrated, 3=fully calibrated");
 }
-#ifdef Dehug
+#ifdef ManuCaliMagn
 std::ofstream Magnedata,Oriendata;
-#endif // Dehug
+#endif // ManuCaliMagn
 void loop(void)
 {
   // Possible vector values can be:
@@ -89,7 +94,8 @@ void loop(void)
   bno.getEvent(& event);
   std::cout<<"Orientation :"<<(float)event.orientation.x<<\
                        " "<<(float)event.orientation.y<<\
-                       " "<<(float)event.orientation.z<<std::endl;
+                       " "<<(float)event.orientation.z\
+                       <<" "<<(float)bno.bInitWithCaliProfileCompleted<<"\n"<<std::endl;
 
 //  imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
 
@@ -121,7 +127,7 @@ void loop(void)
   bno.getCalibration(&system, &gyro, &accel, &mag);
   std::cout<<"System "<<(int)system<<"gyro "<<(int)gyro << \
             "accel "<<(int)accel<<"mag "<<(int)mag<<std::endl;
-  #ifdef Debug
+  #ifdef ManuCaliMagn
     if(system>=1){
         imu::Vector<3> magn = bno.getVector(Adafruit_BNO055::VECTOR_MAGNETOMETER);
         Magnedata<<magn.x()<<" "<<magn.y()<<" "<<magn.z()<<"\n";
@@ -129,19 +135,24 @@ void loop(void)
                        " "<<(float)event.orientation.y<<\
                        " "<<(float)event.orientation.z<<"\n";
     }
-    #endif // Debug
-
-//  if((system>=2&&gyro>=3&&mag>=3&& !(bno.bInitWithCaliProfileCompleted))){
-//    bno.InitWithCaliProfile();
-//  }
-
-//  if(system<=0){
-//    bno.bInitWithCaliProfileCompleted=false;//Need re-calibration
-//  }
+    #endif // ManuCaliMagn
+#ifdef UsingProfileConfig
+  if((system>=2&&gyro>=3&&mag>=3&& !(bno.bInitWithCaliProfileCompleted))){
+    bno.InitWithCaliProfile();
+    bno.LastNorthPoleCount=0;
+  }
+  if(system<=0&&(bno.bInitWithCaliProfileCompleted)){
+    bno.LastNorthPoleCount++;
+    if(bno.LastNorthPoleCount>200){
+        bno.bInitWithCaliProfileCompleted=false;//Need re-calibration
+    }
+  }
+#endif // UsingProfileConfig
 
   delay(BNO055_SAMPLERATE_DELAY_MS);
 }
 
+void ShowMagnBias();
 
 /**************************************************************************/
 /*
@@ -155,19 +166,34 @@ std::ofstream CaliProfile;
 adafruit_bno055_offsets_t CaliProfileData;
 #endif // Debug
 int main(){
-    #ifdef Debug
-    bno.CaliMagneDataCollectAndCali();
-
-    Magnedata.open("./Magnedata.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
-    Oriendata.open("./Oriendata.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
-    #endif // Debug
     setup();
+    #ifdef UsingProfileConfig
+        #ifdef ManuCaliMagn
+        bno.CaliMagneDataCollectAndCali();
+
+        Magnedata.open("./Magnedata.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
+        Oriendata.open("./Oriendata.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
+        #endif // ManuCaliMagn
+    #endif // UsingProfileConfig
+
     #ifdef Debug
     CaliProfile.open("./CaliProfile.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
     #endif // Debug
-    bno.InitWithCaliProfile();
+    #ifdef UsingProfileConfig
+    //bno.InitWithCaliProfile();
+    #endif // UsingProfileConfig
     while(1){
+    #ifdef EXCUTE
         loop();
+        /*static int tempcount=0;
+        tempcount++;
+        if(tempcount>100){
+            ShowMagnBias();
+            tempcount=0;
+
+        }*/
+    #endif // EXCUTE
+
     #ifdef Debug
         if(bno.isFullyCalibrated()&& !CaliProfileGeted){
            bno.getSensorOffsets(CaliProfileData);
@@ -185,4 +211,12 @@ int main(){
 return 0;
 }
 
-
+void ShowMagnBias(){
+        adafruit_bno055_offsets_t OffsetVal;
+        bno.getSensorOffsets(OffsetVal);
+        std::cout<<OffsetVal.accel_offset_x<<" "<<OffsetVal.accel_offset_y<<" "<<OffsetVal.accel_offset_z<<"\n"\
+                    << OffsetVal.accel_radius<<"\n"\
+                    << OffsetVal.gyro_offset_x<<" "<<OffsetVal.gyro_offset_y<<" "<<OffsetVal.gyro_offset_z<<"\n" \
+                    << OffsetVal.mag_offset_x<<" "<<OffsetVal.mag_offset_y<<" "<<OffsetVal.mag_offset_z<<"\n"\
+                    << OffsetVal.mag_radius<<std::endl;
+}

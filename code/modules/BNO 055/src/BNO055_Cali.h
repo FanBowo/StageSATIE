@@ -14,6 +14,8 @@ class BNO055_Cali:public Adafruit_BNO055, public DataCalibration{
     adafruit_bno055_offsets_t OffsetToWriteToRegister;
     void InitWithCaliProfile();
     volatile bool bInitWithCaliProfileCompleted;
+    int LastNorthPoleCount;
+    //volatile bool bManuCaliMagnCompleted;
     //volatile bool bNeedReCalibration;
     //bool begin(adafruit_bno055_opmode_t mode);
 
