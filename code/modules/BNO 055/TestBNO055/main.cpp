@@ -180,7 +180,7 @@ int main(){
     CaliProfile.open("./CaliProfile.txt",std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
     #endif // Debug
     #ifdef UsingProfileConfig
-    //bno.InitWithCaliProfile();
+    bno.InitWithCaliProfile();
     #endif // UsingProfileConfig
     while(1){
     #ifdef EXCUTE
