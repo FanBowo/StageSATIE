@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1558696914 source:/home/firefly/Desktop/StageSATIE/code/modules/GPIO/TestGPIO/main.cpp
+	<iostream>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<unistd.h>
+	<fcntl.h>
+
