@@ -1,1 +1,0 @@
-./../../../../..//usr/share/pyshared/vcstools-0.1.35.egg-info/top_level.txt

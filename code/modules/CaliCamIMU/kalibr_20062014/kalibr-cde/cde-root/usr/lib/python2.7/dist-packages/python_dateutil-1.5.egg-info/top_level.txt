@@ -1,1 +1,0 @@
-../../../../share/pyshared/python_dateutil-1.5.egg-info/top_level.txt

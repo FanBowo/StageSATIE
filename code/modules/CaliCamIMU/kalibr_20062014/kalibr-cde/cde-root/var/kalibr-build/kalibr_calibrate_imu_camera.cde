@@ -1,2 +1,0 @@
-#!/bin/sh
-../../../cde-exec '-o' '/var/kalibr-build/kalibr-cde' 'kalibr_calibrate_imu_camera' "$@"

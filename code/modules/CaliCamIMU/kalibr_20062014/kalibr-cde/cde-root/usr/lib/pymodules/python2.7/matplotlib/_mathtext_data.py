@@ -1,1 +1,0 @@
-./../../../../..//usr/share/pyshared/matplotlib/_mathtext_data.py

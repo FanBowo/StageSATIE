@@ -13,6 +13,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h> //define O_WRONLY and O_RDONLY
+//#include <linux/gpio.h>
 
 //芯片复位引脚: P2_c4 p2:base1064 c4:20
 #define SYSFS_GPIO_EXPORT           "/sys/class/gpio/export"

@@ -1,1 +1,0 @@
-../../../../share/pyshared/kitchen-1.0.0.egg-info/top_level.txt

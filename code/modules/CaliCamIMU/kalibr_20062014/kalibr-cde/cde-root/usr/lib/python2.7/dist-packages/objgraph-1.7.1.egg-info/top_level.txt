@@ -1,1 +1,0 @@
-../../../../share/pyshared/objgraph-1.7.1.egg-info/top_level.txt
