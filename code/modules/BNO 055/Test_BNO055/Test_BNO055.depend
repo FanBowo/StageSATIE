@@ -79,3 +79,78 @@
 1557936761 /home/fanzhuzhi/Bureau/BNO 055//utility/I2Cdev.h
 	<stdint.h>
 
+1557994316 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/BNO 055/Adafruit_BNO055.cpp
+	<math.h>
+	<iostream>
+	"LinuxClk.h"
+	"Adafruit_BNO055.h"
+
+1557936969 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/BNO 055/utility/LinuxClk.h
+	<unistd.h>
+	<sys/time.h>
+	<stdint.h>
+
+1557993144 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/BNO 055/Adafruit_BNO055.h
+	<Adafruit_Sensor.h>
+	<utility/imumaths.h>
+	"I2Cdev.h"
+
+1552318648 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/BNO 055//Adafruit_Sensor.h
+	<stdint.h>
+	"Arduino.h"
+	"Print.h"
+	"WProgram.h"
+
+1557138429 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/BNO 055//utility/imumaths.h
+	"vector.h"
+	"matrix.h"
+	"quaternion.h"
+
+1557138429 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/BNO 055//utility/vector.h
+	<string.h>
+	<stdint.h>
+	<math.h>
+
+1557138429 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/BNO 055//utility/matrix.h
+	<string.h>
+	<stdint.h>
+	"vector.h"
+
+1557138429 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/BNO 055//utility/quaternion.h
+	<stdlib.h>
+	<string.h>
+	<stdint.h>
+	<math.h>
+	"matrix.h"
+
+1556175727 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/BNO 055/utility/I2Cdev.h
+
+1557995725 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/BNO 055/utility/I2Cdev.cpp
+	<stdio.h>
+	<stdint.h>
+	<stdlib.h>
+	<fcntl.h>
+	<unistd.h>
+	<string.h>
+	<errno.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<linux/i2c-dev.h>
+	"I2Cdev.h"
+
+1557936601 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/BNO 055/utility/LinuxClk.cpp
+	"LinuxClk.h"
+
+1557937507 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/BNO 055/Test_BNO055/main.cpp
+	<iostream>
+	"Adafruit_Sensor.h"
+	"Adafruit_BNO055.h"
+	"utility/imumaths.h"
+	"LinuxClk.h"
+
+1557993144 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/BNO 055//Adafruit_BNO055.h
+	<Adafruit_Sensor.h>
+	<utility/imumaths.h>
+	"I2Cdev.h"
+
