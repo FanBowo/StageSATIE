@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1561364937 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestPOSIX/TestPosixSignal/TestPosixSignal/main.cpp
+	<signal.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+

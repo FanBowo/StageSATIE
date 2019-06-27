@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1561036288 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestPOSIX/main.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<sys/socket.h>
+	<sys/types.h>
+	<unistd.h>
+	<fcntl.h>
+	<poll.h>
+

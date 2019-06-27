@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1561559604 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestPOSIX/TestPosixThreadShareFunction/TestPosixThreadShareFunction/main.cpp
+	<pthread.h>
+	<unistd.h>
+	<errno.h>
+	<stdlib.h>
+	<stdio.h>
+	<sys/types.h>
+

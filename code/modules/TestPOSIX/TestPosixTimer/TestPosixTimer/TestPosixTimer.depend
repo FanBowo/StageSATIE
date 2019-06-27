@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1561454369 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestPOSIX/TestPosixTimer/TestPosixTimer/main.cpp
+	<stdio.h>
+	<string.h>
+	<unistd.h>
+	<stdlib.h>
+	<signal.h>
+	<time.h>
+

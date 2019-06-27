@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1561283710 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestPOSIX/TestPosixAlarm/TestPosixAlarm/main.cpp
+	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+

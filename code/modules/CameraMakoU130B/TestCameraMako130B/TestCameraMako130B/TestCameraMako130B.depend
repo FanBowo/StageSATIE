@@ -1,0 +1,202 @@
+# depslib dependency file v1.0
+1561576933 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/ListCameras.cpp
+	<sstream>
+	<iostream>
+	<vector>
+	<algorithm>
+	"ListCameras.h"
+	"VimbaCPP/Include/VimbaCPP.h"
+	"Common/StreamSystemInfo.h"
+	"Common/ErrorCodeToMessage.h"
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/ListCameras.h
+
+1561630107 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/VimbaCPP.h
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/Camera.h>
+	<VimbaCPP/Include/Interface.h>
+	<VimbaCPP/Include/VimbaSystem.h>
+	<VimbaCPP/Include/FeatureContainer.h>
+	<VimbaCPP/Include/ICameraFactory.h>
+	<VimbaCPP/Include/ICameraListObserver.h>
+	<VimbaCPP/Include/IInterfaceListObserver.h>
+	<VimbaCPP/Include/IFeatureObserver.h>
+	<VimbaCPP/Include/IFrameObserver.h>
+	<VimbaCPP/Include/Frame.h>
+
+1561628893 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/VimbaCPPCommon.h
+	<vector>
+	<string>
+	"VimbaC/Include/VmbCommonTypes.h"
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaC/Include/VmbCommonTypes.h
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/Camera.h
+	<vector>
+	<string>
+	<VimbaC/Include/VimbaC.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/IRegisterDevice.h>
+	<VimbaCPP/Include/FeatureContainer.h>
+	<VimbaCPP/Include/Frame.h>
+	<VimbaCPP/Include/IFrameObserver.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Camera.hpp>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaC/Include/VimbaC.h
+	"VmbCommonTypes.h"
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/IRegisterDevice.h
+	<VimbaC/Include/VmbCommonTypes.h>
+	<vector>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/FeatureContainer.h
+	<VimbaC/Include/VmbCommonTypes.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/BasicLockable.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Feature.h>
+	<VimbaCPP/Include/FeatureContainer.hpp>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/BasicLockable.h
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Mutex.h>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/SharedPointerDefines.h
+	<VimbaCPP/Include/SharedPointer.h>
+	<VimbaCPP/Include/UserSharedPointerDefines.h>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/SharedPointer.h
+	<VimbaCPP/Include/Mutex.h>
+	<VimbaCPP/Include/SharedPointer_impl.h>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/Mutex.h
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<windows.h>
+	<pthread.h>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/SharedPointer_impl.h
+	<VimbaCPP/Include/SharedPointer.h>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/UserSharedPointerDefines.h
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/Feature.h
+	<vector>
+	<map>
+	<VimbaC/Include/VimbaC.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/IFeatureObserver.h>
+	<VimbaCPP/Include/EnumEntry.h>
+	<VimbaCPP/Include/Feature.hpp>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/IFeatureObserver.h
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Feature.h>
+	<vector>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/EnumEntry.h
+	<string>
+	<VimbaC/Include/VimbaC.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/EnumEntry.hpp>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/EnumEntry.hpp
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/Feature.hpp
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/FeatureContainer.hpp
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/Frame.h
+	<VimbaC/Include/VimbaC.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/IFrameObserver.h>
+	<VimbaCPP/Include/AncillaryData.h>
+	<vector>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/IFrameObserver.h
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Frame.h>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/AncillaryData.h
+	<VimbaC/Include/VmbCommonTypes.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/FeatureContainer.h>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/Camera.hpp
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/Interface.h
+	<VimbaC/Include/VimbaC.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/FeatureContainer.h>
+	<vector>
+	<VimbaCPP/Include/Interface.hpp>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/Interface.hpp
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/VimbaSystem.h
+	<vector>
+	<VimbaC/Include/VimbaC.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/LoggerDefines.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Interface.h>
+	<VimbaCPP/Include/Camera.h>
+	<VimbaCPP/Include/ICameraFactory.h>
+	<VimbaCPP/Include/ICameraListObserver.h>
+	<VimbaCPP/Include/IInterfaceListObserver.h>
+	<VimbaCPP/Include/VimbaSystem.hpp>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/LoggerDefines.h
+	<VimbaCPP/Include/UserLoggerDefines.h>
+	<VimbaCPP/Include/FileLogger.h>
+	<VimbaCPP/Include/UserLoggerDefines.h>
+	<VimbaCPP/Include/VimbaSystem.h>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/UserLoggerDefines.h
+	<VimbaCPP/Include/FileLogger.h>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/FileLogger.h
+	<string>
+	<stdio.h>
+	<fstream>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Mutex.h>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/ICameraFactory.h
+	<VimbaC/Include/VimbaC.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Camera.h>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/ICameraListObserver.h
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Camera.h>
+	<vector>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/IInterfaceListObserver.h
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Interface.h>
+	<vector>
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/VimbaSystem.hpp
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/Common/StreamSystemInfo.h
+	<exception>
+	"VimbaCPP/Include/VimbaCPP.h"
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/Common/ErrorCodeToMessage.h
+	<string>
+	"VimbaCPP/Include/VimbaCPP.h"
+
+1561630020 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/TestCameraMako130B/TestCameraMako130B/main.cpp
+	<iostream>
+	"ListCameras.h"
+

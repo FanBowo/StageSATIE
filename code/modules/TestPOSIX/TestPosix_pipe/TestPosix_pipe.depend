@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1561104304 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestPOSIX/TestPosix_pipe/main.cpp
+	<unistd.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<errno.h>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<errno.h>
+	<fcntl.h>
+

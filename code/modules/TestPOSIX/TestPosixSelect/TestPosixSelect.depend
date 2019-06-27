@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1561042298 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestPOSIX/TestPosixSelect/main.cpp
+	<stdio.h>
+	<unistd.h>
+	<string.h>
+	<stdlib.h>
+	<dirent.h>
+	<ctype.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<assert.h>
+

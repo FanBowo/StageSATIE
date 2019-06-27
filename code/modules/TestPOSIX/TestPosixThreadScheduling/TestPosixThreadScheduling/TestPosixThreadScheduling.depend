@@ -1,0 +1,4 @@
+# depslib dependency file v1.0
+1561549744 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestPOSIX/TestPosixThreadScheduling/TestPosixThreadScheduling/main.cpp
+	<iostream>
+

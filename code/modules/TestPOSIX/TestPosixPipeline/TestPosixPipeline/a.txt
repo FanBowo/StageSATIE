@@ -1,0 +1,6 @@
+重定向标准输出到a.txt, fileFd = 1
+write string through fd
+write string through fileFd
+重定向标准输出到a.txt, fileFd = 1
+write string through fd
+write string through fileFd
