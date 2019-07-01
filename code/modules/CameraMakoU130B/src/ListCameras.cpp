@@ -60,7 +60,7 @@ void PrintCameraInfo( const CameraPtr &camera )
         ErrorStream << "[Could not get camera ID. Error code: " << err << "("<<AVT::VmbAPI::Examples::ErrorCodeToMessage(err)<<")"<< "]";
         strID =  ErrorStream.str();
     }
-                
+
     err = camera->GetName( strName );
     if( VmbErrorSuccess != err )
     {
@@ -88,14 +88,67 @@ void PrintCameraInfo( const CameraPtr &camera )
         ErrorStream << "[Could not get interface ID. Error code: " << err << "("<<AVT::VmbAPI::Examples::ErrorCodeToMessage(err)<<")"<< "]";
         strInterfaceID = ErrorStream.str() ;
     }
-
+    FeaturePtr feature;
+    if(VmbErrorSuccess==camera -> GetFeatureByName (" PayloadSize ", feature )){
+    }
+    else{
+        std::cout<<"Failed to get PayloadSize feature"<<std::endl;
+    }
     std::cout   << "/// Camera Name    : " << strName           << "\n"
                 << "/// Model Name     : " << strModelName      <<  "\n"
                 << "/// Camera ID      : " << strID             <<  "\n"
                 << "/// Serial Number  : " << strSerialNumber   <<  "\n"
-                << "/// @ Interface ID : " << strInterfaceID    << "\n\n";
+                << "/// @ Interface ID : " << strInterfaceID    << "\n";
+
 }
 
+void OpenCameras( const CameraPtr &camera )
+{
+    std::cout<<"Try to open camera ..."<<std::endl;
+    if(VmbErrorSuccess== camera->Open(VmbAccessModeFull)){
+        std::cout<<"Camera opened"<<std::endl;
+    }
+    else{
+        std::cout<<"Camera open failed"<<std::endl;
+    }
+}
+
+void CloseCameras( const CameraPtr &camera )
+{
+    std::cout<<"Try to close camera ..."<<std::endl;
+    if(VmbErrorSuccess== camera->Close()){
+        std::cout<<"Camera closed"<<std::endl;
+    }
+    else{
+        std::cout<<"camera close failed"<<std::endl;
+    }
+}
+
+void SetContinuAcqMode( const CameraPtr &camera )
+{
+    FeaturePtr feature;
+    if(VmbErrorSuccess==camera->GetFeatureByName("AcquisitionMode",feature)){
+        if(VmbErrorSuccess==feature->SetValue("Continuous")){
+            if(VmbErrorSuccess==camera->GetFeatureByName("AcquisitionStart",feature)){
+                if(VmbErrorSuccess==feature->RunCommand()){
+                    std::cout<<"Acquisition started"<<std::endl;
+                }
+                else{
+                    std::cout<<"Acquisition failed"<<std::endl;
+                }
+            }
+            else{
+                std::cout<<"Failed get AcquisitionStart feature"<<std::endl;
+            }
+        }
+        else{
+            std::cout<<"Failed set AcquisitionMode feature"<<std::endl;
+        }
+    }
+    else{
+        std::cout<<"Failed get AcquisitionMode feature"<<std::endl;
+    }
+}
 //
 // Starts Vimba
 // Gets all connected cameras
@@ -120,18 +173,25 @@ void ListCameras::Print()
             // Query all static details of all known cameras and print them out.
             // We don't have to open the cameras for that.
             std::for_each( cameras.begin(), cameras.end(), PrintCameraInfo );
+            std::cout << "List cameras finished "<< "\n";
+            std::for_each( cameras.begin(), cameras.end(), OpenCameras );
+            std::for_each( cameras.begin(), cameras.end(), SetContinuAcqMode );
+            std::for_each( cameras.begin(), cameras.end(), CloseCameras );
         }
         else
         {
             std::cout << "Could not list cameras. Error code: " << err << "("<<AVT::VmbAPI::Examples::ErrorCodeToMessage(err)<<")"<< "\n";
         }
-
+        std::cout << "Camera system shtdown... "<< "\n";
         sys.Shutdown();                             // Close Vimba
+        std::cout << "Camera system shtdown finished"<< "\n";
     }
     else
     {
         std::cout << "Could not start system. Error code: " << err <<"("<<AVT::VmbAPI::Examples::ErrorCodeToMessage(err)<<")"<< "\n";
     }
+
+    std::cout<<"Finish Test"<<std::endl;
 }
 
 }}} // namespace AVT::VmbAPI::Examples

@@ -13,7 +13,23 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="/home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/TestCameraMako130B/TestCameraMako130B/" />
+					<Add directory="../../src" />
+					<Add directory="../../src/Common" />
+					<Add directory="../../src/VimbaCPP/Include" />
+					<Add directory="../../src/VimbaC" />
+					<Add directory="../../src/VimbaC/Include" />
+					<Add directory="../../src/VimbaCPP" />
 				</Compiler>
+				<Linker>
+					<Add library="/home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/libQtCore.so.4" />
+					<Add library="/home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/libQtGui.so.4" />
+					<Add library="/home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/libQtSvg.so.4" />
+					<Add library="/home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/libVimbaC.so" />
+					<Add library="/home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/libVimbaCPP.so" />
+					<Add library="/home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/libVimbaImageTransform.so" />
+					<Add directory="../../src" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/TestCameraMako130B" prefix_auto="1" extension_auto="1" />
@@ -32,6 +48,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="../../src/ListCameras.cpp" />
+		<Unit filename="../../src/ListCameras.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

@@ -139,3 +139,76 @@
 1556175728 source:/home/fanzhuzhi/Desktop/StageSATIE/code/modules/mpu9250/src/util/LinuxClk.cpp
 	"LinuxClk.h"
 
+1556175728 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/mpu9250/src/SparkFunMPU9250-DMP.cpp
+	"SparkFunMPU9250-DMP.h"
+	"MPU9250_RegisterMap.h"
+	<math.h>
+	"util/inv_mpu.h"
+
+1556175728 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/mpu9250/src/SparkFunMPU9250-DMP.h
+	"util/inv_mpu.h"
+	"util/inv_mpu_dmp_motion_driver.h"
+
+1556175728 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/mpu9250/src/util/inv_mpu.h
+
+1556175728 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/mpu9250/src/util/inv_mpu_dmp_motion_driver.h
+
+1556175728 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/mpu9250/src/MPU9250_RegisterMap.h
+
+1556175728 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/mpu9250/src/util/I2Cdev.cpp
+	<stdio.h>
+	<stdint.h>
+	<stdlib.h>
+	<fcntl.h>
+	<unistd.h>
+	<string.h>
+	<errno.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<linux/i2c-dev.h>
+	"I2Cdev.h"
+
+1556175728 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/mpu9250/src/util/I2Cdev.h
+	<stdbool.h>
+
+1556175728 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/mpu9250/src/util/inv_mpu.c
+	<stdio.h>
+	<stdint.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	"inv_mpu.h"
+	"I2Cdev.h"
+	"LinuxClk.h"
+
+1556175728 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/mpu9250/src/util/LinuxClk.h
+	<unistd.h>
+	<sys/time.h>
+
+1556175728 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/mpu9250/src/util/inv_mpu_dmp_motion_driver.c
+	<stdio.h>
+	<stdint.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	"inv_mpu.h"
+	"inv_mpu_dmp_motion_driver.h"
+	"dmpKey.h"
+	"dmpmap.h"
+	"I2Cdev.h"
+	"LinuxClk.h"
+
+1556175728 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/mpu9250/src/util/dmpKey.h
+
+1556175728 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/mpu9250/src/util/dmpmap.h
+
+1556175728 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/mpu9250/src/util/LinuxClk.cpp
+	"LinuxClk.h"
+
+1556552162 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/mpu9250/test_MPU9250/main.cpp
+	"SparkFunMPU9250-DMP.h"
+	<stdio.h>
+	<iostream>
+	<unistd.h>
+
