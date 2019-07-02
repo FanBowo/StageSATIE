@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1560935641 source:/home/firefly/Desktop/StageSATIE/code/modules/POSIX/TestPOSIXCPP/main.cpp
+	<iostream>
+	<cstdlib>
+	<pthread.h>
+

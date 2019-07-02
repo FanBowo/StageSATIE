@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="TestCameraMako130TakePhoto" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/TestCameraMako130TakePhoto" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+					<Add directory="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhoto/TestCameraMako130TakePhoto/" />
+					<Add directory="../../src" />
+				</Compiler>
+				<Linker>
+					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/libVimbaImageTransform.so" />
+					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/libVimbaCPP.so" />
+					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/libVimbaC.so" />
+					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/libQtSvg.so.4" />
+					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/libQtGui.so.4" />
+					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/libQtCore.so.4" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/TestCameraMako130TakePhoto" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="Bitmap.cpp" />
+		<Unit filename="Bitmap.h" />
+		<Unit filename="CameraMakoCleanUpAndSaveImage.cpp" />
+		<Unit filename="CameraMakoCleanUpAndSaveImage.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
