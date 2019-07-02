@@ -115,27 +115,50 @@ int main(){
     // Register frame observer / callback for each frame
     // Announce frame to the API
     /*Set aquisition rate*/
-    if(VmbErrorSuccess==camera->GetFeatureByName("AcquisitionFrameRateMode", pFeature)){
-        if(VmbErrorSuccess==pFeature->SetValue("Basic")){
-            if(VmbErrorSuccess==camera->GetFeatureByName("AcquisitionFrameRate", pFeature)){
-                if(VmbErrorSuccess==pFeature->SetValue(30.0)){
-                    std::cout<<"Set Frame rate successed"<<std::endl;
+//    if(VmbErrorSuccess==camera->GetFeatureByName("AcquisitionFrameRateMode", pFeature)){
+//        if(VmbErrorSuccess==pFeature->SetValue("Basic")){
+//            if(VmbErrorSuccess==camera->GetFeatureByName("AcquisitionFrameRate", pFeature)){
+//                if(VmbErrorSuccess==pFeature->SetValue(30.0)){
+//                    std::cout<<"Set Frame rate successed"<<std::endl;
+//                }
+//                else{
+//                    std::cout<<"Can't set AcquisitionFrameRate"<<std::endl;
+//                    //std::cout<<"Error code"<<pFeature->SetValue(10.0)<<std::endl;
+//                }
+//            }
+//            else{
+//                std::cout<<"Can't get feature AcquisitionFrameRate"<<std::endl;
+//            }
+//        }
+//        else{
+//            std::cout<<"Can't Set AcquisitionFrameRateMode"<<std::endl;
+//        }
+//    }
+//    else{
+//        std::cout<<"Can't get feature AcquisitionFrameRateMode"<<std::endl;
+//    }
+
+    /* Set trigger mode*/
+    if(VmbErrorSuccess==camera->GetFeatureByName ("TriggerSource", pFeature )){
+        if(VmbErrorSuccess==pFeature -> SetValue ("Line2")){
+            if(VmbErrorSuccess==camera->GetFeatureByName ("TriggerMode", pFeature )){
+                if(VmbErrorSuccess==pFeature -> SetValue ( "On" )){
+                    std::cout<<"Set trigger mode successfully"<<std::endl;
                 }
                 else{
-                    std::cout<<"Can't set AcquisitionFrameRate"<<std::endl;
-                    //std::cout<<"Error code"<<pFeature->SetValue(10.0)<<std::endl;
+                    std::cout<<"Can't set trigger mode"<<std::endl;
                 }
             }
             else{
-                std::cout<<"Can't get feature AcquisitionFrameRate"<<std::endl;
+                std::cout<<"Can't get feature trigger mode"<<std::endl;
             }
         }
         else{
-            std::cout<<"Can't Set AcquisitionFrameRateMode"<<std::endl;
+            std::cout<<"Can't set trigger source"<<std::endl;
         }
     }
     else{
-        std::cout<<"Can't get feature AcquisitionFrameRateMode"<<std::endl;
+        std::cout<<"Can't get feature trigger source"<<std::endl;
     }
     /*Prepare image acquisition*/
     if(VmbErrorSuccess==camera -> GetFeatureByName ("PayloadSize", pFeature )){
