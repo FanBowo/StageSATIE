@@ -75,7 +75,7 @@ int main(){
     std::cout<<"Vimba C++ API Version "<<sys<<"\n";           // Print out version of Vimba
     CameraPtrVector cameras ; // Holds camera handles
     CameraPtr camera ;
-    FramePtrVector frames (15); // Frame array
+    FramePtrVector frames (1); // Frame array
 
     //Some bool value to present whether close peration needed
     struct NeedCleanFlag bNeedCleanFlag;
@@ -114,6 +114,29 @@ int main(){
     // Allocate memory for frame buffer
     // Register frame observer / callback for each frame
     // Announce frame to the API
+    /*Set aquisition rate*/
+    if(VmbErrorSuccess==camera->GetFeatureByName("AcquisitionFrameRateMode", pFeature)){
+        if(VmbErrorSuccess==pFeature->SetValue("Basic")){
+            if(VmbErrorSuccess==camera->GetFeatureByName("AcquisitionFrameRate", pFeature)){
+                if(VmbErrorSuccess==pFeature->SetValue(30.0)){
+                    std::cout<<"Set Frame rate successed"<<std::endl;
+                }
+                else{
+                    std::cout<<"Can't set AcquisitionFrameRate"<<std::endl;
+                    //std::cout<<"Error code"<<pFeature->SetValue(10.0)<<std::endl;
+                }
+            }
+            else{
+                std::cout<<"Can't get feature AcquisitionFrameRate"<<std::endl;
+            }
+        }
+        else{
+            std::cout<<"Can't Set AcquisitionFrameRateMode"<<std::endl;
+        }
+    }
+    else{
+        std::cout<<"Can't get feature AcquisitionFrameRateMode"<<std::endl;
+    }
     /*Prepare image acquisition*/
     if(VmbErrorSuccess==camera -> GetFeatureByName ("PayloadSize", pFeature )){
         if(VmbErrorSuccess==pFeature -> GetValue (nPLS )){

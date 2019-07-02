@@ -59,6 +59,11 @@ void CleanUpFunc(CleanUpDtaTransfert *pDataTransferToCleanUp){
 
 
 void CreatAndSaveImag(const FramePtr pFrame ){
+    static struct PhotoFormat PhotoFormatInfo={.nImageSize=0,\
+                                                .nWidth=0,\
+                                                .nHeight=0,\
+                                                .bFormatGetted=false};
+
     std::string pFileNameBase = "SynchronousGrab.bmp";
     static int picnum=0;
     picnum++;
@@ -66,59 +71,65 @@ void CreatAndSaveImag(const FramePtr pFrame ){
     const char *pFileName=pFileNametemp.c_str();
     VmbErrorType    err         = VmbErrorSuccess;
     VmbPixelFormatType ePixelFormat = VmbPixelFormatMono8;
-    VmbUint32_t nImageSize = 0;
-    err = pFrame->GetImageSize( nImageSize );
-    if ( VmbErrorSuccess == err )
-    {
-        VmbUint32_t nWidth = 0;
-        err = pFrame->GetWidth( nWidth );
+    if(!PhotoFormatInfo.bFormatGetted){
+        VmbUint32_t nImageSize = 0;
+        err = pFrame->GetImageSize( nImageSize );
+        PhotoFormatInfo.nImageSize=nImageSize;
         if ( VmbErrorSuccess == err )
         {
-            VmbUint32_t nHeight = 0;
-            err = pFrame->GetHeight( nHeight );
+            VmbUint32_t nWidth = 0;
+            err = pFrame->GetWidth( nWidth );
+            PhotoFormatInfo.nWidth=nWidth;
             if ( VmbErrorSuccess == err )
             {
-                VmbUchar_t *pImage = NULL;
-                err = pFrame->GetImage( pImage );
+                VmbUint32_t nHeight = 0;
+                err = pFrame->GetHeight( nHeight );
+                PhotoFormatInfo.nHeight=nHeight;
                 if ( VmbErrorSuccess == err )
-                {
-                    AVTBitmap bitmap;
+                {   PhotoFormatInfo.bFormatGetted=true;
+                    VmbUchar_t *pImage = NULL;
+                    err = pFrame->GetImage( pImage );
+                    if ( VmbErrorSuccess == err )
+                    {
 
-                    if ( VmbPixelFormatRgb8 == ePixelFormat )
-                    {
-                        bitmap.colorCode = ColorCodeRGB24;
-                    }
-                    else
-                    {
-                        bitmap.colorCode = ColorCodeMono8;
-                    }
+                        AVTBitmap bitmap;
 
-                    bitmap.bufferSize = nImageSize;
-                    bitmap.width = nWidth;
-                    bitmap.height = nHeight;
-
-                    // Create the bitmap
-                    if ( 0 == AVTCreateBitmap( &bitmap, pImage ))
-                    {
-                        std::cout << "Could not create bitmap.\n";
-                        err = VmbErrorResources;
-                    }
-                    else
-                    {
-                        // Save the bitmap
-                        if ( 0 == AVTWriteBitmapToFile( &bitmap, pFileName ))
+                        if ( VmbPixelFormatRgb8 == ePixelFormat )
                         {
-                            std::cout << "Could not write bitmap to file.\n";
-                            err = VmbErrorOther;
+                            bitmap.colorCode = ColorCodeRGB24;
                         }
                         else
                         {
-                            std::cout << "Bitmap successfully written to file \"" << pFileName << "\"\n" ;
-                            // Release the bitmap's buffer
-                            if ( 0 == AVTReleaseBitmap( &bitmap ))
+                            bitmap.colorCode = ColorCodeMono8;
+                        }
+
+                        bitmap.bufferSize = PhotoFormatInfo.nImageSize;
+                        bitmap.width = PhotoFormatInfo.nWidth;
+                        bitmap.height = PhotoFormatInfo.nHeight;
+
+                        // Create the bitmap
+                        if ( 0 == AVTCreateBitmap( &bitmap, pImage ))
+                        {
+                            std::cout << "Could not create bitmap.\n";
+                            err = VmbErrorResources;
+                        }
+                        else
+                        {
+                            // Save the bitmap
+                            if ( 0 == AVTWriteBitmapToFile( &bitmap, pFileName ))
                             {
-                                std::cout << "Could not release the bitmap.\n";
-                                err = VmbErrorInternalFault;
+                                std::cout << "Could not write bitmap to file.\n";
+                                err = VmbErrorOther;
+                            }
+                            else
+                            {
+                                std::cout << "Bitmap successfully written to file \"" << pFileName << "\"\n" ;
+                                // Release the bitmap's buffer
+                                if ( 0 == AVTReleaseBitmap( &bitmap ))
+                                {
+                                    std::cout << "Could not release the bitmap.\n";
+                                    err = VmbErrorInternalFault;
+                                }
                             }
                         }
                     }
@@ -126,4 +137,53 @@ void CreatAndSaveImag(const FramePtr pFrame ){
             }
         }
     }
+    else{
+        VmbUchar_t *pImage = NULL;
+        err = pFrame->GetImage( pImage );
+        if ( VmbErrorSuccess == err )
+        {
+
+            AVTBitmap bitmap;
+
+            if ( VmbPixelFormatRgb8 == ePixelFormat )
+            {
+                bitmap.colorCode = ColorCodeRGB24;
+            }
+            else
+            {
+                bitmap.colorCode = ColorCodeMono8;
+            }
+
+            bitmap.bufferSize = PhotoFormatInfo.nImageSize;
+            bitmap.width = PhotoFormatInfo.nWidth;
+            bitmap.height = PhotoFormatInfo.nHeight;
+
+            // Create the bitmap
+            if ( 0 == AVTCreateBitmap( &bitmap, pImage ))
+            {
+                std::cout << "Could not create bitmap.\n";
+                err = VmbErrorResources;
+            }
+            else
+            {
+                // Save the bitmap
+                if ( 0 == AVTWriteBitmapToFile( &bitmap, pFileName ))
+                {
+                    std::cout << "Could not write bitmap to file.\n";
+                    err = VmbErrorOther;
+                }
+                else
+                {
+                    std::cout << "Bitmap successfully written to file \"" << pFileName << "\"\n" ;
+                    // Release the bitmap's buffer
+                    if ( 0 == AVTReleaseBitmap( &bitmap ))
+                    {
+                        std::cout << "Could not release the bitmap.\n";
+                        err = VmbErrorInternalFault;
+                    }
+                }
+            }
+        }
+    }
+
 }

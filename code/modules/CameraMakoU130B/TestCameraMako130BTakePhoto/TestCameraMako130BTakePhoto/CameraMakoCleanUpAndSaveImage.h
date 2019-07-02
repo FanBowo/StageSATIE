@@ -54,6 +54,11 @@ class FrameObserver :public IFrameObserver{
     void FrameReceived ( const FramePtr pFrame );
 };
 
-
+struct PhotoFormat{
+VmbUint32_t nImageSize;
+VmbUint32_t nWidth;
+VmbUint32_t nHeight;
+bool bFormatGetted;
+};
 
 #endif // CAMERAMAKOCLEANUPANDSAVEIMAGE_H_INCLUDED

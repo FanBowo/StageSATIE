@@ -47,6 +47,8 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="Bitmap.cpp" />
+		<Unit filename="CameraMakoCleanUpAndSaveImage.cpp" />
+		<Unit filename="CameraMakoCleanUpAndSaveImage.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
