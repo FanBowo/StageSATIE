@@ -33,6 +33,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string>
+#include <signal.h>
+
 //#include "ListCameras.h"
 
 #include "VimbaCPP/Include/VimbaCPP.h"
@@ -47,7 +49,29 @@
 using namespace  AVT;
 using namespace VmbAPI;
 using namespace Examples;
+
+struct NeedCleanFlag{
+    bool bNeedEndCapture;
+    bool bNeedFlushQueue;
+    bool bNeedRevokeAllFrames;
+    bool bNeedUnregisterObserver;
+    bool bNeedCloseCamera;
+    bool bNeedShutdown;
+};
+
+struct CleanUpDtaTransfert{
+    struct NeedCleanFlag *NeedCleanFlag;
+    CameraPtr camera;
+    FramePtrVector frames;
+    VimbaSystem * sys;
+};
+
 void CreatAndSaveImag(const FramePtr pFrame );
+void CleanUpFunc(struct NeedCleanFlag *bNeedCleanFlag,\
+                    CameraPtr camera,FramePtrVector frames,\
+                    VimbaSystem *sys);
+void CleanUpFunc(CleanUpDtaTransfert *pDataTransferToCleanUp);
+
 //Constructor for the FrameObserver class
 class FrameObserver :public IFrameObserver{
     public:
@@ -76,7 +100,21 @@ void FrameObserver :: FrameReceived ( const FramePtr pFrame ){
 }
 
 
+struct CleanUpDtaTransfert DataTransferToCleanUp;
+
+void my_func(int sign_no){
+    if(sign_no==SIGINT||sign_no==SIGQUIT||sign_no==SIGSEGV){//Ctrl + C ||
+        std::cout<<"I have get SIGINT"<<std::endl;
+        CleanUpFunc(& DataTransferToCleanUp);
+    }
+}
+
+
 int main(){
+    signal(SIGINT,my_func);
+    signal(SIGQUIT,my_func);
+    signal(SIGSEGV,my_func);
+
     //Vimba :: RunExample (void)
     VmbInt64_t nPLS; // Payload size value
     FeaturePtr pFeature ; // Generic feature pointer
@@ -87,16 +125,17 @@ int main(){
     FramePtrVector frames (15); // Frame array
 
     //Some bool value to present whether close peration needed
-    bool bNeedEndCapture=false;
-    bool bNeedFlushQueue=false;
-    bool bNeedRevokeAllFrames=false;
-    bool bNeedUnregisterObserver=false;
-    bool bNeedCloseCamera=false;
-    bool bNeedShutdown=false;
+    struct NeedCleanFlag bNeedCleanFlag;
+    bNeedCleanFlag.bNeedEndCapture=false;
+    bNeedCleanFlag.bNeedFlushQueue=false;
+    bNeedCleanFlag.bNeedRevokeAllFrames=false;
+    bNeedCleanFlag.bNeedUnregisterObserver=false;
+    bNeedCleanFlag.bNeedCloseCamera=false;
+    bNeedCleanFlag.bNeedShutdown=false;
     // Start the API , get and open cameras
     VmbErrorType    err =sys. Startup ();
     if(VmbErrorSuccess==err){
-        bNeedShutdown=true;
+        bNeedCleanFlag.bNeedShutdown=true;
         err=sys.GetCameras ( cameras );// Fetch all cameras known to Vimba
         if( VmbErrorSuccess == err ){
             std::cout << "Cameras found: " << cameras.size() <<"\n\n";
@@ -108,7 +147,7 @@ int main(){
         std::cout<<"Try to open camera ..."<<std::endl;
         if(VmbErrorSuccess== camera->Open(VmbAccessModeFull)){
             std::cout<<"Camera opened"<<std::endl;
-            bNeedCloseCamera=true;
+            bNeedCleanFlag.bNeedCloseCamera=true;
         }
         else{
             std::cout<<"Camera open failed"<<std::endl;
@@ -130,16 +169,16 @@ int main(){
                 (*iter)-> RegisterObserver ( IFrameObserverPtr (new FrameObserver ( camera )));
                 camera -> AnnounceFrame (* iter );
             }
-            bNeedUnregisterObserver=true;
-            bNeedRevokeAllFrames=true;
+            bNeedCleanFlag.bNeedUnregisterObserver=true;
+            bNeedCleanFlag.bNeedRevokeAllFrames=true;
             // Start the capture engine (API)
             if(VmbErrorSuccess==camera -> StartCapture ()){
-                bNeedEndCapture=true;
+                bNeedCleanFlag.bNeedEndCapture=true;
                 for( FramePtrVector :: iterator iter= frames .begin (); frames .end ()!= iter; ++ iter){
                     // Put frame into the frame queue
                     camera -> QueueFrame (* iter );
                 }
-                bNeedFlushQueue=true;
+                bNeedCleanFlag.bNeedFlushQueue=true;
             }
             else{
                 std::cout<<"Failed start capture"<<std::endl;
@@ -170,7 +209,7 @@ int main(){
     }
     std::cout<<"Waiting to take photo"<<std::endl;
     // Program runtime , e.g., Sleep (2000);
-    Clock::SleepMS(20);
+    Clock::SleepMS(2000);
     std::cout<<"Stop Taking photo"<<std::endl;
 
     // Stop the acquisition engine ( camera )
@@ -190,32 +229,53 @@ int main(){
     // Flush the frame queue
     // Revoke all frames from the API
     /*Clean up*/
-    if(bNeedEndCapture){
+    DataTransferToCleanUp.camera=camera;
+    DataTransferToCleanUp.frames=frames;
+    DataTransferToCleanUp.sys=&sys;
+    DataTransferToCleanUp.NeedCleanFlag=&bNeedCleanFlag;
+
+    CleanUpFunc(&bNeedCleanFlag,camera,frames,&sys);
+     // Always pair sys. Startup and sys. Shutdown
+
+    return 0;
+}
+
+//This function is used to clean up, to evite unexcepted error
+void CleanUpFunc(struct NeedCleanFlag *bNeedCleanFlag,\
+                    CameraPtr camera,FramePtrVector frames,\
+                    VimbaSystem *sys){
+    if(bNeedCleanFlag->bNeedEndCapture){
         camera -> EndCapture ();
     }
-    if(bNeedFlushQueue){
+    if(bNeedCleanFlag->bNeedFlushQueue){
         camera -> FlushQueue ();
     }
-    if(bNeedRevokeAllFrames){
+    if(bNeedCleanFlag->bNeedRevokeAllFrames){
         camera -> RevokeAllFrames ();
     }
 
-    if(bNeedUnregisterObserver){
+    if(bNeedCleanFlag->bNeedUnregisterObserver){
         for( FramePtrVector :: iterator iter= frames .begin (); frames .end ()!= iter; ++ iter){
             // Unregister the frame observer / callback
             (* iter)-> UnregisterObserver ();
         }
     }
-    if(bNeedCloseCamera){
+    if(bNeedCleanFlag->bNeedCloseCamera){
         camera ->Close ();
     }
-    if(bNeedShutdown){
-        sys. Shutdown ();
+    if(bNeedCleanFlag->bNeedShutdown){
+        sys->Shutdown ();
     }
-     // Always pair sys. Startup and sys. Shutdown
 
-    return 0;
 }
+
+void CleanUpFunc(CleanUpDtaTransfert *pDataTransferToCleanUp){
+    CleanUpFunc(pDataTransferToCleanUp->NeedCleanFlag,\
+                pDataTransferToCleanUp->camera,\
+                pDataTransferToCleanUp->frames,\
+                pDataTransferToCleanUp->sys);
+}
+
 
 void CreatAndSaveImag(const FramePtr pFrame ){
     std::string pFileNameBase = "SynchronousGrab.bmp";

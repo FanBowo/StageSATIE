@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 void my_func(int sign_no){
-    if(sign_no==SIGINT){
+    if(sign_no==SIGINT){//Ctrl + C
         printf("I have get SIGINT\n");
     }
     else if(sign_no==SIGQUIT){
