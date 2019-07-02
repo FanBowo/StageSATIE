@@ -1,16 +1,20 @@
 # depslib dependency file v1.0
-1561991477 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/TestCameraMako130BTakePhoto/TestCameraMako130BTakePhoto/main.cpp
+1562059579 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/TestCameraMako130BTakePhoto/TestCameraMako130BTakePhoto/main.cpp
 	<sstream>
 	<iostream>
 	<vector>
 	<algorithm>
 	<stdlib.h>
 	<unistd.h>
+	<string>
+	<signal.h>
 	"VimbaCPP/Include/VimbaCPP.h"
 	"Common/StreamSystemInfo.h"
 	"Common/ErrorCodeToMessage.h"
 	"VimbaCPP/Include/IFrameObserver.h"
 	"Bitmap.h"
+	"CameraMakoCleanUpAndSaveImage.h"
+	"VimbaCPP/Source/Clock.h"
 
 1561984520 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Include/VimbaCPP.h
 	<VimbaCPP/Include/VimbaCPPCommon.h>
@@ -204,4 +208,25 @@
 	<string.h>
 	<stdlib.h>
 	"Bitmap.h"
+
+1562059583 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/TestCameraMako130BTakePhoto/TestCameraMako130BTakePhoto/CameraMakoCleanUpAndSaveImage.cpp
+	"CameraMakoCleanUpAndSaveImage.h"
+
+1562059781 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/TestCameraMako130BTakePhoto/TestCameraMako130BTakePhoto/CameraMakoCleanUpAndSaveImage.h
+	<sstream>
+	<iostream>
+	<vector>
+	<algorithm>
+	<stdlib.h>
+	<unistd.h>
+	<string>
+	<signal.h>
+	"VimbaCPP/Include/VimbaCPP.h"
+	"Common/StreamSystemInfo.h"
+	"Common/ErrorCodeToMessage.h"
+	"VimbaCPP/Include/IFrameObserver.h"
+	"Bitmap.h"
+	"VimbaCPP/Source/Clock.h"
+
+1561576933 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/CameraMakoU130B/src/VimbaCPP/Source/Clock.h
 
