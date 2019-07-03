@@ -1,0 +1,296 @@
+# depslib dependency file v1.0
+1561576932 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhoto/TestCameraMako130TakePhoto/Bitmap.cpp
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	"Bitmap.h"
+
+1561576932 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhoto/TestCameraMako130TakePhoto/Bitmap.h
+
+1562062724 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhoto/TestCameraMako130TakePhoto/CameraMakoCleanUpAndSaveImage.cpp
+	"CameraMakoCleanUpAndSaveImage.h"
+
+1562061876 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhoto/TestCameraMako130TakePhoto/CameraMakoCleanUpAndSaveImage.h
+	<sstream>
+	<iostream>
+	<vector>
+	<algorithm>
+	<stdlib.h>
+	<unistd.h>
+	<string>
+	<signal.h>
+	"VimbaCPP/Include/VimbaCPP.h"
+	"Common/StreamSystemInfo.h"
+	"Common/ErrorCodeToMessage.h"
+	"VimbaCPP/Include/IFrameObserver.h"
+	"Bitmap.h"
+	"VimbaCPP/Source/Clock.h"
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/VimbaCPP.h
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/Camera.h>
+	<VimbaCPP/Include/Interface.h>
+	<VimbaCPP/Include/VimbaSystem.h>
+	<VimbaCPP/Include/FeatureContainer.h>
+	<VimbaCPP/Include/ICameraFactory.h>
+	<VimbaCPP/Include/ICameraListObserver.h>
+	<VimbaCPP/Include/IInterfaceListObserver.h>
+	<VimbaCPP/Include/IFeatureObserver.h>
+	<VimbaCPP/Include/IFrameObserver.h>
+	<VimbaCPP/Include/Frame.h>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/VimbaCPPCommon.h
+	<vector>
+	<string>
+	"VimbaC/Include/VmbCommonTypes.h"
+
+1561443568 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaC/Include/VmbCommonTypes.h
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/Camera.h
+	<vector>
+	<string>
+	<VimbaC/Include/VimbaC.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/IRegisterDevice.h>
+	<VimbaCPP/Include/FeatureContainer.h>
+	<VimbaCPP/Include/Frame.h>
+	<VimbaCPP/Include/IFrameObserver.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Camera.hpp>
+
+1561443568 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaC/Include/VimbaC.h
+	"VmbCommonTypes.h"
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/IRegisterDevice.h
+	<VimbaC/Include/VmbCommonTypes.h>
+	<vector>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/FeatureContainer.h
+	<VimbaC/Include/VmbCommonTypes.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/BasicLockable.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Feature.h>
+	<VimbaCPP/Include/FeatureContainer.hpp>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/BasicLockable.h
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Mutex.h>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/SharedPointerDefines.h
+	<VimbaCPP/Include/SharedPointer.h>
+	<VimbaCPP/Include/UserSharedPointerDefines.h>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/SharedPointer.h
+	<VimbaCPP/Include/Mutex.h>
+	<VimbaCPP/Include/SharedPointer_impl.h>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/Mutex.h
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<windows.h>
+	<pthread.h>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/SharedPointer_impl.h
+	<VimbaCPP/Include/SharedPointer.h>
+	<stdexcept>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/UserSharedPointerDefines.h
+	"..\..\..\..\VimbaNET\Include\NetPointer.h"
+	"..\..\..\..\VimbaNET\Include\NetCamera.h"
+	"..\..\..\..\VimbaNET\Include\NetInterface.h"
+	"..\..\..\..\VimbaNET\Include\NetFrame.h"
+	"..\..\..\..\VimbaNET\Include\NetFeature.h"
+	"..\..\..\..\VimbaNET\Include\NetAncillaryData.h"
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/Feature.h
+	<vector>
+	<map>
+	<VimbaC/Include/VimbaC.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/IFeatureObserver.h>
+	<VimbaCPP/Include/EnumEntry.h>
+	<VimbaCPP/Include/Feature.hpp>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/IFeatureObserver.h
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Feature.h>
+	<vector>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/EnumEntry.h
+	<string>
+	<VimbaC/Include/VimbaC.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/EnumEntry.hpp>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/EnumEntry.hpp
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/Feature.hpp
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/FeatureContainer.hpp
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/Frame.h
+	<VimbaC/Include/VimbaC.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/IFrameObserver.h>
+	<VimbaCPP/Include/AncillaryData.h>
+	<vector>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/IFrameObserver.h
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Frame.h>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/AncillaryData.h
+	<VimbaC/Include/VmbCommonTypes.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/FeatureContainer.h>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/Camera.hpp
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/Interface.h
+	<VimbaC/Include/VimbaC.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/FeatureContainer.h>
+	<vector>
+	<VimbaCPP/Include/Interface.hpp>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/Interface.hpp
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/VimbaSystem.h
+	<vector>
+	<VimbaC/Include/VimbaC.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/LoggerDefines.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Interface.h>
+	<VimbaCPP/Include/Camera.h>
+	<VimbaCPP/Include/ICameraFactory.h>
+	<VimbaCPP/Include/ICameraListObserver.h>
+	<VimbaCPP/Include/IInterfaceListObserver.h>
+	<VimbaCPP/Include/VimbaSystem.hpp>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/LoggerDefines.h
+	<VimbaCPP/Include/UserLoggerDefines.h>
+	<VimbaCPP/Include/FileLogger.h>
+	<VimbaCPP/Include/UserLoggerDefines.h>
+	<VimbaCPP/Include/VimbaSystem.h>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/UserLoggerDefines.h
+	<VimbaCPP/Include/FileLogger.h>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/FileLogger.h
+	<string>
+	<stdio.h>
+	<fstream>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Mutex.h>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/ICameraFactory.h
+	<VimbaC/Include/VimbaC.h>
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Camera.h>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/ICameraListObserver.h
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Camera.h>
+	<vector>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/IInterfaceListObserver.h
+	<VimbaCPP/Include/VimbaCPPCommon.h>
+	<VimbaCPP/Include/SharedPointerDefines.h>
+	<VimbaCPP/Include/Interface.h>
+	<vector>
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/VimbaSystem.hpp
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/Common/StreamSystemInfo.h
+	<exception>
+	"VimbaCPP/Include/VimbaCPP.h"
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/Common/ErrorCodeToMessage.h
+	<string>
+	"VimbaCPP/Include/VimbaCPP.h"
+
+1561441909 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Source/Clock.h
+
+1562073566 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhoto/TestCameraMako130TakePhoto/main.cpp
+	<sstream>
+	<iostream>
+	<vector>
+	<algorithm>
+	<stdlib.h>
+	<unistd.h>
+	<string>
+	<signal.h>
+	"VimbaCPP/Include/VimbaCPP.h"
+	"Common/StreamSystemInfo.h"
+	"Common/ErrorCodeToMessage.h"
+	"VimbaCPP/Include/IFrameObserver.h"
+	"Bitmap.h"
+	"CameraMakoCleanUpAndSaveImage.h"
+	"VimbaCPP/Source/Clock.h"
+
+1561576932 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhotoWithExternTrigger/TestCameraMako130TakePhotoWithExternTrigger/Bitmap.cpp
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	"Bitmap.h"
+
+1561576932 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhotoWithExternTrigger/TestCameraMako130TakePhotoWithExternTrigger/Bitmap.h
+
+1562062724 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhotoWithExternTrigger/TestCameraMako130TakePhotoWithExternTrigger/CameraMakoCleanUpAndSaveImage.cpp
+	"CameraMakoCleanUpAndSaveImage.h"
+
+1562061876 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhotoWithExternTrigger/TestCameraMako130TakePhotoWithExternTrigger/CameraMakoCleanUpAndSaveImage.h
+	<sstream>
+	<iostream>
+	<vector>
+	<algorithm>
+	<stdlib.h>
+	<unistd.h>
+	<string>
+	<signal.h>
+	"VimbaCPP/Include/VimbaCPP.h"
+	"Common/StreamSystemInfo.h"
+	"Common/ErrorCodeToMessage.h"
+	"VimbaCPP/Include/IFrameObserver.h"
+	"Bitmap.h"
+	"VimbaCPP/Source/Clock.h"
+
+1562144870 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhotoWithExternTrigger/TestCameraMako130TakePhotoWithExternTrigger/main.cpp
+	<sstream>
+	<iostream>
+	<vector>
+	<algorithm>
+	<stdlib.h>
+	<unistd.h>
+	<string>
+	<signal.h>
+	"VimbaCPP/Include/VimbaCPP.h"
+	"Common/StreamSystemInfo.h"
+	"Common/ErrorCodeToMessage.h"
+	"VimbaCPP/Include/IFrameObserver.h"
+	"Bitmap.h"
+	"CameraMakoCleanUpAndSaveImage.h"
+	"VimbaCPP/Source/Clock.h"
+	"CameraTimer.h"
+
+1562146455 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhotoWithExternTrigger/TestCameraMako130TakePhotoWithExternTrigger/CameraTimer.cpp
+	"CameraTimer.h"
+
+1562142249 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhotoWithExternTrigger/TestCameraMako130TakePhotoWithExternTrigger/CameraTimer.h
+	<unistd.h>
+	<stdlib.h>
+	<signal.h>
+	<time.h>
+	<string.h>
+	<stdio.h>
+	<fcntl.h>
+
