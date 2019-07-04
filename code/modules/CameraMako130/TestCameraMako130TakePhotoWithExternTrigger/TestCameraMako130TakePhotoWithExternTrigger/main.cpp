@@ -56,7 +56,7 @@ using namespace Examples;
 
 struct CleanUpDtaTransfert DataTransferToCleanUp;
 
-void my_func(int sign_no){
+void CameraFailed(int sign_no){
     if(sign_no==SIGINT||sign_no==SIGQUIT||sign_no==SIGSEGV){//Ctrl + C ||
         std::cout<<"I have get SIGINT"<<std::endl;
         CleanUpFunc(& DataTransferToCleanUp);
@@ -66,9 +66,9 @@ void my_func(int sign_no){
 
 
 int main(){
-    signal(SIGINT,my_func);
-    signal(SIGQUIT,my_func);
-    signal(SIGSEGV,my_func);
+    signal(SIGINT,CameraFailed);
+    signal(SIGQUIT,CameraFailed);
+    signal(SIGSEGV,CameraFailed);
     InitGPIO();
     InitTimer();
     //Vimba :: RunExample (void)
@@ -78,7 +78,7 @@ int main(){
     std::cout<<"Vimba C++ API Version "<<sys<<"\n";           // Print out version of Vimba
     CameraPtrVector cameras ; // Holds camera handles
     CameraPtr camera ;
-    FramePtrVector frames (4); // Frame array
+    FramePtrVector frames (1); // Frame array
 
     //Some bool value to present whether close peration needed
     struct NeedCleanFlag bNeedCleanFlag;
@@ -120,7 +120,57 @@ int main(){
     // Register frame observer / callback for each frame
     // Announce frame to the API
 
+        /*Set exposure mode*/
+
+//    /*Set exposure time*/
+//        if(VmbErrorSuccess==camera->GetFeatureByName ("ExposureMode", pFeature )){
+//        if(VmbErrorSuccess==pFeature -> SetValue ("TriggerWidth")){
+//            std::cout<<"Successfully Set feature exposure mode"<<std::endl;
+//        }
+//        else{
+//            std::cout<<"Can't Set feature exposure mode"<<std::endl;
+//            std::cout<<pFeature -> SetValue ("TriggerWidth")<<std::endl;
+//        }
+//    }
+//    else{
+//        std::cout<<"Can't get feature exposure mode"<<std::endl;
+//    }
+
+    if(VmbErrorSuccess==camera->GetFeatureByName ("ExposureMode", pFeature )){
+        if(VmbErrorSuccess==pFeature -> SetValue ("Timed")){
+            std::cout<<"Successfully Set feature exposure mode"<<std::endl;
+        }
+        else{
+            std::cout<<"Can't Set feature exposure mode"<<std::endl;
+        }
+    }
+    else{
+        std::cout<<"Can't get feature exposure mode"<<std::endl;
+    }
+
+    if(VmbErrorSuccess==camera->GetFeatureByName ("ExposureTime", pFeature )){
+        if(VmbErrorSuccess==pFeature -> SetValue (3000.0)){
+            std::cout<<"Successfully Set feature exposure time"<<std::endl;
+        }
+        else{
+            std::cout<<"Can't Set feature exposure time"<<std::endl;
+        }
+    }
+    else{
+        std::cout<<"Can't get feature exposure time"<<std::endl;
+    }
     /* Set trigger mode*/
+    if(VmbErrorSuccess==camera->GetFeatureByName ("TriggerActivation", pFeature )){
+        if(VmbErrorSuccess==pFeature -> SetValue ("RisingEdge")){
+            std::cout<<"Successfully set feature TriggerActivation"<<std::endl;
+        }
+        else{
+            std::cout<<"Can't set feature TriggerActivation"<<std::endl;
+        }
+    }
+    else{
+        std::cout<<"Can't get feature TriggerActivation"<<std::endl;
+    }
     if(VmbErrorSuccess==camera->GetFeatureByName ("TriggerSource", pFeature )){
         if(VmbErrorSuccess==pFeature -> SetValue ("Line2")){
             if(VmbErrorSuccess==camera->GetFeatureByName ("TriggerMode", pFeature )){
@@ -191,7 +241,7 @@ int main(){
     }
     std::cout<<"Waiting to take photo"<<std::endl;
     // Program runtime , e.g., Sleep (2000);
-    Clock::SleepMS(40000);
+    Clock::SleepMS(60000);
     std::cout<<"Stop Taking photo"<<std::endl;
 
     // Stop the acquisition engine ( camera )

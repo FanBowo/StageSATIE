@@ -23,7 +23,9 @@
 //extern int fd_GPIO_P2_c4;
 
 void InitTimer();
-void TriggerPWM(union sigval sv);
+void TriggerPWM_pullup(union sigval sv);
+void TriggerPWM_pushdown(union sigval sv);
+
 void CloseTimerGPIO();
 int InitGPIO();
 #endif // CAMERATIMER_H_INCLUDED

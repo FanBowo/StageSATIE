@@ -1,47 +1,74 @@
 
 #include "CameraTimer.h"
-#define ExternTriggerFre 20
-#define Nanoseconds_0_5e10_9 500000000
+#define ExternTriggerFre 25
+#define Nanoseconds_0_5e10_9 1000000000
+#define ExposureTime 5000000
 
-timer_t timerid_EXTERN_TRIGGER;
+timer_t timerid_EXTERN_TRIGGER1;//pull up
+timer_t timerid_EXTERN_TRIGGER2;//push down
 int fd_GPIO_P2_c4;
 
 void InitTimer(){
     printf("Start initialize timer\n");
-    struct sigevent sev;
-    struct itimerspec trigger;
-    memset(&sev, 0, sizeof(struct sigevent));
-    memset(&trigger, 0, sizeof(struct itimerspec));
+    struct sigevent sev1;//pull up
+    struct itimerspec trigger1;//pull up
+    memset(&sev1, 0, sizeof(struct sigevent));//pull up
+    memset(&trigger1, 0, sizeof(struct itimerspec));//pull up
 
-    sev.sigev_notify=SIGEV_THREAD;
-    sev.sigev_notify_function=&TriggerPWM;
+    sev1.sigev_notify=SIGEV_THREAD;//pull up
+    sev1.sigev_notify_function=&TriggerPWM_pullup;//pull up
 
-    timer_create(CLOCK_REALTIME,&sev,&timerid_EXTERN_TRIGGER);
+    timer_create(CLOCK_REALTIME,&sev1,&timerid_EXTERN_TRIGGER1);//pull up
 
-    trigger.it_interval.tv_sec=0;
-    trigger.it_interval.tv_nsec=Nanoseconds_0_5e10_9/ExternTriggerFre;
+    trigger1.it_interval.tv_sec=0;//pull up
+    trigger1.it_interval.tv_nsec=Nanoseconds_0_5e10_9/ExternTriggerFre;//pull up
     //trigger.it_interval.tv_nsec=0;
-    trigger.it_value.tv_sec=0;
-    trigger.it_value.tv_nsec=1;
-    timer_settime(timerid_EXTERN_TRIGGER,0,&trigger,NULL);
+    trigger1.it_value.tv_sec=0;//pull up
+    trigger1.it_value.tv_nsec=1;//pull up
+
+    struct sigevent sev2;//push down
+    struct itimerspec trigger2;//push down
+    memset(&sev2, 0, sizeof(struct sigevent));//push down
+    memset(&trigger2, 0, sizeof(struct itimerspec));//push down
+
+    sev2.sigev_notify=SIGEV_THREAD;//push down
+    sev2.sigev_notify_function=&TriggerPWM_pushdown;//push down
+
+    timer_create(CLOCK_REALTIME,&sev2,&timerid_EXTERN_TRIGGER2);//push down
+
+    trigger2.it_interval.tv_sec=0;//push down
+    trigger2.it_interval.tv_nsec=Nanoseconds_0_5e10_9/ExternTriggerFre;//push down
+    //trigger.it_interval.tv_nsec=0;
+    trigger2.it_value.tv_sec=0;//push down
+    trigger2.it_value.tv_nsec=1+ExposureTime;//push down
+
+    timer_settime(timerid_EXTERN_TRIGGER1,0,&trigger1,NULL);
+    timer_settime(timerid_EXTERN_TRIGGER2,0,&trigger2,NULL);
+
     printf("Successfully initialize timer\n");
 }
 
 
-void TriggerPWM(union sigval sv){
-static bool FlipFlag=true;
-    if(!FlipFlag){
-        write(fd_GPIO_P2_c4, SYSFS_GPIO_RST_VAL_H, sizeof(SYSFS_GPIO_RST_VAL_H));
-        FlipFlag=!FlipFlag;
-        //printf("H\n");
-    }
-    else{
-        write(fd_GPIO_P2_c4, SYSFS_GPIO_RST_VAL_L, sizeof(SYSFS_GPIO_RST_VAL_L));
-        FlipFlag=!FlipFlag;
-        //printf("L\n");
-    }
+void TriggerPWM_pullup(union sigval sv){
+    write(fd_GPIO_P2_c4, SYSFS_GPIO_RST_VAL_H, sizeof(SYSFS_GPIO_RST_VAL_H));
+//printf("H\n");
+//static bool FlipFlag=true;
+//    if(!FlipFlag){
+//        write(fd_GPIO_P2_c4, SYSFS_GPIO_RST_VAL_H, sizeof(SYSFS_GPIO_RST_VAL_H));
+//        FlipFlag=!FlipFlag;
+//        //printf("H\n");
+//    }
+//    else{
+//        write(fd_GPIO_P2_c4, SYSFS_GPIO_RST_VAL_L, sizeof(SYSFS_GPIO_RST_VAL_L));
+//        FlipFlag=!FlipFlag;
+//        //printf("L\n");
+//    }
 }
 
+void TriggerPWM_pushdown(union sigval sv){
+    write(fd_GPIO_P2_c4, SYSFS_GPIO_RST_VAL_L, sizeof(SYSFS_GPIO_RST_VAL_L));
+    //printf("L\n");
+}
 
 int InitGPIO(){
 
@@ -78,6 +105,6 @@ int InitGPIO(){
 }
 
 void CloseTimerGPIO(){
-    timer_delete(timerid_EXTERN_TRIGGER);
+    timer_delete(timerid_EXTERN_TRIGGER1);
     close(fd_GPIO_P2_c4);
 }
