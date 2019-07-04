@@ -45,12 +45,14 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="Bitmap.cpp" />
-		<Unit filename="Bitmap.h" />
-		<Unit filename="CameraMakoCleanUpAndSaveImage.cpp" />
-		<Unit filename="CameraMakoCleanUpAndSaveImage.h" />
-		<Unit filename="CameraTimer.cpp" />
-		<Unit filename="CameraTimer.h" />
+		<Unit filename="../../src/Bitmap.cpp" />
+		<Unit filename="../../src/Bitmap.h" />
+		<Unit filename="../../src/CameraMako130.cpp" />
+		<Unit filename="../../src/CameraMako130.h" />
+		<Unit filename="../../src/CameraMakoCleanUpAndSaveImage.cpp" />
+		<Unit filename="../../src/CameraMakoCleanUpAndSaveImage.h" />
+		<Unit filename="../../src/CameraTimer.cpp" />
+		<Unit filename="../../src/CameraTimer.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

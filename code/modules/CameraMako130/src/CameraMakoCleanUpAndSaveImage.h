@@ -51,7 +51,7 @@ void CleanUpFunc(CleanUpDtaTransfert *pDataTransferToCleanUp);
 class FrameObserver :public IFrameObserver{
     public:
     FrameObserver ( CameraPtr pCamera );
-    void FrameReceived ( const FramePtr pFrame );
+    virtual void FrameReceived ( const FramePtr pFrame );
 };
 
 struct PhotoFormat{

@@ -264,7 +264,7 @@
 	"Bitmap.h"
 	"VimbaCPP/Source/Clock.h"
 
-1562233905 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhotoWithExternTrigger/TestCameraMako130TakePhotoWithExternTrigger/main.cpp
+1562245773 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhotoWithExternTrigger/TestCameraMako130TakePhotoWithExternTrigger/main.cpp
 	<sstream>
 	<iostream>
 	<vector>
@@ -282,7 +282,7 @@
 	"VimbaCPP/Source/Clock.h"
 	"CameraTimer.h"
 
-1562233398 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhotoWithExternTrigger/TestCameraMako130TakePhotoWithExternTrigger/CameraTimer.cpp
+1562239891 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhotoWithExternTrigger/TestCameraMako130TakePhotoWithExternTrigger/CameraTimer.cpp
 	"CameraTimer.h"
 
 1562231546 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhotoWithExternTrigger/TestCameraMako130TakePhotoWithExternTrigger/CameraTimer.h
@@ -293,4 +293,64 @@
 	<string.h>
 	<stdio.h>
 	<fcntl.h>
+
+1561576932 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/Bitmap.h
+
+1562253723 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMakoCleanUpAndSaveImage.h
+	<sstream>
+	<iostream>
+	<vector>
+	<algorithm>
+	<stdlib.h>
+	<unistd.h>
+	<string>
+	<signal.h>
+	"VimbaCPP/Include/VimbaCPP.h"
+	"Common/StreamSystemInfo.h"
+	"Common/ErrorCodeToMessage.h"
+	"VimbaCPP/Include/IFrameObserver.h"
+	"Bitmap.h"
+	"VimbaCPP/Source/Clock.h"
+
+1562231546 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraTimer.h
+	<unistd.h>
+	<stdlib.h>
+	<signal.h>
+	<time.h>
+	<string.h>
+	<stdio.h>
+	<fcntl.h>
+
+1561576932 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/Bitmap.cpp
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	"Bitmap.h"
+
+1562253760 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMakoCleanUpAndSaveImage.cpp
+	"CameraMakoCleanUpAndSaveImage.h"
+
+1562253117 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraTimer.cpp
+	"CameraTimer.h"
+
+1562252000 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.cpp
+	"CameraMako130.h"
+
+1562251950 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.h
+	<sstream>
+	<iostream>
+	<vector>
+	<algorithm>
+	<stdlib.h>
+	<unistd.h>
+	<string>
+	<signal.h>
+	"VimbaCPP/Include/VimbaCPP.h"
+	"Common/StreamSystemInfo.h"
+	"Common/ErrorCodeToMessage.h"
+	"VimbaCPP/Include/IFrameObserver.h"
+	"Bitmap.h"
+	"CameraMakoCleanUpAndSaveImage.h"
+	"VimbaCPP/Source/Clock.h"
+	"CameraTimer.h"
 

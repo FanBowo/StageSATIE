@@ -48,6 +48,44 @@
 /**printing camera info for a camera.
 *\note this function is used with for_each and is called for each camera in range cameras.begin(), cameraas.end()
 */
+
+//void FrameObserver :: FrameReceived ( const FramePtr pFrame ){
+//    // Send notification to working thread
+//    // Do not apply image processing within this callback ( performance )
+//    // When the frame has been processed , requeue it
+//    VmbFrameStatusType eReceiveStatus;
+//    if(VmbErrorSuccess==pFrame->GetReceiveStatus(eReceiveStatus)){
+//        if(VmbFrameStatusComplete==eReceiveStatus){
+//            //code here to react on a successfully received frame
+//        }
+//        else{
+//            //code here to react on an unsuccessfully received frame
+//        }
+//    }
+//    m_pCamera -> QueueFrame ( pFrame );
+//    std::cout<<"One photo taken"<<std::endl;
+//    CreatAndSaveImag(pFrame);
+//}
+
+
+#define TeseCppVersion
+#ifdef TeseCppVersion
+#include "CameraMako130.h"
+int main(){
+    CameraMako130 TheCamera;
+    TheCamera.InitCameraTriggerGPIO();
+    TheCamera.InitCameraTriggrtTimer();
+    TheCamera.InitCameraParas();
+    Clock::SleepMS(60000);
+    TheCamera.CleanUpCamera();
+    return 0;
+}
+
+#endif // TeseCppVersion
+
+//#define TeseCVersion
+#ifdef TeseCVersion
+
 using namespace  AVT;
 using namespace VmbAPI;
 using namespace Examples;
@@ -149,7 +187,7 @@ int main(){
     }
 
     if(VmbErrorSuccess==camera->GetFeatureByName ("ExposureTime", pFeature )){
-        if(VmbErrorSuccess==pFeature -> SetValue (3000.0)){
+        if(VmbErrorSuccess==pFeature -> SetValue (5000.0)){
             std::cout<<"Successfully Set feature exposure time"<<std::endl;
         }
         else{
@@ -271,4 +309,5 @@ int main(){
     CloseTimerGPIO();
     return 0;
 }
+#endif // TeseCVersion
 
