@@ -20,6 +20,19 @@ void FrameObserver :: FrameReceived ( const FramePtr pFrame ){
     CreatAndSaveImag(pFrame);
 }
 
+AcquisitionStatusChageEvent::AcquisitionStatusChageEvent(){
+    ;
+}
+
+void AcquisitionStatusChageEvent::FeatureChanged(const FeaturePtr &pFeature){
+    if(pFeature!=NULL){
+        CheckAcquisitionStatus();
+    }
+    else
+    {
+        std::cout<<"Invalide feature"<<std::endl;
+    }
+}
 
 //This function is used to clean up, to evite unexcepted error
 void CleanUpFunc(struct NeedCleanFlag *bNeedCleanFlag,\
@@ -27,25 +40,32 @@ void CleanUpFunc(struct NeedCleanFlag *bNeedCleanFlag,\
                     VimbaSystem *sys){
     if(bNeedCleanFlag->bNeedEndCapture){
         camera -> EndCapture ();
+        std::cout<<"EndCapture"<<std::endl;
     }
     if(bNeedCleanFlag->bNeedFlushQueue){
         camera -> FlushQueue ();
+        std::cout<<"FlushQueue"<<std::endl;
     }
     if(bNeedCleanFlag->bNeedRevokeAllFrames){
         camera -> RevokeAllFrames ();
+        std::cout<<"RevokeAllFrames"<<std::endl;
+
     }
 
     if(bNeedCleanFlag->bNeedUnregisterObserver){
         for( FramePtrVector :: iterator iter= frames .begin (); frames .end ()!= iter; ++ iter){
             // Unregister the frame observer / callback
             (* iter)-> UnregisterObserver ();
+            std::cout<<"UnregisterObserver"<<std::endl;
         }
     }
     if(bNeedCleanFlag->bNeedCloseCamera){
         camera ->Close ();
+        std::cout<<"Close"<<std::endl;
     }
     if(bNeedCleanFlag->bNeedShutdown){
         sys->Shutdown ();
+        std::cout<<"Shutdown"<<std::endl;
     }
 
 }
@@ -57,133 +77,19 @@ void CleanUpFunc(CleanUpDtaTransfert *pDataTransferToCleanUp){
                 pDataTransferToCleanUp->sys);
 }
 
-
-void CreatAndSaveImag(const FramePtr pFrame ){
-    static struct PhotoFormat PhotoFormatInfo={.nImageSize=0,\
-                                                .nWidth=0,\
-                                                .nHeight=0,\
-                                                .bFormatGetted=false};
-
-    std::string pFileNameBase = "SynchronousGrab.bmp";
-    static int picnum=0;
-    picnum++;
-    std::string pFileNametemp=pFileNameBase+std::to_string(picnum);
-    const char *pFileName=pFileNametemp.c_str();
-    VmbErrorType    err         = VmbErrorSuccess;
-    VmbPixelFormatType ePixelFormat = VmbPixelFormatMono8;
-    if(!PhotoFormatInfo.bFormatGetted){
-        VmbUint32_t nImageSize = 0;
-        err = pFrame->GetImageSize( nImageSize );
-        PhotoFormatInfo.nImageSize=nImageSize;
-        if ( VmbErrorSuccess == err )
-        {
-            VmbUint32_t nWidth = 0;
-            err = pFrame->GetWidth( nWidth );
-            PhotoFormatInfo.nWidth=nWidth;
-            if ( VmbErrorSuccess == err )
-            {
-                VmbUint32_t nHeight = 0;
-                err = pFrame->GetHeight( nHeight );
-                PhotoFormatInfo.nHeight=nHeight;
-                if ( VmbErrorSuccess == err )
-                {   PhotoFormatInfo.bFormatGetted=true;
-                    VmbUchar_t *pImage = NULL;
-                    err = pFrame->GetImage( pImage );
-                    if ( VmbErrorSuccess == err )
-                    {
-
-                        AVTBitmap bitmap;
-
-                        if ( VmbPixelFormatRgb8 == ePixelFormat )
-                        {
-                            bitmap.colorCode = ColorCodeRGB24;
-                        }
-                        else
-                        {
-                            bitmap.colorCode = ColorCodeMono8;
-                        }
-
-                        bitmap.bufferSize = PhotoFormatInfo.nImageSize;
-                        bitmap.width = PhotoFormatInfo.nWidth;
-                        bitmap.height = PhotoFormatInfo.nHeight;
-
-                        // Create the bitmap
-                        if ( 0 == AVTCreateBitmap( &bitmap, pImage ))
-                        {
-                            std::cout << "Could not create bitmap.\n";
-                            err = VmbErrorResources;
-                        }
-                        else
-                        {
-                            // Save the bitmap
-                            if ( 0 == AVTWriteBitmapToFile( &bitmap, pFileName ))
-                            {
-                                std::cout << "Could not write bitmap to file.\n";
-                                err = VmbErrorOther;
-                            }
-                            else
-                            {
-                                std::cout << "Bitmap successfully written to file \"" << pFileName << "\"\n" ;
-                                // Release the bitmap's buffer
-                                if ( 0 == AVTReleaseBitmap( &bitmap ))
-                                {
-                                    std::cout << "Could not release the bitmap.\n";
-                                    err = VmbErrorInternalFault;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+void SetAcquisitionStatusSelector(const CameraPtr camera, \
+        const char * AcquisitionStatusSelectorVal){
+    FeaturePtr pFeature;
+    if(VmbErrorSuccess==camera->GetFeatureByName ("AcquisitionStatusSelector", pFeature )){
+        if(VmbErrorSuccess==pFeature -> SetValue (AcquisitionStatusSelectorVal)){
+            std::cout<<"Successfully Set feature exposure mode Timed"<<std::endl;
+        }
+        else{
+            std::cout<<"Can't Set feature AcquisitionStatusSelector" \
+                    << AcquisitionStatusSelectorVal<<std::endl;
         }
     }
     else{
-        VmbUchar_t *pImage = NULL;
-        err = pFrame->GetImage( pImage );
-        if ( VmbErrorSuccess == err )
-        {
-
-            AVTBitmap bitmap;
-
-            if ( VmbPixelFormatRgb8 == ePixelFormat )
-            {
-                bitmap.colorCode = ColorCodeRGB24;
-            }
-            else
-            {
-                bitmap.colorCode = ColorCodeMono8;
-            }
-
-            bitmap.bufferSize = PhotoFormatInfo.nImageSize;
-            bitmap.width = PhotoFormatInfo.nWidth;
-            bitmap.height = PhotoFormatInfo.nHeight;
-
-            // Create the bitmap
-            if ( 0 == AVTCreateBitmap( &bitmap, pImage ))
-            {
-                std::cout << "Could not create bitmap.\n";
-                err = VmbErrorResources;
-            }
-            else
-            {
-                // Save the bitmap
-                if ( 0 == AVTWriteBitmapToFile( &bitmap, pFileName ))
-                {
-                    std::cout << "Could not write bitmap to file.\n";
-                    err = VmbErrorOther;
-                }
-                else
-                {
-                    std::cout << "Bitmap successfully written to file \"" << pFileName << "\"\n" ;
-                    // Release the bitmap's buffer
-                    if ( 0 == AVTReleaseBitmap( &bitmap ))
-                    {
-                        std::cout << "Could not release the bitmap.\n";
-                        err = VmbErrorInternalFault;
-                    }
-                }
-            }
-        }
+        std::cout<<"Can't get feature AcquisitionStatusSelector"<<std::endl;
     }
-
 }

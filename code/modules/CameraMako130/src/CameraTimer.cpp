@@ -2,7 +2,7 @@
 #include "CameraTimer.h"
 #define ExternTriggerFre 10
 #define Nanoseconds_0_5e10_9 1000000000
-#define ExposureTime 5000000
+#define ExposureTime 50000000
 
 timer_t timerid_EXTERN_TRIGGER1;//pull up
 timer_t timerid_EXTERN_TRIGGER2;//push down
@@ -51,7 +51,7 @@ void InitTimer(){
 
 void TriggerPWM_pullup(union sigval sv){
     write(fd_GPIO_P2_c4, SYSFS_GPIO_RST_VAL_H, sizeof(SYSFS_GPIO_RST_VAL_H));
-//printf("H\n");
+//    printf("H\n");
 //static bool FlipFlag=true;
 //    if(!FlipFlag){
 //        write(fd_GPIO_P2_c4, SYSFS_GPIO_RST_VAL_H, sizeof(SYSFS_GPIO_RST_VAL_H));
@@ -67,7 +67,7 @@ void TriggerPWM_pullup(union sigval sv){
 
 void TriggerPWM_pushdown(union sigval sv){
     write(fd_GPIO_P2_c4, SYSFS_GPIO_RST_VAL_L, sizeof(SYSFS_GPIO_RST_VAL_L));
-    //printf("L\n");
+//    printf("L\n");
 }
 
 int InitGPIO(){

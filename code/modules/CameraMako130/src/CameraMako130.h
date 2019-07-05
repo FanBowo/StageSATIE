@@ -58,8 +58,11 @@ class CameraMako130 {
     void InitCameraTriggerGPIO();
     void InitCameraTriggrtTimer();
     CameraMako130();
+
+    void CameraFailed();
     void CleanUpCamera();
 
+    CameraPtr camera ;
     private:
 
     void StarSysAndOpenCamera();
@@ -68,16 +71,17 @@ class CameraMako130 {
     void SetTriggerMode();
     void PrepareImagAqc();
     void StartImagAqc();
+    void RegisteParaChangeEvent();
 
 
     VmbInt64_t nPLS; // Payload size value
     FeaturePtr pFeature ; // Generic feature pointer
     VimbaSystem *sys; // Create and get Vimba singleton
     CameraPtrVector cameras ; // Holds camera handles
-    CameraPtr camera ;
+
     FramePtrVector frames; // Frame array
     struct NeedCleanFlag bNeedCleanFlag;//Some bool value to present whether close peration needed
-    struct CleanUpDtaTransfert DataTransferToCleanUp;
+//    static struct CleanUpDtaTransfert DataTransferToCleanUp;
 };
 
 

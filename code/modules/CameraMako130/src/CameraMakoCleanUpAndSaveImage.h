@@ -41,7 +41,10 @@ struct CleanUpDtaTransfert{
     VimbaSystem * sys;
 };
 
-void CreatAndSaveImag(const FramePtr pFrame );
+extern void CreatAndSaveImag(const FramePtr pFrame );
+extern void CheckAcquisitionStatus();
+
+void SetAcquisitionStatusSelector(const CameraPtr camera, const char * AcquisitionStatusSelectorVal);
 void CleanUpFunc(struct NeedCleanFlag *bNeedCleanFlag,\
                     CameraPtr camera,FramePtrVector frames,\
                     VimbaSystem *sys);
@@ -51,8 +54,16 @@ void CleanUpFunc(CleanUpDtaTransfert *pDataTransferToCleanUp);
 class FrameObserver :public IFrameObserver{
     public:
     FrameObserver ( CameraPtr pCamera );
-    virtual void FrameReceived ( const FramePtr pFrame );
+    void FrameReceived ( const FramePtr pFrame );
 };
+
+//Define un class for parameter change event
+class AcquisitionStatusChageEvent:public IFeatureObserver{
+    public:
+    AcquisitionStatusChageEvent();
+    void FeatureChanged(const FeaturePtr &pFeature);
+};
+
 
 struct PhotoFormat{
 VmbUint32_t nImageSize;

@@ -264,7 +264,7 @@
 	"Bitmap.h"
 	"VimbaCPP/Source/Clock.h"
 
-1562245773 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhotoWithExternTrigger/TestCameraMako130TakePhotoWithExternTrigger/main.cpp
+1562338254 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhotoWithExternTrigger/TestCameraMako130TakePhotoWithExternTrigger/main.cpp
 	<sstream>
 	<iostream>
 	<vector>
@@ -281,6 +281,7 @@
 	"CameraMakoCleanUpAndSaveImage.h"
 	"VimbaCPP/Source/Clock.h"
 	"CameraTimer.h"
+	"CameraMako130.h"
 
 1562239891 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhotoWithExternTrigger/TestCameraMako130TakePhotoWithExternTrigger/CameraTimer.cpp
 	"CameraTimer.h"
@@ -296,7 +297,7 @@
 
 1561576932 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/Bitmap.h
 
-1562253723 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMakoCleanUpAndSaveImage.h
+1562338474 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMakoCleanUpAndSaveImage.h
 	<sstream>
 	<iostream>
 	<vector>
@@ -327,16 +328,16 @@
 	<stdlib.h>
 	"Bitmap.h"
 
-1562253760 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMakoCleanUpAndSaveImage.cpp
+1562338871 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMakoCleanUpAndSaveImage.cpp
 	"CameraMakoCleanUpAndSaveImage.h"
 
-1562253117 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraTimer.cpp
+1562320816 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraTimer.cpp
 	"CameraTimer.h"
 
-1562252000 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.cpp
+1562336605 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.cpp
 	"CameraMako130.h"
 
-1562251950 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.h
+1562339058 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.h
 	<sstream>
 	<iostream>
 	<vector>

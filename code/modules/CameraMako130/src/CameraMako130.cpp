@@ -64,7 +64,7 @@ void CameraMako130:: SetExposureTime(){
 //    /*Set exposure time*/
     if(VmbErrorSuccess==camera->GetFeatureByName ("ExposureMode", pFeature )){
         if(VmbErrorSuccess==pFeature -> SetValue ("Timed")){
-            std::cout<<"Successfully Set feature exposure mode"<<std::endl;
+            std::cout<<"Successfully Set feature exposure mode Timed"<<std::endl;
         }
         else{
             std::cout<<"Can't Set feature exposure mode"<<std::endl;
@@ -75,7 +75,7 @@ void CameraMako130:: SetExposureTime(){
     }
 
     if(VmbErrorSuccess==camera->GetFeatureByName ("ExposureTime", pFeature )){
-        if(VmbErrorSuccess==pFeature -> SetValue (5000.0)){
+        if(VmbErrorSuccess==pFeature -> SetValue (4999.9)){
             std::cout<<"Successfully Set feature exposure time"<<std::endl;
         }
         else{
@@ -128,7 +128,9 @@ void CameraMako130::PrepareImagAqc(){
     // Allocate memory for frame buffer
     // Register frame observer / callback for each frame
     // Announce frame to the API
+    /*Register feature change int*/
         /*Prepare image acquisition*/
+    RegisteParaChangeEvent();
     if(VmbErrorSuccess==camera -> GetFeatureByName ("PayloadSize", pFeature )){
         if(VmbErrorSuccess==pFeature -> GetValue (nPLS )){
             for( FramePtrVector :: iterator iter= frames .begin (); frames .end ()!= iter; ++ iter){
@@ -161,6 +163,15 @@ void CameraMako130::PrepareImagAqc(){
         std::cout<<camera -> GetFeatureByName ("PayloadSize", pFeature )<<std::endl;
     }
 
+}
+
+void CameraMako130::RegisteParaChangeEvent(){
+    if(VmbErrorSuccess==camera->GetFeatureByName("AcquisitionStatus",pFeature)){
+        pFeature->RegisterObserver(IFeatureObserverPtr(new AcquisitionStatusChageEvent()));
+    }
+    else{
+        std::cout<<"Get AcquisitionStatus Feature failed"<<std::endl;
+    }
 }
 
 void CameraMako130::StartImagAqc(){
@@ -201,5 +212,39 @@ void CameraMako130::InitCameraTriggrtTimer(){
 }
 
 void CameraMako130::CleanUpCamera(){
+    // Stop the acquisition engine ( camera )
+    /*Stop image acquisition*/
+    if(VmbErrorSuccess==camera -> GetFeatureByName ("AcquisitionStop", pFeature )){
+        if(VmbErrorSuccess==pFeature -> RunCommand ()){
+            std::cout<<"Successfully stop aquisition"<<std::endl;
+        }
+        else{
+            std::cout<<"Failed to stop aquisition"<<std::endl;
+        }
+    }
+    else{
+            std::cout<<"Failed to get acquisition stop feature"<<std::endl;
+    }
+
+    // Stop the capture engine (API)
+    // Flush the frame queue
+    // Revoke all frames from the API
+    /*Clean up*/
+//    DataTransferToCleanUp.camera=camera;
+//    DataTransferToCleanUp.frames=frames;
+//    DataTransferToCleanUp.sys=sys;
+//    DataTransferToCleanUp.NeedCleanFlag=&bNeedCleanFlag;
     CleanUpFunc(&bNeedCleanFlag,camera,frames,sys);
 }
+
+void CameraMako130:: CameraFailed(){
+    std::cout<<"Camera failed"<<std::endl;
+    CleanUpCamera();
+    CloseTimerGPIO();
+}
+
+//void CameraMako130::ResgistCameraErrInt(){
+//    signal(SIGINT,CameraFailed);
+//    signal(SIGQUIT,CameraFailed);
+//    signal(SIGSEGV,CameraFailed);
+//}
