@@ -468,7 +468,9 @@ void CheckAcquisitionStatus(){
     FeaturePtr pFeature;
     if(VmbErrorSuccess==TheCamera.camera->GetFeatureByName ("AcquisitionStatus", pFeature )){
         if(VmbErrorSuccess==pFeature -> GetValue (AcquisitionStatus)){
-            std::cout<<"Successfully get feature AcquisitionStatus"<<std::endl;
+            if(AcquisitionStatus){
+                std::cout<<"AcquisitionActive"<<std::endl;
+            }
         }
         else{
             std::cout<<"Can't get feature AcquisitionStatus"<<std::endl;

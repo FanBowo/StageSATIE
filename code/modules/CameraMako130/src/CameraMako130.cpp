@@ -130,7 +130,7 @@ void CameraMako130::PrepareImagAqc(){
     // Announce frame to the API
     /*Register feature change int*/
         /*Prepare image acquisition*/
-    RegisteParaChangeEvent();
+    //RegisteParaChangeEvent();
     if(VmbErrorSuccess==camera -> GetFeatureByName ("PayloadSize", pFeature )){
         if(VmbErrorSuccess==pFeature -> GetValue (nPLS )){
             for( FramePtrVector :: iterator iter= frames .begin (); frames .end ()!= iter; ++ iter){
