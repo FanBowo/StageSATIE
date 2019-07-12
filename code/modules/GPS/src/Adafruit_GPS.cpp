@@ -37,7 +37,7 @@
 #include <cctype>
 #include <unistd.h>
 #include <math.h>
-
+#include <iostream>
 #define delay(a) usleep(1000*a);
 #define MAXLINELENGTH 120 ///< how long are max NMEA lines to parse?
 
@@ -52,7 +52,7 @@ volatile boolean inStandbyMode;     ///< In standby flag
 
 /***********************************************/
 /*!
-	@brief Return if Recommended Minimum Specific GPS/TRANSIT Data RMC Get 
+	@brief Return if Recommended Minimum Specific GPS/TRANSIT Data RMC Get
 	@param Non
 	@return True if one new RMC frame get, false if not
 */
@@ -304,7 +304,7 @@ boolean Adafruit_GPS::parse(char *nmea) {
       month = (fulldate % 10000) / 100;
       year = (fulldate % 100);
     }
-	
+
 	recvdRMCflag=true;
     // we dont parse the remaining, yet!
     return true;
@@ -435,6 +435,20 @@ void Adafruit_GPS::begin(uint32_t baud)
   delay(10);
 }
 
+void Adafruit_GPS::SetBaudRate(uint32_t baud){
+    gpsHwSerial->ResetBaudRate(baud);
+}
+void Adafruit_GPS::CloseSerialPort()
+{
+#if (defined(__AVR__) || defined(ESP8266)) && defined(USE_SW_SERIAL)
+  if(gpsSwSerial)
+    gpsSwSerial->begin(baud);
+  else
+#endif
+//    gpsHwSerial->begin(baud);
+    gpsHwSerial->close();
+  delay(10);
+}
 /**************************************************************************/
 /*!
     @brief Send a command to the GPS device
@@ -448,6 +462,14 @@ void Adafruit_GPS::sendCommand(const char *str) {
   else
 #endif
     gpsHwSerial->println(str);
+    gpsHwSerial->DrainWriteBuffer();
+//    int LenIns=strlen(str);
+//    std::cout<<str<<std::endl;
+//    for(int i=0;i<LenIns;i++){
+//        std::cout<<(int)str[i]<<" ";
+//    }
+
+
 }
 
 /**************************************************************************/

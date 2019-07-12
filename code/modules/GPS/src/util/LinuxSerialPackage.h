@@ -37,6 +37,8 @@ class LinuxSerialPackage : public LibSerial::SerialPort
 
         void begin(uint32_t BaudRateVal);
 
+        void ResetBaudRate(uint32_t BaudRateVal);
+
         void println(const char *str);
 
         bool available();

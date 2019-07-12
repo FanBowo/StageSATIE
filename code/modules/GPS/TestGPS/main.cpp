@@ -32,16 +32,20 @@ void init()
     // 9600 NMEA is the default baud rate for Adafruit MTK GPS's- some use 4800
 
     GPS.begin(9600);
-    GPS.sendCommand(PMTK_SET_BAUD_57600);
-    GPS.begin(57600);
+    std::cout<<"Set baud rate"<<std::endl;
+//    GPS.sendCommand(PMTK_SET_BAUD_115200);
+////
+//    GPS.SetBaudRate(115200);
+    std::cout<<"Set baud rate finished"<<std::endl;
+
     // uncomment this line to turn on RMC (recommended minimum) and GGA (fix data) including altitude
-    GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
+    //GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
     // uncomment this line to turn on only the "minimum recommended" data
-    //GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
+    GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
     // For parsing data, we don't suggest using anything but either RMC only or RMC+GGA since
     // the parser doesn't care about other sentences at this time
     // Set the update rate
-    GPS.sendCommand(PMTK_SET_NMEA_UPDATE_5HZ); // 1 Hz update rate
+    GPS.sendCommand(PMTK_SET_NMEA_UPDATE_10HZ); // 1 Hz update rate
     // For the parsing code to work nicely and have time to sort thru the data, and
     // print it out we don't suggest using anything higher than 1 Hz
 
@@ -66,6 +70,7 @@ void init()
 int main() // run over and over again
 {
     init();
+    std::cout<<"Initialization finished"<<std::endl;
     while(1){
         if(RevNewPack){
             RevNewPack=false;
@@ -108,8 +113,9 @@ int main() // run over and over again
 void signal_handler_IO (int status)
 {
     // read data from the GPS in the 'main loop'
-
+//    std::cout<< "."<<std::endl;
     char c = GPS.read();
+    //std::cout<< (char)c<<std::endl;
     // if you want to debug, this is a good time to do it!
     if (GPSECHO)
         if (c) std::cout<<c;
