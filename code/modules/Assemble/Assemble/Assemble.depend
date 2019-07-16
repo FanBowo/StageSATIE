@@ -2,7 +2,7 @@
 1562923062 source:/home/firefly/Desktop/StageSATIE/code/modules/Asseble/Assemble/main.cpp
 	"Assemble.h"
 
-1562834805 /home/firefly/Desktop/StageSATIE/code/modules/GPS/src/Adafruit_GPS.h
+1562936163 /home/firefly/Desktop/StageSATIE/code/modules/GPS/src/Adafruit_GPS.h
 	"LinuxSerialPackage.h"
 	<SoftwareSerial.h>
 
@@ -22,7 +22,7 @@
 	<termios.h>
 	<vector>
 
-1562770505 source:/home/firefly/Desktop/StageSATIE/code/modules/GPS/src/Adafruit_GPS.cpp
+1562937242 source:/home/firefly/Desktop/StageSATIE/code/modules/GPS/src/Adafruit_GPS.cpp
 	<SoftwareSerial.h>
 	"Adafruit_GPS.h"
 	<cstring>
@@ -45,23 +45,26 @@
 	<sys/signal.h>
 	<fcntl.h>
 
-1562923289 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Assemble.cpp
+1563261949 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Assemble.cpp
 	"Assemble.h"
 
-1562923277 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Assemble.h
+1563261723 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Assemble.h
 	"Adafruit_GPS.h"
 	<iostream>
 	<unistd.h>
 	<sys/signal.h>
 	<fcntl.h>
 
-1562933360 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
+1563208019 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
 	"Tasks.h"
 
-1562933355 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.h
+1563261938 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.h
 	"Assemble.h"
 	<pthread.h>
+	<signal.h>
+	<time.h>
+	<string.h>
 
-1562933272 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/Assemble/main.cpp
+1563204564 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/Assemble/main.cpp
 	"Tasks.h"
 

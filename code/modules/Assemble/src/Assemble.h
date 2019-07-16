@@ -18,10 +18,11 @@ class Assemble{
     void InitGPS_Module();
     static LinuxSerialPackage GPSSerial;
     static Adafruit_GPS GPS;
-
+    double IMU_TimeStamp;
 };
 
 // what's the name of the hardware serial port?
+
 
 
 #endif // ASSEMBLE_H_INCLUDED

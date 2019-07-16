@@ -6,7 +6,7 @@ Assemble::Assemble()
 //    LinuxSerialPackage GPSSerial(SERIAL_PORT_1);
 //    // Connect to the GPS on the hardware port
 //    Adafruit_GPS GPS(&_GPSSerialPort);
-
+    IMU_TimeStamp=0.0;
 }
 
 LinuxSerialPackage Assemble::GPSSerial(SERIAL_PORT_1);
@@ -45,3 +45,5 @@ void Assemble::InitGPS_Module(){
     // Ask for firmware version
     GPSSerial.println(PMTK_Q_RELEASE);
 }
+
+

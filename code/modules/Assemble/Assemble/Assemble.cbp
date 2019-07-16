@@ -15,6 +15,7 @@
 					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add option="-lpthread" />
+					<Add option="-lrt" />
 					<Add directory="/home/firefly/Desktop/StageSATIE/code/modules/Assemble/Assemble/" />
 					<Add directory="../../GPS/src" />
 					<Add directory="../../GPS/src/util" />
@@ -22,6 +23,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-lpthread" />
+					<Add option="-lrt" />
 					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/GPS/src/util/libserial.a" />
 				</Linker>
 			</Target>

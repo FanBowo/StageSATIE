@@ -103,6 +103,7 @@ class Adafruit_GPS {
   void CloseSerialPort();
   void SetBaudRate(uint32_t baud);
 
+
 #if (defined(__AVR__) || defined(ESP8266)) && defined(USE_SW_SERIAL)
   Adafruit_GPS(SoftwareSerial *ser); // Constructor when using SoftwareSerial
 #endif
@@ -126,6 +127,7 @@ class Adafruit_GPS {
   boolean wakeup(void);
   boolean standby(void);
 
+  volatile float GpsTimeGetted;
   uint8_t hour;                                     ///< GMT hours
   uint8_t minute;                                   ///< GMT minutes
   uint8_t seconds;                                  ///< GMT seconds
