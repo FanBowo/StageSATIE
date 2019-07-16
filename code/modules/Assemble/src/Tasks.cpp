@@ -148,7 +148,7 @@ void * IMU_UpdateTimeStampFunc(void *){
         AssembleDevice.IMU_TimeStamp=IMU_TimerCounter*(1.0/(float)TimerIMUFre)+ \
                                 AssembleDevice.GPS.GpsTimeGetted;
         std::cout<<"TimeStamp: "<<AssembleDevice.IMU_TimeStamp<<std::endl;
-
+        AssembleDevice.UpdateIMU_RawData();
         pthread_mutex_unlock(&IMU_TimerCounterMutex);
         pthread_mutex_unlock(& TimeStampBaseReNewMutex );
 

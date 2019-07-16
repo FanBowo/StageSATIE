@@ -26,6 +26,7 @@ void init()
 int main() // run over and over again
 {
     AssembleDevice.InitGPS_Module();
+    AssembleDevice.InitIMU_Module();
     init();
 
     std::cout<<"Initialization finished"<<std::endl;

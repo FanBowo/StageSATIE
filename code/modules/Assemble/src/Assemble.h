@@ -8,7 +8,7 @@
 #include <fcntl.h>
 
 #include "Adafruit_GPS.h"//GPS Module
-
+#include "BNO055_Cali.h"//IMU Module
 
 #define delay(a) usleep(1000*a);
 
@@ -19,8 +19,11 @@ class Assemble{
     public:
     Assemble();
     void InitGPS_Module();
+    void InitIMU_Module();
+    void UpdateIMU_RawData();
     static LinuxSerialPackage GPSSerial;
     static Adafruit_GPS GPS;
+    static BNO055_Cali IMU_BNO055;
     double IMU_TimeStamp;
 };
 

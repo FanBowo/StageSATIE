@@ -20,6 +20,8 @@
 					<Add directory="../../GPS/src" />
 					<Add directory="../../GPS/src/util" />
 					<Add directory="../src" />
+					<Add directory="../../BNO 055/src" />
+					<Add directory="../../BNO 055/src/util" />
 				</Compiler>
 				<Linker>
 					<Add option="-lpthread" />
@@ -44,6 +46,24 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="../../BNO 055/src/Adafruit_BNO055.cpp" />
+		<Unit filename="../../BNO 055/src/Adafruit_BNO055.h" />
+		<Unit filename="../../BNO 055/src/Adafruit_Sensor.h" />
+		<Unit filename="../../BNO 055/src/BNO055_Cali.cpp" />
+		<Unit filename="../../BNO 055/src/BNO055_Cali.h" />
+		<Unit filename="../../BNO 055/src/rawdata.ino" />
+		<Unit filename="../../BNO 055/src/util/DataCalibration.cpp" />
+		<Unit filename="../../BNO 055/src/util/DataCalibration.h" />
+		<Unit filename="../../BNO 055/src/util/I2Cdev.cpp" />
+		<Unit filename="../../BNO 055/src/util/I2Cdev.h" />
+		<Unit filename="../../BNO 055/src/util/LinuxClk.cpp" />
+		<Unit filename="../../BNO 055/src/util/LinuxClk.h" />
+		<Unit filename="../../BNO 055/src/util/MahonyAHRS.cpp" />
+		<Unit filename="../../BNO 055/src/util/MahonyAHRS.hpp" />
+		<Unit filename="../../BNO 055/src/util/imumaths.h" />
+		<Unit filename="../../BNO 055/src/util/matrix.h" />
+		<Unit filename="../../BNO 055/src/util/quaternion.h" />
+		<Unit filename="../../BNO 055/src/util/vector.h" />
 		<Unit filename="../../GPS/src/Adafruit_GPS.cpp" />
 		<Unit filename="../../GPS/src/Adafruit_GPS.h" />
 		<Unit filename="../../GPS/src/util/LinuxSerialPackage.cpp" />
