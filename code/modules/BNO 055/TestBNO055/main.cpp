@@ -1,12 +1,9 @@
-#include <iostream>
-#include <fstream>
+
 //#include <Wire.h>
-#include "Adafruit_Sensor.h"
-#include "Adafruit_BNO055.h"
+//#include "Adafruit_Sensor.h"
+//#include "Adafruit_BNO055.h"
 #include "BNO055_Cali.h"
-#include "imumaths.h"
-#include "LinuxClk.h"
-#define delay(a) Linux_delay_ms(a)
+
 /* This driver reads raw data from the BNO055
 
    Connections

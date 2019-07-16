@@ -1,11 +1,14 @@
 #ifndef ASSEMBLE_H_INCLUDED
 #define ASSEMBLE_H_INCLUDED
 
-#include "Adafruit_GPS.h"
+
 #include <iostream>
 #include <unistd.h>
 #include <sys/signal.h>
 #include <fcntl.h>
+
+#include "Adafruit_GPS.h"//GPS Module
+
 
 #define delay(a) usleep(1000*a);
 

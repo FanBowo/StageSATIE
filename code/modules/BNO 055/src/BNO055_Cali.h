@@ -3,6 +3,11 @@
 
 #include "Adafruit_BNO055.h"
 #include "util/DataCalibration.h"
+#include "imumaths.h"
+#include "LinuxClk.h"
+#define delay(a) Linux_delay_ms(a)
+#include <iostream>
+#include <fstream>
 
 class BNO055_Cali:public Adafruit_BNO055, public DataCalibration{
     public:
