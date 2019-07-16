@@ -25,7 +25,7 @@
 #define BNO055_SAMPLERATE_DELAY_MS (100)
 
 
-#define ManuCaliMagn
+//#define ManuCaliMagn
 #ifdef ManuCaliMagn
     #define UsingProfileConfig
 #endif // ManuCaliMagn
