@@ -26,6 +26,9 @@ void init()
 int main() // run over and over again
 {
     AssembleDevice.InitGPS_Module();
+
+    sem_init(&IMU_RawDataFifoSem,0,0);
+
     AssembleDevice.InitIMU_Module();
     init();
 

@@ -9,6 +9,7 @@ pthread_mutex_t TimeStampBaseReNewMutex =PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t IMU_TimeStampCond=PTHREAD_COND_INITIALIZER;
 pthread_mutex_t IMU_TimeStampMutex =PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t IMU_TimerCounterMutex=PTHREAD_MUTEX_INITIALIZER;
+sem_t IMU_RawDataFifoSem;
 
 timer_t IMU_Timer;
 struct itimerspec IMU_Timer_trigger;
@@ -148,7 +149,7 @@ void * IMU_UpdateTimeStampFunc(void *){
         AssembleDevice.IMU_TimeStamp=IMU_TimerCounter*(1.0/(float)TimerIMUFre)+ \
                                 AssembleDevice.GPS.GpsTimeGetted;
         std::cout<<"TimeStamp: "<<AssembleDevice.IMU_TimeStamp<<std::endl;
-        AssembleDevice.UpdateIMU_RawData();
+        UpdateIMU_RawData();
         pthread_mutex_unlock(&IMU_TimerCounterMutex);
         pthread_mutex_unlock(& TimeStampBaseReNewMutex );
 
@@ -156,3 +157,85 @@ void * IMU_UpdateTimeStampFunc(void *){
     }
 
 }
+
+
+void UpdateIMU_RawData(){
+    // Possible vector values can be:
+    // - VECTOR_ACCELEROMETER - m/s^2
+    // - VECTOR_MAGNETOMETER  - uT
+    // - VECTOR_GYROSCOPE     - rad/s
+    // - VECTOR_EULER         - degrees
+    // - VECTOR_LINEARACCEL   - m/s^2
+    // - VECTOR_GRAVITY       - m/s^2
+    sensors_event_t event;
+    AssembleDevice.IMU_BNO055.getEvent(& event);
+    //<IMU_RawData_t>IMU_RawDataFifo;
+    IMU_RawData_t TempIMU_RawData;
+    TempIMU_RawData.acceleration.x=(float)event.acceleration.x;
+    TempIMU_RawData.acceleration.y=(float)event.acceleration.y;
+    TempIMU_RawData.acceleration.z=(float)event.acceleration.z;
+    TempIMU_RawData.gyro.x=(float)event.gyro.x;
+    TempIMU_RawData.gyro.x=(float)event.gyro.y;
+    TempIMU_RawData.gyro.x=(float)event.gyro.z;
+    TempIMU_RawData.timestamp=AssembleDevice.IMU_TimeStamp;
+    AssembleDevice.IMU_RawDataFifo.push(TempIMU_RawData);
+    sem_post(&IMU_RawDataFifoSem);
+//  std::cout<<"Orientation :"<<(float)event.orientation.x<<\
+//                       " "<<(float)event.orientation.y<<\
+//                       " "<<(float)event.orientation.z\
+//                       <<" "<<(float)IMU_BNO055.bInitWithCaliProfileCompleted<<"\n"<<std::endl;
+
+//  imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
+
+  /* Display the floating point data */
+//  Serial.print("X: ");
+//  Serial.print(euler.x());
+//  Serial.print(" Y: ");
+//  Serial.print(euler.y());
+//  Serial.print(" Z: ");
+//  Serial.print(euler.z());
+//  Serial.print("\t\t");
+
+  /*
+  // Quaternion data
+  imu::Quaternion quat = bno.getQuat();
+  Serial.print("qW: ");
+  Serial.print(quat.w(), 4);
+  Serial.print(" qX: ");
+  Serial.print(quat.x(), 4);
+  Serial.print(" qY: ");
+  Serial.print(quat.y(), 4);
+  Serial.print(" qZ: ");
+  Serial.print(quat.z(), 4);
+  Serial.print("\t\t");
+  */
+
+  /* Display calibration status for each sensor. */
+  uint8_t system, gyro, accel, mag = 0;
+  AssembleDevice.IMU_BNO055.getCalibration(&system, &gyro, &accel, &mag);
+  std::cout<<"System "<<(int)system<<"gyro "<<(int)gyro << \
+            "accel "<<(int)accel<<"mag "<<(int)mag<<std::endl;
+  #ifdef ManuCaliMagn
+    if(system>=1){
+        imu::Vector<3> magn = bno.getVector(Adafruit_BNO055::VECTOR_MAGNETOMETER);
+        Magnedata<<magn.x()<<" "<<magn.y()<<" "<<magn.z()<<"\n";
+        Oriendata<<(float)event.orientation.x<<\
+                       " "<<(float)event.orientation.y<<\
+                       " "<<(float)event.orientation.z<<"\n";
+    }
+    #endif // ManuCaliMagn
+#ifdef UsingProfileConfig
+  if((system>=2&&gyro>=3&&mag>=3&& !(bno.bInitWithCaliProfileCompleted))){
+    bno.InitWithCaliProfile();
+    bno.LastNorthPoleCount=0;
+  }
+  if(system<=0&&(bno.bInitWithCaliProfileCompleted)){
+    bno.LastNorthPoleCount++;
+    if(bno.LastNorthPoleCount>200){
+        bno.bInitWithCaliProfileCompleted=false;//Need re-calibration
+    }
+  }
+#endif // UsingProfileConfig
+}
+
+
