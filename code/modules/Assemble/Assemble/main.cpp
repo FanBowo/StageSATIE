@@ -39,8 +39,12 @@ int main() // run over and over again
     pthread_t ThreadIMU_UpdateTimeStamp;
     pthread_create(&ThreadIMU_UpdateTimeStamp,NULL,&IMU_UpdateTimeStampFunc,NULL);
 
+    pthread_t ThreadSaveIMU_RawData;
+    pthread_create(&ThreadSaveIMU_RawData,NULL,&SaveIMU_RawDataFunc,NULL);
+
     pthread_join(ThreadUpdateTimeStampBase,NULL);
     pthread_join(ThreadIMU_UpdateTimeStamp,NULL);
+    pthread_join(ThreadSaveIMU_RawData,NULL);
 
     std::cout<<"End of programme"<<std::endl;
 }

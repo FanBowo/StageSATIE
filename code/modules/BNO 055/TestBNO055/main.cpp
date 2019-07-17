@@ -92,7 +92,17 @@ void loop(void)
   std::cout<<"Orientation :"<<(float)event.orientation.x<<\
                        " "<<(float)event.orientation.y<<\
                        " "<<(float)event.orientation.z\
-                       <<" "<<(float)bno.bInitWithCaliProfileCompleted<<"\n"<<std::endl;
+                       <<" "<<(float)bno.bInitWithCaliProfileCompleted<<std::endl;
+
+  bno.getEvent(& event,Adafruit_BNO055::VECTOR_GYROSCOPE);
+  std::cout<<"omega :"<<(float)event.gyro.x<<\
+                       " "<<(float)event.gyro.y<<\
+                       " "<<(float)event.gyro.z<<std::endl;
+
+  bno.getEvent(& event,Adafruit_BNO055::VECTOR_LINEARACCEL);
+  std::cout<<"acc :"<<(float)event.acceleration.x<<\
+                       " "<<(float)event.acceleration.y<<\
+                       " "<<(float)event.acceleration.z<<std::endl;
 
 //  imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
 

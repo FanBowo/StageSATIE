@@ -168,53 +168,46 @@ void UpdateIMU_RawData(){
     // - VECTOR_LINEARACCEL   - m/s^2
     // - VECTOR_GRAVITY       - m/s^2
     sensors_event_t event;
-    AssembleDevice.IMU_BNO055.getEvent(& event);
-    //<IMU_RawData_t>IMU_RawDataFifo;
+    AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_LINEARACCEL);
+
     IMU_RawData_t TempIMU_RawData;
+
     TempIMU_RawData.acceleration.x=(float)event.acceleration.x;
     TempIMU_RawData.acceleration.y=(float)event.acceleration.y;
     TempIMU_RawData.acceleration.z=(float)event.acceleration.z;
+//    std::cout<<"acc :"<<(float)event.acceleration.x<<\
+//                           " "<<(float)event.acceleration.y<<\
+//                           " "<<(float)event.acceleration.z<<std::endl;
+
+
+    AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_GYROSCOPE);
     TempIMU_RawData.gyro.x=(float)event.gyro.x;
-    TempIMU_RawData.gyro.x=(float)event.gyro.y;
-    TempIMU_RawData.gyro.x=(float)event.gyro.z;
+    TempIMU_RawData.gyro.y=(float)event.gyro.y;
+    TempIMU_RawData.gyro.z=(float)event.gyro.z;
+//    std::cout<<"omega :"<<(float)event.gyro.x<<\
+//                       " "<<(float)event.gyro.y<<\
+//                       " "<<(float)event.gyro.z<<std::endl;
+
     TempIMU_RawData.timestamp=AssembleDevice.IMU_TimeStamp;
+
+
     AssembleDevice.IMU_RawDataFifo.push(TempIMU_RawData);
+
     sem_post(&IMU_RawDataFifoSem);
-//  std::cout<<"Orientation :"<<(float)event.orientation.x<<\
-//                       " "<<(float)event.orientation.y<<\
-//                       " "<<(float)event.orientation.z\
-//                       <<" "<<(float)IMU_BNO055.bInitWithCaliProfileCompleted<<"\n"<<std::endl;
 
-//  imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
-
-  /* Display the floating point data */
-//  Serial.print("X: ");
-//  Serial.print(euler.x());
-//  Serial.print(" Y: ");
-//  Serial.print(euler.y());
-//  Serial.print(" Z: ");
-//  Serial.print(euler.z());
-//  Serial.print("\t\t");
-
-  /*
-  // Quaternion data
-  imu::Quaternion quat = bno.getQuat();
-  Serial.print("qW: ");
-  Serial.print(quat.w(), 4);
-  Serial.print(" qX: ");
-  Serial.print(quat.x(), 4);
-  Serial.print(" qY: ");
-  Serial.print(quat.y(), 4);
-  Serial.print(" qZ: ");
-  Serial.print(quat.z(), 4);
-  Serial.print("\t\t");
-  */
+//    std::cout<<TempIMU_RawData.acceleration.x<<" "\
+//            <<TempIMU_RawData.acceleration.y<<" "\
+//            <<TempIMU_RawData.acceleration.z<<" "\
+//            <<TempIMU_RawData.gyro.x<<" "\
+//            <<TempIMU_RawData.gyro.y<<" "\
+//            <<TempIMU_RawData.gyro.z<<" "<<std::endl;
 
   /* Display calibration status for each sensor. */
   uint8_t system, gyro, accel, mag = 0;
   AssembleDevice.IMU_BNO055.getCalibration(&system, &gyro, &accel, &mag);
   std::cout<<"System "<<(int)system<<"gyro "<<(int)gyro << \
             "accel "<<(int)accel<<"mag "<<(int)mag<<std::endl;
+
   #ifdef ManuCaliMagn
     if(system>=1){
         imu::Vector<3> magn = bno.getVector(Adafruit_BNO055::VECTOR_MAGNETOMETER);
@@ -238,4 +231,19 @@ void UpdateIMU_RawData(){
 #endif // UsingProfileConfig
 }
 
+void * SaveIMU_RawDataFunc(void *){
+    while(1){
+        sem_wait(&IMU_RawDataFifoSem);
+        IMU_RawData_t TempIMU_RawData=AssembleDevice.IMU_RawDataFifo.back();
+        AssembleDevice.pSaveRawIMU_Data<<std::setiosflags(std::ios::fixed)\
+                        <<std::setprecision(7)\
+                        <<TempIMU_RawData.timestamp<<"," \
+                        << TempIMU_RawData.gyro.x<<","\
+                        << TempIMU_RawData.gyro.y<<","\
+                        << TempIMU_RawData.gyro.z<<","\
+                        << TempIMU_RawData.acceleration.x<<","\
+                        << TempIMU_RawData.acceleration.y<<","\
+                        << TempIMU_RawData.acceleration.z<<std::endl;
 
+    }
+}
