@@ -7,6 +7,7 @@
 #include <string.h>
 #include <semaphore.h>
 #include <iomanip>
+#include <sched.h>
 
 #define EnableParseOutput true
 #define GPSECHO false
