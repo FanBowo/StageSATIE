@@ -234,16 +234,18 @@ void UpdateIMU_RawData(){
 void * SaveIMU_RawDataFunc(void *){
     while(1){
         sem_wait(&IMU_RawDataFifoSem);
-        IMU_RawData_t TempIMU_RawData=AssembleDevice.IMU_RawDataFifo.back();
-        AssembleDevice.pSaveRawIMU_Data<<std::setiosflags(std::ios::fixed)\
-                        <<std::setprecision(7)\
-                        <<TempIMU_RawData.timestamp<<"," \
+        IMU_RawData_t TempIMU_RawData=AssembleDevice.IMU_RawDataFifo.front();
+        AssembleDevice.pSaveRawIMU_Data
+                        <<(long)(TempIMU_RawData.timestamp*Nano10_9)<<"," \
+                        <<std::setiosflags(std::ios::fixed)\
+                        <<std::setprecision(4)\
                         << TempIMU_RawData.gyro.x<<","\
                         << TempIMU_RawData.gyro.y<<","\
                         << TempIMU_RawData.gyro.z<<","\
                         << TempIMU_RawData.acceleration.x<<","\
                         << TempIMU_RawData.acceleration.y<<","\
                         << TempIMU_RawData.acceleration.z<<std::endl;
+        AssembleDevice.IMU_RawDataFifo.pop();
 
     }
 }
