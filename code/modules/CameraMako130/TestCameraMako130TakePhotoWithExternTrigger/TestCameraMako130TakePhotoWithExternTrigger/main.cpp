@@ -26,29 +26,11 @@
 
 =============================================================================*/
 
-#include <sstream>
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string>
-#include <signal.h>
+#define TeseCppVersion
+#ifdef TeseCppVersion
+#include "CameraMako130.h"
 
-//#include "ListCameras.h"
 
-#include "VimbaCPP/Include/VimbaCPP.h"
-#include "Common/StreamSystemInfo.h"
-#include "Common/ErrorCodeToMessage.h"
-#include "VimbaCPP/Include/IFrameObserver.h"
-#include "Bitmap.h"
-#include "CameraMakoCleanUpAndSaveImage.h"
-#include "VimbaCPP/Source/Clock.h"
-#include "CameraTimer.h"
-
-using namespace  AVT;
-using namespace VmbAPI;
-using namespace Examples;
 
 /**printing camera info for a camera.
 *\note this function is used with for_each and is called for each camera in range cameras.begin(), cameraas.end()
@@ -73,9 +55,7 @@ using namespace Examples;
 //}
 
 
-#define TeseCppVersion
-#ifdef TeseCppVersion
-#include "CameraMako130.h"
+
 CameraMako130 TheCamera;
 void CameraFailed(int sign_no){
     if(sign_no==SIGINT||sign_no==SIGQUIT||sign_no==SIGSEGV){//Ctrl + C ||
@@ -93,7 +73,7 @@ int main(){
     TheCamera.InitCameraTriggerGPIO();
     TheCamera.InitCameraTriggrtTimer();
     TheCamera.InitCameraParas();
-    Clock::SleepMS(60000);
+    Clock::SleepMS(10000);
     std::cout<<"Stop systeme and camera..."<<std::endl;
     TheCamera.CleanUpCamera();
     return 0;

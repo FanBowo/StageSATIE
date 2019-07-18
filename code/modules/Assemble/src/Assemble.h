@@ -6,8 +6,8 @@
 #include <unistd.h>
 #include <sys/signal.h>
 #include <fcntl.h>
-#
 
+#include "CameraMako130.h"//Camera module
 #include "Adafruit_GPS.h"//GPS Module
 #include "BNO055_Cali.h"//IMU Module
 

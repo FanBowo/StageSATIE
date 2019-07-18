@@ -38,6 +38,16 @@
 #include <signal.h>
 
 //#include "ListCameras.h"
+#include <sstream>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string>
+#include <signal.h>
+
+//#include "ListCameras.h"
 
 #include "VimbaCPP/Include/VimbaCPP.h"
 #include "Common/StreamSystemInfo.h"
@@ -46,10 +56,30 @@
 #include "Bitmap.h"
 #include "CameraMakoCleanUpAndSaveImage.h"
 #include "VimbaCPP/Source/Clock.h"
-#include "CameraTimer.h"
+//#include "CameraTimer.h"
+
+
+//#include "VimbaCPP/Include/VimbaCPP.h"
+//#include "Common/StreamSystemInfo.h"
+//#include "Common/ErrorCodeToMessage.h"
+//#include "VimbaCPP/Include/IFrameObserver.h"
+//#include "Bitmap.h"
+//#include "CameraMakoCleanUpAndSaveImage.h"
+//#include "VimbaCPP/Source/Clock.h"
+//#include "CameraTimer.h"
 /**printing camera info for a camera.
 *\note this function is used with for_each and is called for each camera in range cameras.begin(), cameraas.end()
 */
+using namespace  AVT;
+using namespace VmbAPI;
+using namespace Examples;
+
+extern void InitCameraTimer();
+//void TriggerPWM_pullup(union sigval sv);
+//void TriggerPWM_pushdown(union sigval sv);
+
+extern void CloseTimerGPIO();
+extern int InitCameraTriggerGPIO();
 
 
 class CameraMako130 {

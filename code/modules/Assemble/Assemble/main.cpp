@@ -25,7 +25,8 @@ void init()
     AssembleDevice.InitIMU_Module();
 
     init_SerialPortInt();
-    InitTimerIMU();
+    InitTimerIMU();//i2c1
+    //CAMERA TRIGGER SDO1
 }
 
 

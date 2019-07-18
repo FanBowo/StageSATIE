@@ -22,11 +22,19 @@
 					<Add directory="../src" />
 					<Add directory="../../BNO 055/src" />
 					<Add directory="../../BNO 055/src/util" />
+					<Add directory="../../CameraMako130/src" />
+					<Add directory="../../CameraMako130/TestCameraMako130TakePhoto" />
 				</Compiler>
 				<Linker>
 					<Add option="-lpthread" />
 					<Add option="-lrt" />
 					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/GPS/src/util/libserial.a" />
+					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/libVimbaImageTransform.so" />
+					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/libVimbaCPP.so" />
+					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/libVimbaC.so" />
+					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/libQtSvg.so.4" />
+					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/libQtGui.so.4" />
+					<Add library="/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/libQtCore.so.4" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -64,6 +72,46 @@
 		<Unit filename="../../BNO 055/src/util/matrix.h" />
 		<Unit filename="../../BNO 055/src/util/quaternion.h" />
 		<Unit filename="../../BNO 055/src/util/vector.h" />
+		<Unit filename="../../CameraMako130/TestCameraMako130TakePhoto/TestCameraMako130TakePhoto/CameraMakoCleanUpAndSaveImage.h" />
+		<Unit filename="../../CameraMako130/src/Bitmap.cpp" />
+		<Unit filename="../../CameraMako130/src/Bitmap.h" />
+		<Unit filename="../../CameraMako130/src/CameraMako130.cpp" />
+		<Unit filename="../../CameraMako130/src/CameraMako130.h" />
+		<Unit filename="../../CameraMako130/src/CameraMakoCleanUpAndSaveImage.cpp" />
+		<Unit filename="../../CameraMako130/src/CameraMakoCleanUpAndSaveImage.h" />
+		<Unit filename="../../CameraMako130/src/CameraTimer.cpp" />
+		<Unit filename="../../CameraMako130/src/CameraTimer.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/AncillaryData.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/BasicLockable.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/Camera.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/Camera.hpp" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/EnumEntry.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/EnumEntry.hpp" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/Feature.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/Feature.hpp" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/FeatureContainer.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/FeatureContainer.hpp" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/FileLogger.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/Frame.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/ICameraFactory.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/ICameraListObserver.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/IFeatureObserver.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/IFrameObserver.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/IInterfaceListObserver.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/IRegisterDevice.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/Interface.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/Interface.hpp" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/LoggerDefines.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/Mutex.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/SharedPointer.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/SharedPointerDefines.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/SharedPointer_impl.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/UserLoggerDefines.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/UserSharedPointerDefines.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/VimbaCPP.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/VimbaCPPCommon.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/VimbaSystem.h" />
+		<Unit filename="../../CameraMako130/src/VimbaCPP/Include/VimbaSystem.hpp" />
 		<Unit filename="../../GPS/src/Adafruit_GPS.cpp" />
 		<Unit filename="../../GPS/src/Adafruit_GPS.h" />
 		<Unit filename="../../GPS/src/util/LinuxSerialPackage.cpp" />
@@ -76,6 +124,7 @@
 		<Unit filename="../src/Assemble.h" />
 		<Unit filename="../src/Tasks.cpp" />
 		<Unit filename="../src/Tasks.h" />
+		<Unit filename="OriTestCameras.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

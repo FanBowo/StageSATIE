@@ -10,7 +10,7 @@
 #include <fcntl.h> //define O_WRONLY and O_RDONLY
 //#include <linux/gpio.h>
 
-//芯片复位引脚: P2_c4 p2:base1064 c4:20
+//芯片复位引脚: P2_c4 p2:base1064 c4:20 SDO1
 #define SYSFS_GPIO_EXPORT           "/sys/class/gpio/export"
 #define SYSFS_GPIO_RST_PIN_VAL      "1084"
 #define SYSFS_GPIO_RST_DIR          "/sys/class/gpio/gpio1084/direction"
