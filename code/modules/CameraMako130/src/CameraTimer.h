@@ -23,6 +23,7 @@
 //extern int fd_GPIO_P2_c4;
 
 void InitTimer();
+
 void TriggerPWM_pullup(union sigval sv);
 void TriggerPWM_pushdown(union sigval sv);
 

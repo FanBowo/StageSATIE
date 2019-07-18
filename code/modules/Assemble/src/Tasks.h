@@ -35,6 +35,16 @@ void * SaveIMU_RawDataFunc(void *);
 #define TimerIMUFre 50
 
 /*cameras*/
+void * SaveCamera_IMU_DataFunc(void *);
+//extern pthread_mutex_t Camera_TimerCounterMutex;
+//extern pthread_cond_t Camera_TimeStampCond;
+//extern pthread_mutex_t Camera_TimeStampMutex;
+//extern int Camera_TimerCounter;
+extern sem_t Camera_IMUDataFifoSem;
+extern timer_t timerid_EXTERN_TRIGGER1;//Camera trigger pull up
+extern timer_t timerid_EXTERN_TRIGGER2;//Camera trigger push down
+extern int fd_GPIO_P2_c4;//GPIO file descriptor
+
 //芯片复位引脚: P2_c4 p2:base1064 c4:20 SDO1
 #define SYSFS_GPIO_EXPORT           "/sys/class/gpio/export"
 #define SYSFS_GPIO_RST_PIN_VAL      "1084"
@@ -50,9 +60,10 @@ void * SaveIMU_RawDataFunc(void *);
 //extern timer_t timerid_EXTERN_TRIGGER;
 //extern int fd_GPIO_P2_c4;
 
+
 //void InitCameraTimer();
-void TriggerPWM_pullup(union sigval sv);
-void TriggerPWM_pushdown(union sigval sv);
+//void TriggerPWM_pullup(union sigval sv);
+//void TriggerPWM_pushdown(union sigval sv);
 
 //void CloseTimerGPIO();
 //int InitCameraTriggerGPIO();

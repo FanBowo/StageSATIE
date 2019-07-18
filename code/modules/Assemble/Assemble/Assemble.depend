@@ -45,10 +45,10 @@
 	<sys/signal.h>
 	<fcntl.h>
 
-1563359020 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Assemble.cpp
+1563461864 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Assemble.cpp
 	"Assemble.h"
 
-1563444497 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Assemble.h
+1563461127 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Assemble.h
 	<queue>
 	<iostream>
 	<unistd.h>
@@ -58,10 +58,10 @@
 	"Adafruit_GPS.h"
 	"BNO055_Cali.h"
 
-1563433066 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
+1563463108 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
 	"Tasks.h"
 
-1563445576 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.h
+1563462868 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.h
 	"Assemble.h"
 	<pthread.h>
 	<signal.h>
@@ -72,7 +72,7 @@
 	<sched.h>
 	<fcntl.h>
 
-1563437683 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/Assemble/main.cpp
+1563463417 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/Assemble/main.cpp
 	"Tasks.h"
 
 1563284776 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/BNO055_Cali.h
@@ -177,10 +177,10 @@
 
 1562751330 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/Bitmap.h
 
-1563445104 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.cpp
+1563463240 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.cpp
 	"CameraMako130.h"
 
-1563445134 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.h
+1563462786 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.h
 	<sstream>
 	<iostream>
 	<vector>
@@ -204,6 +204,7 @@
 	"Bitmap.h"
 	"CameraMakoCleanUpAndSaveImage.h"
 	"VimbaCPP/Source/Clock.h"
+	"CameraTimer.h"
 
 1562751331 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Include/VimbaCPP.h
 	<VimbaCPP/Include/VimbaCPPCommon.h>
@@ -415,7 +416,7 @@
 
 1562751331 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/VimbaCPP/Source/Clock.h
 
-1563437632 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraTimer.h
+1563462737 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraTimer.h
 	<unistd.h>
 	<stdlib.h>
 	<signal.h>
@@ -424,7 +425,7 @@
 	<stdio.h>
 	<fcntl.h>
 
-1562751330 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraTimer.cpp
+1563463044 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraTimer.cpp
 	"CameraTimer.h"
 
 1562751330 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhoto/TestCameraMako130TakePhoto/CameraMakoCleanUpAndSaveImage.cpp

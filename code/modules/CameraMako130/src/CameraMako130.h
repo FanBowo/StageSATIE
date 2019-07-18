@@ -56,7 +56,7 @@
 #include "Bitmap.h"
 #include "CameraMakoCleanUpAndSaveImage.h"
 #include "VimbaCPP/Source/Clock.h"
-//#include "CameraTimer.h"
+#include "CameraTimer.h"
 
 
 //#include "VimbaCPP/Include/VimbaCPP.h"
@@ -74,12 +74,12 @@ using namespace  AVT;
 using namespace VmbAPI;
 using namespace Examples;
 
-extern void InitCameraTimer();
+void InitCameraTimer();
 //void TriggerPWM_pullup(union sigval sv);
 //void TriggerPWM_pushdown(union sigval sv);
 
-extern void CloseTimerGPIO();
-extern int InitCameraTriggerGPIO();
+void CloseTimerGPIO();
+int InitCameraTriggerGPIO();
 
 
 class CameraMako130 {

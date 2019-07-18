@@ -205,10 +205,10 @@ void CameraMako130::InitCameraParas(){
 }
 
 void CameraMako130::InitCameraTriggerGPIO(){
-    InitCameraTriggerGPIO();
+    InitGPIO();
 }
 void CameraMako130::InitCameraTriggrtTimer(){
-    InitCameraTimer();
+    InitTimer();
 }
 
 void CameraMako130::CleanUpCamera(){

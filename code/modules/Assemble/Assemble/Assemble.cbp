@@ -72,7 +72,6 @@
 		<Unit filename="../../BNO 055/src/util/matrix.h" />
 		<Unit filename="../../BNO 055/src/util/quaternion.h" />
 		<Unit filename="../../BNO 055/src/util/vector.h" />
-		<Unit filename="../../CameraMako130/TestCameraMako130TakePhoto/TestCameraMako130TakePhoto/CameraMakoCleanUpAndSaveImage.h" />
 		<Unit filename="../../CameraMako130/src/Bitmap.cpp" />
 		<Unit filename="../../CameraMako130/src/Bitmap.h" />
 		<Unit filename="../../CameraMako130/src/CameraMako130.cpp" />

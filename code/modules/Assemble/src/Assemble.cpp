@@ -11,10 +11,14 @@ Assemble::Assemble()
     pSaveRawIMU_Data<<"timestamp"<<","\
                     <<"omega_x"<<","<<"omega_y"<<","<<"omega_z"<<","\
                     <<"alpha_x"<<","<<"alpha_y"<<","<<"alpha_z"<<std::endl;
+    pSaveCamera_IMU_Data.open("Camera_IMU.csv",std::ios::out|std::ios::trunc);
+    pSaveCamera_IMU_Data<<"timestamp"<<","\
+                    <<"x"<<","<<"y"<<","<<"z"<<std::endl;
 }
 
 Assemble::~Assemble(){
     pSaveRawIMU_Data.close();
+    pSaveCamera_IMU_Data.close();
 }
 
 LinuxSerialPackage Assemble::GPSSerial(SERIAL_PORT_1);
@@ -22,6 +26,12 @@ LinuxSerialPackage Assemble::GPSSerial(SERIAL_PORT_1);
 // Connect to the GPS on the hardware port
 Adafruit_GPS Assemble:: GPS(&GPSSerial);
 BNO055_Cali Assemble::IMU_BNO055 =BNO055_Cali();
+CameraMako130 Assemble::TheCamera=CameraMako130();
+
+struct PhotoFormat Assemble::PhotoFormatInfo={.nImageSize=0,\
+                            .nWidth=0,\
+                            .nHeight=0,\
+                            .bFormatGetted=false};
 
 void Assemble::InitGPS_Module(){
     std::cout<<"Adafruit GPS library basic test!"<<std::endl;
