@@ -16,6 +16,7 @@ struct itimerspec IMU_Timer_trigger;
 int IMU_TimerCounter=0;
 
 void * UpdateTimeStampBaseFunc(void *){
+    std::cout<<"EnterThread_UpdateTimeStampBase"<<std::endl;
     while(1){
         pthread_mutex_lock(& TimeStampBaseMutex );
 
@@ -138,6 +139,7 @@ void TimerIMU_Feedback(union sigval sv){
 }
 
 void * IMU_UpdateTimeStampFunc(void *){
+    std::cout<<"EnterThread_IMU_UpdateTimeStamp"<<std::endl;
     while(1){
 
         pthread_mutex_lock(&IMU_TimeStampMutex);
@@ -232,6 +234,7 @@ void UpdateIMU_RawData(){
 }
 
 void * SaveIMU_RawDataFunc(void *){
+    std::cout<<"EnterThread_SaveIMU_RawData"<<std::endl;
     while(1){
         sem_wait(&IMU_RawDataFifoSem);
         IMU_RawData_t TempIMU_RawData=AssembleDevice.IMU_RawDataFifo.front();

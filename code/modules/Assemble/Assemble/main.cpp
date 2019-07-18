@@ -56,6 +56,7 @@ int main() // run over and over again
     */
 
     std::cout<<"Initialization finished"<<std::endl;
+
     pthread_t ThreadUpdateTimeStampBase;
     struct sched_param ThreadUpdateTimeStampBasePara;
     memset(&ThreadUpdateTimeStampBasePara,0,sizeof(sched_param));
@@ -69,8 +70,8 @@ int main() // run over and over again
 
     pthread_t ThreadIMU_UpdateTimeStamp;
     struct sched_param ThreadIMU_UpdateTimeStampPara;
-    memset(&ThreadUpdateTimeStampBasePara,0,sizeof(sched_param));
-    ThreadUpdateTimeStampBasePara.__sched_priority=sched_get_priority_max(SCHED_RR)-1;
+    memset(&ThreadIMU_UpdateTimeStampPara,0,sizeof(sched_param));
+    ThreadIMU_UpdateTimeStampPara.__sched_priority=sched_get_priority_max(SCHED_RR)-1;
     pthread_attr_t ThreadIMU_UpdateTimeStampParaAttr;
     pthread_attr_init(&ThreadIMU_UpdateTimeStampParaAttr);
     pthread_attr_setinheritsched(&ThreadIMU_UpdateTimeStampParaAttr,PTHREAD_EXPLICIT_SCHED);
@@ -81,10 +82,10 @@ int main() // run over and over again
     pthread_t ThreadSaveIMU_RawData;
     struct sched_param ThreadSaveIMU_RawDataPara;
     memset(&ThreadSaveIMU_RawDataPara,0,sizeof(sched_param));
-    ThreadSaveIMU_RawDataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-1;
+    ThreadSaveIMU_RawDataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-3;
     pthread_attr_t ThreadSaveIMU_RawDataParaAttr;
     pthread_attr_init(&ThreadSaveIMU_RawDataParaAttr);
-    pthread_attr_setinheritsched(&ThreadSaveIMU_RawDataParaAttr,PTHREAD_EXPLICIT_SCHED)-3;
+    pthread_attr_setinheritsched(&ThreadSaveIMU_RawDataParaAttr,PTHREAD_EXPLICIT_SCHED);
     pthread_attr_setschedpolicy(&ThreadSaveIMU_RawDataParaAttr,SCHED_RR);
     pthread_attr_setschedparam(&ThreadSaveIMU_RawDataParaAttr,&ThreadSaveIMU_RawDataPara);
     pthread_create(&ThreadSaveIMU_RawData,&ThreadSaveIMU_RawDataParaAttr,&SaveIMU_RawDataFunc,NULL);
