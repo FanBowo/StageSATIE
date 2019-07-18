@@ -389,7 +389,7 @@ void CreatAndSaveImag(const FramePtr pFrame ){
     std::string pFileNametemp=pFileNameBase+std::to_string(picnum);
     const char *pFileName=pFileNametemp.c_str();
     VmbErrorType    err         = VmbErrorSuccess;
-    VmbPixelFormatType ePixelFormat = VmbPixelFormatMono8;
+    //VmbPixelFormatType ePixelFormat = VmbPixelFormatMono8;
     if(! AssembleDevice.PhotoFormatInfo.bFormatGetted){
         VmbUint32_t nImageSize = 0;
         err = pFrame->GetImageSize( nImageSize );
@@ -524,7 +524,43 @@ void * SaveCamera_IMU_DataFunc(void *){
                         << TempCamera_IMU_Data.CameraPose.orientation.x<<","\
                         << TempCamera_IMU_Data.CameraPose.orientation.x<<","\
                         << TempCamera_IMU_Data.CameraPose.orientation.z<<std::endl;
+        VmbUchar_t *pImage = TempCamera_IMU_Data.pImage;
+        AVTBitmap bitmap;
+        std::string pFileNametemp=std::to_string((long)(TempCamera_IMU_Data.timestamp*Nano10_9))\
+                        + ".bmp";
+        const char *pFileName=pFileNametemp.c_str();
+//        VmbPixelFormatType ePixelFormat = VmbPixelFormatMono8;
+//        if ( VmbPixelFormatRgb8 == ePixelFormat ){
+//            bitmap.colorCode = ColorCodeRGB24;
+//        }
+//        else{
+//            bitmap.colorCode = ColorCodeMono8;
+//        }
+        bitmap.colorCode = ColorCodeMono8;
+        bitmap.bufferSize =  AssembleDevice.PhotoFormatInfo.nImageSize;
+        bitmap.width =  AssembleDevice.PhotoFormatInfo.nWidth;
+        bitmap.height =  AssembleDevice.PhotoFormatInfo.nHeight;
 
+        VmbError_t err =VmbErrorSuccess;
+        if ( 0 == AVTCreateBitmap( &bitmap, pImage )){
+            std::cout << "Could not create bitmap.\n";
+            err = VmbErrorResources;
+        }
+        else{
+            // Save the bitmap
+            if ( 0 == AVTWriteBitmapToFile( &bitmap, pFileName )){
+                std::cout << "Could not write bitmap to file.\n";
+                err = VmbErrorOther;
+            }
+            else{
+                std::cout << "Bitmap successfully written to file \"" << pFileName << "\"\n" ;
+                // Release the bitmap's buffer
+                if ( 0 == AVTReleaseBitmap( &bitmap )){
+                    std::cout << "Could not release the bitmap.\n";
+                    err = VmbErrorInternalFault;
+                }
+            }
+        }
         AssembleDevice.Camera_IMU_DataFifo.pop();
 
     }
