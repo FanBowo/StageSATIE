@@ -99,6 +99,7 @@ class CameraMako130 {
     void SetCameraExposureMode();
     void SetExposureTime();
     void SetTriggerMode();
+    void SetBufferSize();
     void PrepareImagAqc();
     void StartImagAqc();
     void RegisteParaChangeEvent();

@@ -88,6 +88,21 @@ void CameraMako130:: SetExposureTime(){
     }
 }
 
+void CameraMako130:: SetBufferSize(){
+
+    if(VmbErrorSuccess==camera->GetFeatureByName ("MaxDriverBuffersCount", pFeature )){
+        if(VmbErrorSuccess==pFeature -> SetValue (1)){
+            std::cout<<"Successfully Set feature MaxDriverBuffersCount"<<std::endl;
+        }
+        else{
+            std::cout<<"Can't Set feature MaxDriverBuffersCount"<<std::endl;
+        }
+    }
+    else{
+        std::cout<<"Can't get feature MaxDriverBuffersCount"<<std::endl;
+    }
+}
+
 void CameraMako130:: SetTriggerMode(){
     /* Set trigger mode*/
     if(VmbErrorSuccess==camera->GetFeatureByName ("TriggerActivation", pFeature )){
@@ -198,6 +213,7 @@ void CameraMako130::InitCameraParas(){
     std::cout<<"Vimba C++ API Version "<<sys<<"\n";           // Print out version of Vimba
 
     StarSysAndOpenCamera();
+    SetBufferSize();
     //SetCameraExposureMode();
     SetExposureTime();
     SetTriggerMode();

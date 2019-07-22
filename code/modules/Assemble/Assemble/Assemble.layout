@@ -1,54 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="OriTestCameras.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../CameraMako130/src/CameraTimer.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2902" topLine="0" />
+			<Cursor1 position="0" topLine="12" />
 		</Cursor>
 	</File>
-	<File name="../../CameraMako130/src/CameraMakoCleanUpAndSaveImage.h" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../GPS/src/util/LinuxSerialPackage.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1685" topLine="44" />
+			<Cursor1 position="128" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="../../GPS/src/Adafruit_GPS.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../src/Tasks.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="5798" topLine="198" />
+			<Cursor1 position="2675" topLine="32" />
 		</Cursor>
 	</File>
 	<File name="../../CameraMako130/src/CameraMakoCleanUpAndSaveImage.cpp" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="848" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../src/Tasks.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="11790" topLine="127" />
-		</Cursor>
-	</File>
-	<File name="../../BNO 055/src/Adafruit_Sensor.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3002" topLine="65" />
-		</Cursor>
-	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3343" topLine="87" />
-		</Cursor>
-	</File>
-	<File name="../../CameraMako130/src/CameraTimer.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3475" topLine="103" />
-		</Cursor>
-	</File>
-	<File name="../../GPS/src/util/SerialPortConstants.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="6690" topLine="164" />
-		</Cursor>
-	</File>
-	<File name="../../CameraMako130/src/CameraMako130.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5170" topLine="128" />
 		</Cursor>
 	</File>
 	<File name="../../GPS/src/Adafruit_GPS.h" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -61,39 +31,69 @@
 			<Cursor1 position="261" topLine="0" />
 		</Cursor>
 	</File>
+	<File name="../../CameraMako130/src/CameraMakoCleanUpAndSaveImage.h" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1685" topLine="44" />
+		</Cursor>
+	</File>
+	<File name="OriTestCameras.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2902" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../CameraMako130/src/CameraMako130.cpp" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7758" topLine="201" />
+		</Cursor>
+	</File>
+	<File name="../../CameraMako130/src/CameraMako130.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2910" topLine="86" />
+		</Cursor>
+	</File>
+	<File name="../src/Tasks.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="11790" topLine="127" />
+		</Cursor>
+	</File>
+	<File name="../../CameraMako130/src/CameraTimer.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3475" topLine="103" />
+		</Cursor>
+	</File>
 	<File name="../../GPS/src/util/LinuxSerialPackage.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="382" topLine="3" />
 		</Cursor>
 	</File>
-	<File name="../../CameraMako130/src/CameraMako130.h" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../GPS/src/util/SerialPortConstants.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2858" topLine="96" />
+			<Cursor1 position="6690" topLine="164" />
 		</Cursor>
 	</File>
-	<File name="../../CameraMako130/src/CameraTimer.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="main.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="12" />
+			<Cursor1 position="1243" topLine="33" />
 		</Cursor>
 	</File>
-	<File name="../src/Tasks.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="../../BNO 055/src/Adafruit_Sensor.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2675" topLine="32" />
+			<Cursor1 position="3002" topLine="65" />
 		</Cursor>
 	</File>
-	<File name="../../BNO 055/src/Adafruit_BNO055.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../GPS/src/Adafruit_GPS.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="21" />
-		</Cursor>
-	</File>
-	<File name="../../GPS/src/util/LinuxSerialPackage.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="128" topLine="0" />
+			<Cursor1 position="5798" topLine="198" />
 		</Cursor>
 	</File>
 	<File name="../src/Assemble.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1231" topLine="33" />
+		</Cursor>
+	</File>
+	<File name="../../BNO 055/src/Adafruit_BNO055.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="21" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
