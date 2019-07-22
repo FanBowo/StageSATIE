@@ -43,6 +43,7 @@ class Assemble{
     static BNO055_Cali IMU_BNO055;
     static CameraMako130 TheCamera;
     static struct PhotoFormat PhotoFormatInfo;
+    bool bIMU_Data_Stable;
     double IMU_TimeStamp;
     std::queue <IMU_RawData_t>IMU_RawDataFifo;
     std::ofstream pSaveRawIMU_Data;

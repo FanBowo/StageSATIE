@@ -6,6 +6,7 @@ Assemble::Assemble()
 //    LinuxSerialPackage GPSSerial(SERIAL_PORT_1);
 //    // Connect to the GPS on the hardware port
 //    Adafruit_GPS GPS(&_GPSSerialPort);
+    bIMU_Data_Stable=false;
     IMU_TimeStamp=0.0;
     pSaveRawIMU_Data.open("imu0.csv",std::ios::out|std::ios::trunc);
     pSaveRawIMU_Data<<"timestamp"<<","\

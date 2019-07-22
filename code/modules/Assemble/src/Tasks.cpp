@@ -11,13 +11,16 @@ pthread_cond_t IMU_TimeStampCond=PTHREAD_COND_INITIALIZER;
 pthread_mutex_t IMU_TimeStampMutex =PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t IMU_TimerCounterMutex=PTHREAD_MUTEX_INITIALIZER;
 sem_t IMU_RawDataFifoSem;
-
+//pthread_mutex_t SaveIMU_RawDataMutex=PTHREAD_MUTEX_INITIALIZER;
+//pthread_cond_t SaveIMU_RawDataCond=PTHREAD_COND_INITIALIZER;
 //pthread_mutex_t Camera_TimerCounterMutex=PTHREAD_MUTEX_INITIALIZER;
 //pthread_cond_t Camera_TimeStampCond=PTHREAD_COND_INITIALIZER;
 //pthread_mutex_t Camera_TimeStampMutex=PTHREAD_MUTEX_INITIALIZER;
 //int Camera_TimerCounter=0;
 sem_t Camera_IMUDataFifoSem;
-
+pthread_mutex_t SaveCamera_IMU_DataMutex=PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t SaveCamera_IMU_DataCond=PTHREAD_COND_INITIALIZER;
+FramePtr pNewFrame;
 //timer_t timerid_EXTERN_TRIGGER1;//Camera trigger pull up
 //timer_t timerid_EXTERN_TRIGGER2;//Camera trigger push down
 //int fd_GPIO_P2_c4;//GPIO file descriptor
@@ -181,38 +184,57 @@ void UpdateIMU_RawData(){
     // - VECTOR_EULER         - degrees
     // - VECTOR_LINEARACCEL   - m/s^2
     // - VECTOR_GRAVITY       - m/s^2
-    sensors_event_t event;
+      /* Display calibration status for each sensor. */
+    uint8_t system, gyro, accel, mag = 0;
 
-    pthread_mutex_lock(&ReadIMU_Mutex);
-    AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_LINEARACCEL);
-    pthread_mutex_unlock(&ReadIMU_Mutex);
-
-    IMU_RawData_t TempIMU_RawData;
-
-    TempIMU_RawData.acceleration.x=(float)event.acceleration.x;
-    TempIMU_RawData.acceleration.y=(float)event.acceleration.y;
-    TempIMU_RawData.acceleration.z=(float)event.acceleration.z;
-//    std::cout<<"acc :"<<(float)event.acceleration.x<<\
-//                           " "<<(float)event.acceleration.y<<\
-//                           " "<<(float)event.acceleration.z<<std::endl;
-
-    pthread_mutex_lock(&ReadIMU_Mutex);
-    AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_GYROSCOPE);
-    pthread_mutex_unlock(&ReadIMU_Mutex);
-
-    TempIMU_RawData.gyro.x=(float)event.gyro.x;
-    TempIMU_RawData.gyro.y=(float)event.gyro.y;
-    TempIMU_RawData.gyro.z=(float)event.gyro.z;
-//    std::cout<<"omega :"<<(float)event.gyro.x<<\
-//                       " "<<(float)event.gyro.y<<\
-//                       " "<<(float)event.gyro.z<<std::endl;
-
-    TempIMU_RawData.timestamp=AssembleDevice.IMU_TimeStamp;
+    if(!AssembleDevice.bIMU_Data_Stable){
+        pthread_mutex_lock(&ReadIMU_Mutex);
+        AssembleDevice.IMU_BNO055.getCalibration(&system, &gyro, &accel, &mag);
+        pthread_mutex_unlock(&ReadIMU_Mutex);
 
 
-    AssembleDevice.IMU_RawDataFifo.push(TempIMU_RawData);
+        std::cout<<"System "<<(int)system<<"gyro "<<(int)gyro << \
+                "accel "<<(int)accel<<"mag "<<(int)mag<<std::endl;
+        if((int)system==3){
+            AssembleDevice.bIMU_Data_Stable=true;
+        }
+    }
+    else{
+        sensors_event_t event;
 
-    sem_post(&IMU_RawDataFifoSem);
+        pthread_mutex_lock(&ReadIMU_Mutex);
+        AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_LINEARACCEL);
+        pthread_mutex_unlock(&ReadIMU_Mutex);
+
+        IMU_RawData_t TempIMU_RawData;
+
+        TempIMU_RawData.acceleration.x=(float)event.acceleration.x;
+        TempIMU_RawData.acceleration.y=(float)event.acceleration.y;
+        TempIMU_RawData.acceleration.z=(float)event.acceleration.z;
+    //    std::cout<<"acc :"<<(float)event.acceleration.x<<\
+    //                           " "<<(float)event.acceleration.y<<\
+    //                           " "<<(float)event.acceleration.z<<std::endl;
+
+        pthread_mutex_lock(&ReadIMU_Mutex);
+        AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_GYROSCOPE);
+        pthread_mutex_unlock(&ReadIMU_Mutex);
+
+        TempIMU_RawData.gyro.x=(float)event.gyro.x;
+        TempIMU_RawData.gyro.y=(float)event.gyro.y;
+        TempIMU_RawData.gyro.z=(float)event.gyro.z;
+    //    std::cout<<"omega :"<<(float)event.gyro.x<<\
+    //                       " "<<(float)event.gyro.y<<\
+    //                       " "<<(float)event.gyro.z<<std::endl;
+
+        TempIMU_RawData.timestamp=AssembleDevice.IMU_TimeStamp;
+
+
+        AssembleDevice.IMU_RawDataFifo.push(TempIMU_RawData);
+
+        sem_post(&IMU_RawDataFifoSem);
+    }
+
+
 
 //    std::cout<<TempIMU_RawData.acceleration.x<<" "\
 //            <<TempIMU_RawData.acceleration.y<<" "\
@@ -221,15 +243,8 @@ void UpdateIMU_RawData(){
 //            <<TempIMU_RawData.gyro.y<<" "\
 //            <<TempIMU_RawData.gyro.z<<" "<<std::endl;
 
-  /* Display calibration status for each sensor. */
-  uint8_t system, gyro, accel, mag = 0;
 
-  pthread_mutex_lock(&ReadIMU_Mutex);
-  AssembleDevice.IMU_BNO055.getCalibration(&system, &gyro, &accel, &mag);
-  pthread_mutex_unlock(&ReadIMU_Mutex);
 
-  std::cout<<"System "<<(int)system<<"gyro "<<(int)gyro << \
-            "accel "<<(int)accel<<"mag "<<(int)mag<<std::endl;
 
   #ifdef ManuCaliMagn
     if(system>=1){
@@ -279,64 +294,81 @@ void * SaveIMU_RawDataFunc(void *){
 /*A new image received save into fifo*/
 void CreatAndSaveImag(const FramePtr pFrame ){
     std::cout<<"Received one new frame"<<std::endl;
-    /*use PhotoFormatInfo to save frame format*/
-    Camera_IMU_Data_t TempCamera_IMU_Data;
-    TempCamera_IMU_Data.timestamp=AssembleDevice.IMU_TimeStamp;
+    pthread_mutex_lock(&SaveCamera_IMU_DataMutex);
+    pNewFrame=pFrame;
+    pthread_cond_signal(&SaveCamera_IMU_DataCond);
+    pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
 
-    sensors_event_t event;
+}
 
-//    pthread_mutex_lock(&ReadIMU_Mutex);
-//    std::cout<<"CreatAndSaveImag event get ReadIMU_Mutex"<<std::endl;
-    AssembleDevice.IMU_BNO055.getEvent(& event);
-//    pthread_mutex_unlock(&ReadIMU_Mutex);
+void *SaveCamera_IMU_DataToFifoFunc(void *){
+    while(1){
+        pthread_mutex_lock(&SaveCamera_IMU_DataMutex);
+        pthread_cond_wait(&SaveCamera_IMU_DataCond,&SaveCamera_IMU_DataMutex);
 
-    TempCamera_IMU_Data.CameraPose.orientation.x=(float)event.orientation.x;
-    TempCamera_IMU_Data.CameraPose.orientation.y=(float)event.orientation.y;
-    TempCamera_IMU_Data.CameraPose.orientation.z=(float)event.orientation.z;
+        //    std::cout<<"Received one new frame"<<std::endl;
+        /*use PhotoFormatInfo to save frame format*/
+        Camera_IMU_Data_t TempCamera_IMU_Data;
+        TempCamera_IMU_Data.timestamp=AssembleDevice.IMU_TimeStamp;
 
-    VmbErrorType    err         = VmbErrorSuccess;
-    //VmbPixelFormatType ePixelFormat = VmbPixelFormatMono8;
-    if(! AssembleDevice.PhotoFormatInfo.bFormatGetted){
-        VmbUint32_t nImageSize = 0;
-        err = pFrame->GetImageSize( nImageSize );
-        AssembleDevice.PhotoFormatInfo.nImageSize=nImageSize;
-        if ( VmbErrorSuccess == err )
-        {
-            VmbUint32_t nWidth = 0;
-            err = pFrame->GetWidth( nWidth );
-             AssembleDevice.PhotoFormatInfo.nWidth=nWidth;
+        sensors_event_t event;
+
+        pthread_mutex_lock(&ReadIMU_Mutex);
+    //    std::cout<<"CreatAndSaveImag event get ReadIMU_Mutex"<<std::endl;
+        AssembleDevice.IMU_BNO055.getEvent(& event);
+        pthread_mutex_unlock(&ReadIMU_Mutex);
+
+        TempCamera_IMU_Data.CameraPose.orientation.x=(float)event.orientation.x;
+        TempCamera_IMU_Data.CameraPose.orientation.y=(float)event.orientation.y;
+        TempCamera_IMU_Data.CameraPose.orientation.z=(float)event.orientation.z;
+
+        VmbErrorType    err         = VmbErrorSuccess;
+        //VmbPixelFormatType ePixelFormat = VmbPixelFormatMono8;
+
+        if(! AssembleDevice.PhotoFormatInfo.bFormatGetted){
+            VmbUint32_t nImageSize = 0;
+            err = pNewFrame->GetImageSize( nImageSize );
+            AssembleDevice.PhotoFormatInfo.nImageSize=nImageSize;
             if ( VmbErrorSuccess == err )
             {
-                VmbUint32_t nHeight = 0;
-                err = pFrame->GetHeight( nHeight );
-                 AssembleDevice.PhotoFormatInfo.nHeight=nHeight;
+                VmbUint32_t nWidth = 0;
+                err = pNewFrame->GetWidth( nWidth );
+                 AssembleDevice.PhotoFormatInfo.nWidth=nWidth;
                 if ( VmbErrorSuccess == err )
-                {    AssembleDevice.PhotoFormatInfo.bFormatGetted=true;
-                    VmbUchar_t *pImage = NULL;
-                    err = pFrame->GetImage( pImage );
-
+                {
+                    VmbUint32_t nHeight = 0;
+                    err = pNewFrame->GetHeight( nHeight );
+                     AssembleDevice.PhotoFormatInfo.nHeight=nHeight;
                     if ( VmbErrorSuccess == err )
-                    {
-                        TempCamera_IMU_Data.pImage=pImage;
+                    {    AssembleDevice.PhotoFormatInfo.bFormatGetted=true;
+                        VmbUchar_t *pImage = NULL;
+                        err = pNewFrame->GetImage( pImage );
+
+                        if ( VmbErrorSuccess == err )
+                        {
+                            TempCamera_IMU_Data.pImage=pImage;
+                        }
                     }
                 }
             }
         }
-    }
-    else{
-        VmbUchar_t *pImage = NULL;
-        err = pFrame->GetImage( pImage );
-        if ( VmbErrorSuccess == err )
-        {
-            TempCamera_IMU_Data.pImage=pImage;
+        else{
+            VmbUchar_t *pImage = NULL;
+
+            err = pNewFrame->GetImage( pImage );
+
+            if ( VmbErrorSuccess == err )
+            {
+                TempCamera_IMU_Data.pImage=pImage;
+            }
         }
+
+        AssembleDevice.Camera_IMU_DataFifo.push(TempCamera_IMU_Data);
+        sem_post(&Camera_IMUDataFifoSem);
+
+        pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
     }
-
-    AssembleDevice.Camera_IMU_DataFifo.push(TempCamera_IMU_Data);
-    sem_post(&Camera_IMUDataFifoSem);
 }
-
-
 
 void * SaveCamera_IMU_DataFunc(void *){
     std::cout<<"EnterThread_SaveCamera_IMU_Data"<<std::endl;

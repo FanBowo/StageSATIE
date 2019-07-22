@@ -45,10 +45,10 @@
 	<sys/signal.h>
 	<fcntl.h>
 
-1563463650 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Assemble.cpp
+1563800322 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Assemble.cpp
 	"Assemble.h"
 
-1563461127 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Assemble.h
+1563800305 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Assemble.h
 	<queue>
 	<iostream>
 	<unistd.h>
@@ -58,10 +58,10 @@
 	"Adafruit_GPS.h"
 	"BNO055_Cali.h"
 
-1563792097 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
+1563800949 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
 	"Tasks.h"
 
-1563778958 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.h
+1563799523 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.h
 	"Assemble.h"
 	<pthread.h>
 	<signal.h>
@@ -72,7 +72,7 @@
 	<sched.h>
 	<fcntl.h>
 
-1563789818 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/Assemble/main.cpp
+1563802884 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/Assemble/main.cpp
 	"Tasks.h"
 
 1563284776 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/BNO055_Cali.h
@@ -180,7 +180,7 @@
 1563788402 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.cpp
 	"CameraMako130.h"
 
-1563462786 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.h
+1563793859 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.h
 	<sstream>
 	<iostream>
 	<vector>

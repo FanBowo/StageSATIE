@@ -69,12 +69,14 @@ int main() // run over and over again
         Task2:Update IMU timestamp and read IMU raw data
         Task3:Save raw IMU dato to csv file
         Task4:Save photos and save IMU direction data to csv file
+        Task5:Save photos and save IMU direction data to fifo
 
         Schedule policy: RR
         Task1:MaxPriorityRR
-        Task2:MaxPriorityRR-1
-        Task3:MaxPriorityRR-3
-        Task4:MaxPriorityRR-2
+        Task2:MaxPriorityRR-10
+        Task3:MaxPriorityRR-25
+        Task4:MaxPriorityRR-20
+        Task5:MaxPriorityRR-1
 
     */
 
@@ -94,7 +96,7 @@ int main() // run over and over again
     pthread_t ThreadIMU_UpdateTimeStamp;
     struct sched_param ThreadIMU_UpdateTimeStampPara;
     memset(&ThreadIMU_UpdateTimeStampPara,0,sizeof(sched_param));
-    ThreadIMU_UpdateTimeStampPara.__sched_priority=sched_get_priority_max(SCHED_RR)-1;
+    ThreadIMU_UpdateTimeStampPara.__sched_priority=sched_get_priority_max(SCHED_RR)-10;
     pthread_attr_t ThreadIMU_UpdateTimeStampParaAttr;
     pthread_attr_init(&ThreadIMU_UpdateTimeStampParaAttr);
     pthread_attr_setinheritsched(&ThreadIMU_UpdateTimeStampParaAttr,PTHREAD_EXPLICIT_SCHED);
@@ -102,10 +104,13 @@ int main() // run over and over again
     pthread_attr_setschedparam(&ThreadIMU_UpdateTimeStampParaAttr,&ThreadIMU_UpdateTimeStampPara);
     pthread_create(&ThreadIMU_UpdateTimeStamp,&ThreadIMU_UpdateTimeStampParaAttr,&IMU_UpdateTimeStampFunc,NULL);
 
+    while(!AssembleDevice.bIMU_Data_Stable){
+        ;
+    }
     pthread_t ThreadSaveIMU_RawData;
     struct sched_param ThreadSaveIMU_RawDataPara;
     memset(&ThreadSaveIMU_RawDataPara,0,sizeof(sched_param));
-    ThreadSaveIMU_RawDataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-3;
+    ThreadSaveIMU_RawDataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-25;
     pthread_attr_t ThreadSaveIMU_RawDataParaAttr;
     pthread_attr_init(&ThreadSaveIMU_RawDataParaAttr);
     pthread_attr_setinheritsched(&ThreadSaveIMU_RawDataParaAttr,PTHREAD_EXPLICIT_SCHED);
@@ -116,7 +121,7 @@ int main() // run over and over again
     pthread_t ThreadSaveCamera_IMU_Data;
     struct sched_param ThreadSaveCamera_IMU_DataPara;
     memset(&ThreadSaveCamera_IMU_DataPara,0,sizeof(sched_param));
-    ThreadSaveCamera_IMU_DataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-2;
+    ThreadSaveCamera_IMU_DataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-20;
     pthread_attr_t ThreadSaveCamera_IMU_DataParaAttr;
     pthread_attr_init(&ThreadSaveCamera_IMU_DataParaAttr);
     pthread_attr_setinheritsched(&ThreadSaveCamera_IMU_DataParaAttr,PTHREAD_EXPLICIT_SCHED);
@@ -124,10 +129,23 @@ int main() // run over and over again
     pthread_attr_setschedparam(&ThreadSaveCamera_IMU_DataParaAttr,&ThreadSaveCamera_IMU_DataPara);
     pthread_create(&ThreadSaveCamera_IMU_Data,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
 
+    pthread_t ThreadSaveCamera_IMU_DataToFifo;
+    struct sched_param ThreadSaveCamera_IMU_DataToFifoPara;
+    memset(&ThreadSaveCamera_IMU_DataToFifoPara,0,sizeof(sched_param));
+    ThreadSaveCamera_IMU_DataToFifoPara.__sched_priority=sched_get_priority_max(SCHED_RR)-1;
+    pthread_attr_t ThreadSaveCamera_IMU_DataToFifoParaAttr;
+    pthread_attr_init(&ThreadSaveCamera_IMU_DataToFifoParaAttr);
+    pthread_attr_setinheritsched(&ThreadSaveCamera_IMU_DataToFifoParaAttr,PTHREAD_EXPLICIT_SCHED);
+    pthread_attr_setschedpolicy(&ThreadSaveCamera_IMU_DataToFifoParaAttr,SCHED_RR);
+    pthread_attr_setschedparam(&ThreadSaveCamera_IMU_DataToFifoParaAttr,&ThreadSaveCamera_IMU_DataToFifoPara);
+    pthread_create(&ThreadSaveCamera_IMU_DataToFifo,&ThreadSaveCamera_IMU_DataToFifoParaAttr,&SaveCamera_IMU_DataToFifoFunc,NULL);
+
+
     pthread_join(ThreadUpdateTimeStampBase,NULL);
     pthread_join(ThreadIMU_UpdateTimeStamp,NULL);
     pthread_join(ThreadSaveIMU_RawData,NULL);
     pthread_join(ThreadSaveCamera_IMU_Data,NULL);
+    pthread_join(ThreadSaveCamera_IMU_DataToFifo,NULL);
 
     std::cout<<"End of programme"<<std::endl;
 }
