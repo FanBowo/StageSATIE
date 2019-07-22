@@ -384,7 +384,7 @@ void * SaveCamera_IMU_DataFunc(void *){
                         << TempCamera_IMU_Data.CameraPose.orientation.z<<std::endl;
         VmbUchar_t *pImage = TempCamera_IMU_Data.pImage;
         AVTBitmap bitmap;
-        std::string pFileNametemp=std::to_string((long)(TempCamera_IMU_Data.timestamp*Nano10_9))\
+        std::string pFileNametemp="./cam0/"+std::to_string((long)(TempCamera_IMU_Data.timestamp*Nano10_9))\
                         + ".bmp";
         const char *pFileName=pFileNametemp.c_str();
 

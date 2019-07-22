@@ -67,7 +67,7 @@ int main() // run over and over again
         Task:
         Task1:Update base time stamp
         Task2:Update IMU timestamp and read IMU raw data
-        Task3:Save raw IMU dato to csv file
+        Task3:Save raw IMU data to csv file
         Task4:Save photos and save IMU direction data to csv file
         Task5:Save photos and save IMU direction data to fifo
 
