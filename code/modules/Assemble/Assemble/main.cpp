@@ -13,6 +13,19 @@
 
 
 
+void CameraFailed(int sign_no){
+//    if(sign_no==SIGINT||sign_no==SIGQUIT||sign_no==SIGSEGV){//Ctrl + C ||
+    if(sign_no==SIGINT){//Ctrl + C ||
+        std::cout<<"I have get SIGINT"<<std::endl;
+        if(AssembleDevice.GPSSerial.IsOpen()){
+            AssembleDevice.GPSSerial.close();
+        }
+        timer_delete(IMU_Timer);
+        AssembleDevice.TheCamera.CameraFailed();
+        AssembleDevice.pSaveRawIMU_Data.close();
+        AssembleDevice.pSaveCamera_IMU_Data.close();
+    }
+}
 
 
 //bool RevNewPack =false;
@@ -32,7 +45,11 @@ void init()
     AssembleDevice.TheCamera.InitCameraTriggrtTimer();
     AssembleDevice.TheCamera.InitCameraParas();
 
+    signal(SIGINT,CameraFailed);
+//    signal(SIGQUIT,CameraFailed);
+//    signal(SIGSEGV,CameraFailed);
 }
+
 
 
 int main() // run over and over again

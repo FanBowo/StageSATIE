@@ -223,7 +223,11 @@ void UpdateIMU_RawData(){
 
   /* Display calibration status for each sensor. */
   uint8_t system, gyro, accel, mag = 0;
+
+  pthread_mutex_lock(&ReadIMU_Mutex);
   AssembleDevice.IMU_BNO055.getCalibration(&system, &gyro, &accel, &mag);
+  pthread_mutex_unlock(&ReadIMU_Mutex);
+
   std::cout<<"System "<<(int)system<<"gyro "<<(int)gyro << \
             "accel "<<(int)accel<<"mag "<<(int)mag<<std::endl;
 
@@ -272,131 +276,24 @@ void * SaveIMU_RawDataFunc(void *){
 
 /*Camera*/
 
-
-
-
-//void InitCameraTimer(){
-//    printf("Start initialize timer\n");
-//    struct sigevent sev1;//pull up
-//    struct itimerspec trigger1;//pull up
-//    memset(&sev1, 0, sizeof(struct sigevent));//pull up
-//    memset(&trigger1, 0, sizeof(struct itimerspec));//pull up
-//
-//    sev1.sigev_notify=SIGEV_THREAD;//pull up
-//    sev1.sigev_notify_function=&TriggerPWM_pullup;//pull up
-//
-//    timer_create(CLOCK_REALTIME,&sev1,&timerid_EXTERN_TRIGGER1);//pull up
-//
-//    trigger1.it_interval.tv_sec=0;//pull up
-//    trigger1.it_interval.tv_nsec=Nano10_9/ExternTriggerFre;//pull up
-//    //trigger.it_interval.tv_nsec=0;
-//    trigger1.it_value.tv_sec=0;//pull up
-//    trigger1.it_value.tv_nsec=1;//pull up
-//
-//    struct sigevent sev2;//push down
-//    struct itimerspec trigger2;//push down
-//    memset(&sev2, 0, sizeof(struct sigevent));//push down
-//    memset(&trigger2, 0, sizeof(struct itimerspec));//push down
-//
-//    sev2.sigev_notify=SIGEV_THREAD;//push down
-//    sev2.sigev_notify_function=&TriggerPWM_pushdown;//push down
-//
-//    timer_create(CLOCK_REALTIME,&sev2,&timerid_EXTERN_TRIGGER2);//push down
-//
-//    trigger2.it_interval.tv_sec=0;//push down
-//    trigger2.it_interval.tv_nsec=Nano10_9/ExternTriggerFre;//push down
-//    //trigger.it_interval.tv_nsec=0;
-//    trigger2.it_value.tv_sec=0;//push down
-//    trigger2.it_value.tv_nsec=1+ExposureTime;//push down
-//
-//    timer_settime(timerid_EXTERN_TRIGGER1,0,&trigger1,NULL);
-//    timer_settime(timerid_EXTERN_TRIGGER2,0,&trigger2,NULL);
-//
-//    printf("Successfully initialize timer\n");
-//}
-//
-//
-//void TriggerPWM_pullup(union sigval sv){
-//    write(fd_GPIO_P2_c4, SYSFS_GPIO_RST_VAL_H, sizeof(SYSFS_GPIO_RST_VAL_H));
-////    printf("H\n");
-////    pthread_mutex_lock(&Camera_TimeStampMutex);
-////    pthread_mutex_lock(&Camera_TimerCounterMutex);
-////
-////    pthread_cond_signal(&Camera_TimeStampCond);
-////    Camera_TimerCounter++;
-////
-////    pthread_mutex_unlock(&Camera_TimerCounterMutex);
-////    pthread_mutex_unlock(&Camera_TimeStampMutex);
-//}
-//
-//void TriggerPWM_pushdown(union sigval sv){
-//    write(fd_GPIO_P2_c4, SYSFS_GPIO_RST_VAL_L, sizeof(SYSFS_GPIO_RST_VAL_L));
-////    printf("L\n");
-//}
-//
-//int InitCameraTriggerGPIO(){
-//
-//    //open gpio
-//    printf("Start initialize GPIO\n");
-//    fd_GPIO_P2_c4 = open(SYSFS_GPIO_EXPORT, O_WRONLY);
-//    if(fd_GPIO_P2_c4 == -1)
-//    {
-//              printf("ERR: Radio hard reset pin open error.\n");
-//              return EXIT_FAILURE;
-//    }
-//    write(fd_GPIO_P2_c4, SYSFS_GPIO_RST_PIN_VAL ,sizeof(SYSFS_GPIO_RST_PIN_VAL));
-//    close(fd_GPIO_P2_c4);
-//
-//    //set direction
-//    fd_GPIO_P2_c4 = open(SYSFS_GPIO_RST_DIR, O_WRONLY);
-//    if(fd_GPIO_P2_c4 == -1)
-//    {
-//              printf("ERR: Radio hard reset pin direction open error.\n");
-//              return EXIT_FAILURE;
-//    }
-//    write(fd_GPIO_P2_c4, SYSFS_GPIO_RST_DIR_VAL, sizeof(SYSFS_GPIO_RST_DIR_VAL));
-//    close(fd_GPIO_P2_c4);
-//
-//    //output reset sigal
-//    fd_GPIO_P2_c4 = open(SYSFS_GPIO_RST_VAL, O_RDWR);
-//    if(fd_GPIO_P2_c4 == -1)
-//    {
-//              printf("ERR: Radio hard reset pin value open error.\n");
-//              return EXIT_FAILURE;
-//    }
-//    printf("Successfully initialize GPIO\n");
-//    return 0;
-//}
-//
-//void CloseTimerGPIO(){
-//    timer_delete(timerid_EXTERN_TRIGGER1);
-//    close(fd_GPIO_P2_c4);
-//}
-
 /*A new image received save into fifo*/
 void CreatAndSaveImag(const FramePtr pFrame ){
+    std::cout<<"Received one new frame"<<std::endl;
     /*use PhotoFormatInfo to save frame format*/
     Camera_IMU_Data_t TempCamera_IMU_Data;
     TempCamera_IMU_Data.timestamp=AssembleDevice.IMU_TimeStamp;
 
     sensors_event_t event;
-    pthread_mutex_lock(&ReadIMU_Mutex);
+
+//    pthread_mutex_lock(&ReadIMU_Mutex);
+//    std::cout<<"CreatAndSaveImag event get ReadIMU_Mutex"<<std::endl;
     AssembleDevice.IMU_BNO055.getEvent(& event);
-    pthread_mutex_unlock(&ReadIMU_Mutex);
+//    pthread_mutex_unlock(&ReadIMU_Mutex);
 
     TempCamera_IMU_Data.CameraPose.orientation.x=(float)event.orientation.x;
     TempCamera_IMU_Data.CameraPose.orientation.y=(float)event.orientation.y;
     TempCamera_IMU_Data.CameraPose.orientation.z=(float)event.orientation.z;
-//    std::cout<<"Orientation :"<<(float)event.orientation.x<<\
-//                       " "<<(float)event.orientation.y<<\
-//                       " "<<(float)event.orientation.z\
-//                       <<" "<<(float)bno.bInitWithCaliProfileCompleted<<std::endl;
 
-    std::string pFileNameBase = "SynchronousGrab.bmp";
-    static int picnum=0;
-    picnum++;
-    std::string pFileNametemp=pFileNameBase+std::to_string(picnum);
-    const char *pFileName=pFileNametemp.c_str();
     VmbErrorType    err         = VmbErrorSuccess;
     //VmbPixelFormatType ePixelFormat = VmbPixelFormatMono8;
     if(! AssembleDevice.PhotoFormatInfo.bFormatGetted){
@@ -421,46 +318,6 @@ void CreatAndSaveImag(const FramePtr pFrame ){
                     if ( VmbErrorSuccess == err )
                     {
                         TempCamera_IMU_Data.pImage=pImage;
-//                        AVTBitmap bitmap;
-//
-//                        if ( VmbPixelFormatRgb8 == ePixelFormat )
-//                        {
-//                            bitmap.colorCode = ColorCodeRGB24;
-//                        }
-//                        else
-//                        {
-//                            bitmap.colorCode = ColorCodeMono8;
-//                        }
-//
-//                        bitmap.bufferSize =  AssembleDevice.PhotoFormatInfo.nImageSize;
-//                        bitmap.width =  AssembleDevice.PhotoFormatInfo.nWidth;
-//                        bitmap.height =  AssembleDevice.PhotoFormatInfo.nHeight;
-//
-//                        // Create the bitmap
-//                        if ( 0 == AVTCreateBitmap( &bitmap, pImage ))
-//                        {
-//                            std::cout << "Could not create bitmap.\n";
-//                            err = VmbErrorResources;
-//                        }
-//                        else
-//                        {
-//                            // Save the bitmap
-//                            if ( 0 == AVTWriteBitmapToFile( &bitmap, pFileName ))
-//                            {
-//                                std::cout << "Could not write bitmap to file.\n";
-//                                err = VmbErrorOther;
-//                            }
-//                            else
-//                            {
-//                                std::cout << "Bitmap successfully written to file \"" << pFileName << "\"\n" ;
-//                                // Release the bitmap's buffer
-//                                if ( 0 == AVTReleaseBitmap( &bitmap ))
-//                                {
-//                                    std::cout << "Could not release the bitmap.\n";
-//                                    err = VmbErrorInternalFault;
-//                                }
-//                            }
-//                        }
                     }
                 }
             }
@@ -472,46 +329,6 @@ void CreatAndSaveImag(const FramePtr pFrame ){
         if ( VmbErrorSuccess == err )
         {
             TempCamera_IMU_Data.pImage=pImage;
-//            AVTBitmap bitmap;
-//
-//            if ( VmbPixelFormatRgb8 == ePixelFormat )
-//            {
-//                bitmap.colorCode = ColorCodeRGB24;
-//            }
-//            else
-//            {
-//                bitmap.colorCode = ColorCodeMono8;
-//            }
-//
-//            bitmap.bufferSize =  AssembleDevice.PhotoFormatInfo.nImageSize;
-//            bitmap.width =  AssembleDevice.PhotoFormatInfo.nWidth;
-//            bitmap.height =  AssembleDevice.PhotoFormatInfo.nHeight;
-//
-//            // Create the bitmap
-//            if ( 0 == AVTCreateBitmap( &bitmap, pImage ))
-//            {
-//                std::cout << "Could not create bitmap.\n";
-//                err = VmbErrorResources;
-//            }
-//            else
-//            {
-//                // Save the bitmap
-//                if ( 0 == AVTWriteBitmapToFile( &bitmap, pFileName ))
-//                {
-//                    std::cout << "Could not write bitmap to file.\n";
-//                    err = VmbErrorOther;
-//                }
-//                else
-//                {
-//                    std::cout << "Bitmap successfully written to file \"" << pFileName << "\"\n" ;
-//                    // Release the bitmap's buffer
-//                    if ( 0 == AVTReleaseBitmap( &bitmap ))
-//                    {
-//                        std::cout << "Could not release the bitmap.\n";
-//                        err = VmbErrorInternalFault;
-//                    }
-//                }
-//            }
         }
     }
 
@@ -538,13 +355,7 @@ void * SaveCamera_IMU_DataFunc(void *){
         std::string pFileNametemp=std::to_string((long)(TempCamera_IMU_Data.timestamp*Nano10_9))\
                         + ".bmp";
         const char *pFileName=pFileNametemp.c_str();
-//        VmbPixelFormatType ePixelFormat = VmbPixelFormatMono8;
-//        if ( VmbPixelFormatRgb8 == ePixelFormat ){
-//            bitmap.colorCode = ColorCodeRGB24;
-//        }
-//        else{
-//            bitmap.colorCode = ColorCodeMono8;
-//        }
+
         bitmap.colorCode = ColorCodeMono8;
         bitmap.bufferSize =  AssembleDevice.PhotoFormatInfo.nImageSize;
         bitmap.width =  AssembleDevice.PhotoFormatInfo.nWidth;

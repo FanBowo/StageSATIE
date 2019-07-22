@@ -8,6 +8,7 @@ CameraMako130::CameraMako130(){
     sys = &(VimbaSystem :: GetInstance ());// Create and get Vimba singleton
     FramePtrVector _frames(1);
     frames=_frames;
+    bNeedCleanFlag.bNeedEndAcquisition=false;
     bNeedCleanFlag.bNeedEndCapture=false;
     bNeedCleanFlag.bNeedFlushQueue=false;
     bNeedCleanFlag.bNeedRevokeAllFrames=false;
@@ -180,6 +181,7 @@ void CameraMako130::StartImagAqc(){
     if(VmbErrorSuccess==camera->GetFeatureByName("AcquisitionStart",pFeature)){
         if(VmbErrorSuccess==pFeature->RunCommand()){
             std::cout<<"Acquisition started"<<std::endl;
+            bNeedCleanFlag.bNeedEndAcquisition=true;
         }
         else{
             std::cout<<"Acquisition failed"<<std::endl;
@@ -212,21 +214,24 @@ void CameraMako130::InitCameraTriggrtTimer(){
 }
 
 void CameraMako130::CleanUpCamera(){
-    // Stop the acquisition engine ( camera )
-    /*Stop image acquisition*/
-    if(VmbErrorSuccess==camera -> GetFeatureByName ("AcquisitionStop", pFeature )){
-        if(VmbErrorSuccess==pFeature -> RunCommand ()){
-            std::cout<<"Successfully stop aquisition"<<std::endl;
-        }
-        else{
-            std::cout<<"Failed to stop aquisition"<<std::endl;
-        }
-    }
-    else{
-            std::cout<<"Failed to get acquisition stop feature"<<std::endl;
-    }
 
     // Stop the capture engine (API)
+    // Stop the acquisition engine ( camera )
+    /*Stop image acquisition*/
+    if(bNeedCleanFlag.bNeedEndAcquisition){
+        if(VmbErrorSuccess==camera -> GetFeatureByName ("AcquisitionStop", pFeature )){
+            if(VmbErrorSuccess==pFeature -> RunCommand ()){
+                std::cout<<"Successfully stop aquisition"<<std::endl;
+                bNeedCleanFlag.bNeedEndAcquisition=false;
+            }
+            else{
+                std::cout<<"Failed to stop aquisition"<<std::endl;
+            }
+        }
+        else{
+                std::cout<<"Failed to get acquisition stop feature"<<std::endl;
+        }
+    }
     // Flush the frame queue
     // Revoke all frames from the API
     /*Clean up*/

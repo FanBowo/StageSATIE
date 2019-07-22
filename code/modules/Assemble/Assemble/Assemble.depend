@@ -58,7 +58,7 @@
 	"Adafruit_GPS.h"
 	"BNO055_Cali.h"
 
-1563779519 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
+1563792097 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
 	"Tasks.h"
 
 1563778958 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.h
@@ -72,7 +72,7 @@
 	<sched.h>
 	<fcntl.h>
 
-1563463417 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/Assemble/main.cpp
+1563789818 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/Assemble/main.cpp
 	"Tasks.h"
 
 1563284776 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/BNO055_Cali.h
@@ -177,7 +177,7 @@
 
 1562751330 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/Bitmap.h
 
-1563463240 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.cpp
+1563788402 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.cpp
 	"CameraMako130.h"
 
 1563462786 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.h
@@ -398,7 +398,7 @@
 	<string>
 	"VimbaCPP/Include/VimbaCPP.h"
 
-1562751330 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMakoCleanUpAndSaveImage.h
+1563787653 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMakoCleanUpAndSaveImage.h
 	<sstream>
 	<iostream>
 	<vector>
@@ -425,7 +425,7 @@
 	<stdio.h>
 	<fcntl.h>
 
-1563465250 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraTimer.cpp
+1563783325 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraTimer.cpp
 	"CameraTimer.h"
 
 1562751330 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhoto/TestCameraMako130TakePhoto/CameraMakoCleanUpAndSaveImage.cpp
@@ -449,7 +449,7 @@
 
 1562751330 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhoto/TestCameraMako130TakePhoto/Bitmap.h
 
-1562751330 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMakoCleanUpAndSaveImage.cpp
+1563788377 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMakoCleanUpAndSaveImage.cpp
 	"CameraMakoCleanUpAndSaveImage.h"
 
 1563444432 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/Assemble/OriTestCameras.cpp

@@ -38,18 +38,21 @@ void AcquisitionStatusChageEvent::FeatureChanged(const FeaturePtr &pFeature){
 void CleanUpFunc(struct NeedCleanFlag *bNeedCleanFlag,\
                     CameraPtr camera,FramePtrVector frames,\
                     VimbaSystem *sys){
+
     if(bNeedCleanFlag->bNeedEndCapture){
         camera -> EndCapture ();
         std::cout<<"EndCapture"<<std::endl;
+        bNeedCleanFlag->bNeedEndCapture=false;
     }
     if(bNeedCleanFlag->bNeedFlushQueue){
         camera -> FlushQueue ();
         std::cout<<"FlushQueue"<<std::endl;
+        bNeedCleanFlag->bNeedFlushQueue=false;
     }
     if(bNeedCleanFlag->bNeedRevokeAllFrames){
         camera -> RevokeAllFrames ();
         std::cout<<"RevokeAllFrames"<<std::endl;
-
+        bNeedCleanFlag->bNeedRevokeAllFrames=false;
     }
 
     if(bNeedCleanFlag->bNeedUnregisterObserver){
@@ -58,14 +61,17 @@ void CleanUpFunc(struct NeedCleanFlag *bNeedCleanFlag,\
             (* iter)-> UnregisterObserver ();
             std::cout<<"UnregisterObserver"<<std::endl;
         }
+        bNeedCleanFlag->bNeedUnregisterObserver=false;
     }
     if(bNeedCleanFlag->bNeedCloseCamera){
         camera ->Close ();
         std::cout<<"Close"<<std::endl;
+        bNeedCleanFlag->bNeedCloseCamera=false;
     }
     if(bNeedCleanFlag->bNeedShutdown){
         sys->Shutdown ();
         std::cout<<"Shutdown"<<std::endl;
+        bNeedCleanFlag->bNeedShutdown=false;
     }
 
 }

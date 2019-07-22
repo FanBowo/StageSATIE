@@ -108,6 +108,7 @@ int InitGPIO(){
 
 void CloseTimerGPIO(){
     timer_delete(timerid_EXTERN_TRIGGER1);
+    timer_delete(timerid_EXTERN_TRIGGER2);
     close(fd_GPIO_P2_c4);
 }
 

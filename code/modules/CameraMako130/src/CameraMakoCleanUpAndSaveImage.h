@@ -26,6 +26,7 @@ using namespace VmbAPI;
 using namespace Examples;
 
 struct NeedCleanFlag{
+    bool bNeedEndAcquisition;
     bool bNeedEndCapture;
     bool bNeedFlushQueue;
     bool bNeedRevokeAllFrames;
