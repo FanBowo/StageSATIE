@@ -2,6 +2,7 @@
 #include "Tasks.h"
 Assemble AssembleDevice;
 
+pthread_mutex_t ReadIMU_Mutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t TimeStampBaseMutex =PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t TimeStampBaseCond=PTHREAD_COND_INITIALIZER;
 pthread_mutex_t TimeStampBaseReNewMutex =PTHREAD_MUTEX_INITIALIZER;
@@ -181,7 +182,10 @@ void UpdateIMU_RawData(){
     // - VECTOR_LINEARACCEL   - m/s^2
     // - VECTOR_GRAVITY       - m/s^2
     sensors_event_t event;
+
+    pthread_mutex_lock(&ReadIMU_Mutex);
     AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_LINEARACCEL);
+    pthread_mutex_unlock(&ReadIMU_Mutex);
 
     IMU_RawData_t TempIMU_RawData;
 
@@ -192,8 +196,10 @@ void UpdateIMU_RawData(){
 //                           " "<<(float)event.acceleration.y<<\
 //                           " "<<(float)event.acceleration.z<<std::endl;
 
-
+    pthread_mutex_lock(&ReadIMU_Mutex);
     AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_GYROSCOPE);
+    pthread_mutex_unlock(&ReadIMU_Mutex);
+
     TempIMU_RawData.gyro.x=(float)event.gyro.x;
     TempIMU_RawData.gyro.y=(float)event.gyro.y;
     TempIMU_RawData.gyro.z=(float)event.gyro.z;
@@ -374,7 +380,10 @@ void CreatAndSaveImag(const FramePtr pFrame ){
     TempCamera_IMU_Data.timestamp=AssembleDevice.IMU_TimeStamp;
 
     sensors_event_t event;
+    pthread_mutex_lock(&ReadIMU_Mutex);
     AssembleDevice.IMU_BNO055.getEvent(& event);
+    pthread_mutex_unlock(&ReadIMU_Mutex);
+
     TempCamera_IMU_Data.CameraPose.orientation.x=(float)event.orientation.x;
     TempCamera_IMU_Data.CameraPose.orientation.y=(float)event.orientation.y;
     TempCamera_IMU_Data.CameraPose.orientation.z=(float)event.orientation.z;

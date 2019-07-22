@@ -16,6 +16,7 @@
 extern Assemble AssembleDevice;
 
 
+extern pthread_mutex_t ReadIMU_Mutex;
 extern pthread_mutex_t TimeStampBaseMutex;
 extern pthread_cond_t TimeStampBaseCond;
 void * UpdateTimeStampBaseFunc(void *);
