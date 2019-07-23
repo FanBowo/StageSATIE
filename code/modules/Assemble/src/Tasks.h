@@ -23,7 +23,7 @@ extern pthread_mutex_t RW_Device_TimeStampMutex;
 extern timer_t Device_Timer;
 extern int Device_TimerCounter;
 extern struct itimerspec Device_Timer_trigger;
-#define TimerDeviceFre 100
+#define TimerDeviceFre 157
 void InitTimerDevice();
 void TimerDevice_Feedback(union sigval sv);
 void * UpdateDeviceTimeStampFunc(void *);
@@ -33,16 +33,16 @@ extern pthread_mutex_t TimeStampBaseMutex;
 extern pthread_cond_t TimeStampBaseCond;
 void * UpdateTimeStampBaseFunc(void *);
 
-extern pthread_mutex_t IMU_TimerCounterMutex;
-extern pthread_cond_t IMU_TimeStampCond;
-extern pthread_mutex_t IMU_TimeStampMutex;
+//extern pthread_mutex_t IMU_TimerCounterMutex;
+extern pthread_cond_t IMU_RawDataCond;
+extern pthread_mutex_t IMU_RawDataMutex;
 extern timer_t IMU_Timer;
 extern sem_t IMU_RawDataFifoSem;
 extern struct itimerspec IMU_Timer_trigger;
 extern int IMU_TimerCounter;
 void InitTimerIMU();//IMU data frequncy 50hz
 void TimerIMU_Feedback(union sigval sv);
-void * IMU_UpdateTimeStampFunc(void *);
+void * IMU_UpdateRawDataFunc(void *);
 void UpdateIMU_RawData();
 void * SaveIMU_RawDataFunc(void *);
 //void * SaveIMU_RawDataToFifoFunc(void *);

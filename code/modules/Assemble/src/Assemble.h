@@ -44,7 +44,7 @@ class Assemble{
     static CameraMako130 TheCamera;
     static struct PhotoFormat PhotoFormatInfo;
     bool bIMU_Data_Stable;
-    double IMU_TimeStamp;
+//    double IMU_TimeStamp;
     double DeviceTimeStamp;
     std::queue <IMU_RawData_t>IMU_RawDataFifo;
     std::ofstream pSaveRawIMU_Data;

@@ -109,16 +109,16 @@ int main() // run over and over again
     pthread_attr_setschedparam(&ThreadDevice_UpdateTimeStampParaAttr,&ThreadDevice_UpdateTimeStampPara);
     pthread_create(&ThreadDevice_UpdateTimeStamp,&ThreadDevice_UpdateTimeStampParaAttr,&UpdateDeviceTimeStampFunc,NULL);
 
-    pthread_t ThreadIMU_UpdateTimeStamp;
-    struct sched_param ThreadIMU_UpdateTimeStampPara;
-    memset(&ThreadIMU_UpdateTimeStampPara,0,sizeof(sched_param));
-    ThreadIMU_UpdateTimeStampPara.__sched_priority=sched_get_priority_max(SCHED_RR)-10;
-    pthread_attr_t ThreadIMU_UpdateTimeStampParaAttr;
-    pthread_attr_init(&ThreadIMU_UpdateTimeStampParaAttr);
-    pthread_attr_setinheritsched(&ThreadIMU_UpdateTimeStampParaAttr,PTHREAD_EXPLICIT_SCHED);
-    pthread_attr_setschedpolicy(&ThreadIMU_UpdateTimeStampParaAttr,SCHED_RR);
-    pthread_attr_setschedparam(&ThreadIMU_UpdateTimeStampParaAttr,&ThreadIMU_UpdateTimeStampPara);
-    pthread_create(&ThreadIMU_UpdateTimeStamp,&ThreadIMU_UpdateTimeStampParaAttr,&IMU_UpdateTimeStampFunc,NULL);
+    pthread_t ThreadIMU_UpdateRawData;
+    struct sched_param ThreadIMU_UpdateRawDataPara;
+    memset(&ThreadIMU_UpdateRawDataPara,0,sizeof(sched_param));
+    ThreadIMU_UpdateRawDataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-10;
+    pthread_attr_t ThreadIMU_UpdateRawDataParaAttr;
+    pthread_attr_init(&ThreadIMU_UpdateRawDataParaAttr);
+    pthread_attr_setinheritsched(&ThreadIMU_UpdateRawDataParaAttr,PTHREAD_EXPLICIT_SCHED);
+    pthread_attr_setschedpolicy(&ThreadIMU_UpdateRawDataParaAttr,SCHED_RR);
+    pthread_attr_setschedparam(&ThreadIMU_UpdateRawDataParaAttr,&ThreadIMU_UpdateRawDataPara);
+    pthread_create(&ThreadIMU_UpdateRawData,&ThreadIMU_UpdateRawDataParaAttr,&IMU_UpdateRawDataFunc,NULL);
 
     while(!AssembleDevice.bIMU_Data_Stable){
         ;
@@ -159,7 +159,7 @@ int main() // run over and over again
 
     pthread_join(ThreadUpdateTimeStampBase,NULL);
     pthread_join(ThreadDevice_UpdateTimeStamp,NULL);
-    pthread_join(ThreadIMU_UpdateTimeStamp,NULL);
+    pthread_join(ThreadIMU_UpdateRawData,NULL);
     pthread_join(ThreadSaveIMU_RawData,NULL);
     pthread_join(ThreadSaveCamera_IMU_Data,NULL);
     pthread_join(ThreadSaveCamera_IMU_DataToFifo,NULL);

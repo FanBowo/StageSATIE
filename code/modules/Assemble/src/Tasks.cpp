@@ -7,9 +7,9 @@ pthread_mutex_t TimeStampBaseMutex =PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t TimeStampBaseCond=PTHREAD_COND_INITIALIZER;
 pthread_mutex_t TimeStampBaseReNewMutex =PTHREAD_MUTEX_INITIALIZER;
 
-pthread_cond_t IMU_TimeStampCond=PTHREAD_COND_INITIALIZER;
-pthread_mutex_t IMU_TimeStampMutex =PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t IMU_TimerCounterMutex=PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t IMU_RawDataCond=PTHREAD_COND_INITIALIZER;
+pthread_mutex_t IMU_RawDataMutex =PTHREAD_MUTEX_INITIALIZER;
+//pthread_mutex_t IMU_TimerCounterMutex=PTHREAD_MUTEX_INITIALIZER;
 sem_t IMU_RawDataFifoSem;
 
 
@@ -32,7 +32,7 @@ struct itimerspec Device_Timer_trigger;
 
 timer_t IMU_Timer;
 struct itimerspec IMU_Timer_trigger;
-int IMU_TimerCounter=0;
+//int IMU_TimerCounter=0;
 
 void * UpdateTimeStampBaseFunc(void *){
     std::cout<<"EnterThread_UpdateTimeStampBase"<<std::endl;
@@ -50,10 +50,10 @@ void * UpdateTimeStampBaseFunc(void *){
             }
         }
 
-        pthread_mutex_lock(&IMU_TimerCounterMutex);
-        IMU_TimerCounter=0;
-        timer_settime(IMU_Timer,0,&IMU_Timer_trigger,NULL);
-        pthread_mutex_unlock(&IMU_TimerCounterMutex);
+//        pthread_mutex_lock(&IMU_TimerCounterMutex);
+//        IMU_TimerCounter=0;
+//        timer_settime(IMU_Timer,0,&IMU_Timer_trigger,NULL);
+//        pthread_mutex_unlock(&IMU_TimerCounterMutex);
 
         pthread_mutex_lock(&Device_TimerCounterMutex);
         Device_TimerCounter=0;
@@ -157,11 +157,13 @@ void * UpdateDeviceTimeStampFunc(void *){
         pthread_mutex_lock(&Device_TimerCounterMutex);
 
         pthread_mutex_lock(&RW_Device_TimeStampMutex);
-        AssembleDevice.DeviceTimeStamp=Device_TimerCounter*(1.0/(float)TimerDeviceFre)+ \
+        AssembleDevice.DeviceTimeStamp=Device_TimerCounter*(1.0/(double)TimerDeviceFre)+ \
                                 AssembleDevice.GPS.GpsTimeGetted;
+//        std::cout<<"Device_TimerCounter: "<<Device_TimerCounter<<std::endl;
         pthread_mutex_unlock(&RW_Device_TimeStampMutex);
 
-        std::cout<<"DeviceTimeStamp: "<<AssembleDevice.DeviceTimeStamp<<std::endl;
+        std::cout<<"DeviceTimeStamp: "<<std::setiosflags(std::ios::fixed)\
+                        <<std::setprecision(4)<<AssembleDevice.DeviceTimeStamp<<std::endl;
 
         pthread_mutex_unlock(&Device_TimerCounterMutex);
         pthread_mutex_unlock(& TimeStampBaseReNewMutex );
@@ -185,42 +187,42 @@ void InitTimerIMU(){
     IMU_Timer_trigger.it_interval.tv_nsec=Nano10_9/TimerIMUFre;
     IMU_Timer_trigger.it_value.tv_sec=0;
     IMU_Timer_trigger.it_value.tv_nsec=1;
-    IMU_TimerCounter=0;
-//    timer_settime(IMU_Timer,0,&IMU_Timer_trigger,NULL);
+//    IMU_TimerCounter=0;
+    timer_settime(IMU_Timer,0,&IMU_Timer_trigger,NULL);
 
 }
 
 void TimerIMU_Feedback(union sigval sv){
 
-    pthread_mutex_lock(&IMU_TimeStampMutex);
-    pthread_mutex_lock(&IMU_TimerCounterMutex);
+    pthread_mutex_lock(&IMU_RawDataMutex);
+//    pthread_mutex_lock(&IMU_TimerCounterMutex);
 
-    pthread_cond_signal(&IMU_TimeStampCond);
-    IMU_TimerCounter++;
+    pthread_cond_signal(&IMU_RawDataCond);
+//    IMU_TimerCounter++;
 
-    pthread_mutex_unlock(&IMU_TimerCounterMutex);
-    pthread_mutex_unlock(&IMU_TimeStampMutex);
+//    pthread_mutex_unlock(&IMU_TimerCounterMutex);
+    pthread_mutex_unlock(&IMU_RawDataMutex);
 
 }
 
-void * IMU_UpdateTimeStampFunc(void *){
-    std::cout<<"EnterThread_IMU_UpdateTimeStamp"<<std::endl;
+void * IMU_UpdateRawDataFunc(void *){
+    std::cout<<"EnterThread_IMU_UpdateRawData"<<std::endl;
     while(1){
 
-        pthread_mutex_lock(&IMU_TimeStampMutex);
-        pthread_cond_wait(&IMU_TimeStampCond,&IMU_TimeStampMutex);
+        pthread_mutex_lock(&IMU_RawDataMutex);
+        pthread_cond_wait(&IMU_RawDataCond,&IMU_RawDataMutex);
 
-        pthread_mutex_lock(& TimeStampBaseReNewMutex );
-        pthread_mutex_lock(&IMU_TimerCounterMutex);
+//        pthread_mutex_lock(& TimeStampBaseReNewMutex );
+//        pthread_mutex_lock(&IMU_TimerCounterMutex);
 
-        AssembleDevice.IMU_TimeStamp=IMU_TimerCounter*(1.0/(float)TimerIMUFre)+ \
-                                AssembleDevice.GPS.GpsTimeGetted;
-        std::cout<<"TimeStamp: "<<AssembleDevice.IMU_TimeStamp<<std::endl;
+//        AssembleDevice.IMU_TimeStamp=IMU_TimerCounter*(1.0/(float)TimerIMUFre)+ \
+//                                AssembleDevice.GPS.GpsTimeGetted;
+//        std::cout<<"TimeStamp: "<<AssembleDevice.IMU_TimeStamp<<std::endl;
         UpdateIMU_RawData();
-        pthread_mutex_unlock(&IMU_TimerCounterMutex);
-        pthread_mutex_unlock(& TimeStampBaseReNewMutex );
+//        pthread_mutex_unlock(&IMU_TimerCounterMutex);
+//        pthread_mutex_unlock(& TimeStampBaseReNewMutex );
 
-        pthread_mutex_unlock(&IMU_TimeStampMutex);
+        pthread_mutex_unlock(&IMU_RawDataMutex);
     }
 
 }
