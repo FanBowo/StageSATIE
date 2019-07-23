@@ -4,7 +4,8 @@ Assemble AssembleDevice;
 
 pthread_mutex_t Camera_IMU_DataFifoMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t IMU_RawDataFifoMutex=PTHREAD_MUTEX_INITIALIZER;
-
+pthread_mutex_t pSaveRawIMU_DataMutex=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t pSaveCamera_IMU_DataMutex=PTHREAD_MUTEX_INITIALIZER;
 
 pthread_mutex_t ReadIMU_Mutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t TimeStampBaseMutex =PTHREAD_MUTEX_INITIALIZER;
@@ -20,7 +21,10 @@ sem_t IMU_RawDataFifoSem;
 sem_t Camera_IMUDataFifoSem;
 pthread_mutex_t SaveCamera_IMU_DataMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t SaveCamera_IMU_DataCond=PTHREAD_COND_INITIALIZER;
+
 FramePtr pNewFrame;
+pthread_mutex_t pNewFrameMutex=PTHREAD_MUTEX_INITIALIZER;
+
 //timer_t timerid_EXTERN_TRIGGER1;//Camera trigger pull up
 //timer_t timerid_EXTERN_TRIGGER2;//Camera trigger push down
 //int fd_GPIO_P2_c4;//GPIO file descriptor
@@ -331,6 +335,7 @@ void * SaveIMU_RawDataFunc(void *){
         AssembleDevice.IMU_RawDataFifo.pop();
         pthread_mutex_unlock(&IMU_RawDataFifoMutex);
 
+        pthread_mutex_lock(&pSaveRawIMU_DataMutex);
         AssembleDevice.pSaveRawIMU_Data
                         <<(long)(TempIMU_RawData.timestamp*Nano10_9)<<"," \
                         <<std::setiosflags(std::ios::fixed)\
@@ -341,7 +346,7 @@ void * SaveIMU_RawDataFunc(void *){
                         << TempIMU_RawData.acceleration.x<<","\
                         << TempIMU_RawData.acceleration.y<<","\
                         << TempIMU_RawData.acceleration.z<<std::endl;
-
+        pthread_mutex_unlock(&pSaveRawIMU_DataMutex);
     }
 }
 
@@ -351,7 +356,11 @@ void * SaveIMU_RawDataFunc(void *){
 void CreatAndSaveImag(const FramePtr pFrame ){
     std::cout<<"Received one new frame"<<std::endl;
     pthread_mutex_lock(&SaveCamera_IMU_DataMutex);
+
+    pthread_mutex_lock(&pNewFrameMutex);
     pNewFrame=pFrame;
+    pthread_mutex_unlock(&pNewFrameMutex);
+
     pthread_cond_signal(&SaveCamera_IMU_DataCond);
     pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
 }
@@ -382,25 +391,28 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
 
         VmbErrorType    err         = VmbErrorSuccess;
         //VmbPixelFormatType ePixelFormat = VmbPixelFormatMono8;
+        pthread_mutex_lock(&pNewFrameMutex);
+        FramePtr TempPtr=pNewFrame;
+        pthread_mutex_unlock(&pNewFrameMutex);
 
         if(! AssembleDevice.PhotoFormatInfo.bFormatGetted){
             VmbUint32_t nImageSize = 0;
-            err = pNewFrame->GetImageSize( nImageSize );
+            err = TempPtr->GetImageSize( nImageSize );
             AssembleDevice.PhotoFormatInfo.nImageSize=nImageSize;
             if ( VmbErrorSuccess == err )
             {
                 VmbUint32_t nWidth = 0;
-                err = pNewFrame->GetWidth( nWidth );
+                err = TempPtr->GetWidth( nWidth );
                  AssembleDevice.PhotoFormatInfo.nWidth=nWidth;
                 if ( VmbErrorSuccess == err )
                 {
                     VmbUint32_t nHeight = 0;
-                    err = pNewFrame->GetHeight( nHeight );
+                    err = TempPtr->GetHeight( nHeight );
                      AssembleDevice.PhotoFormatInfo.nHeight=nHeight;
                     if ( VmbErrorSuccess == err )
                     {    AssembleDevice.PhotoFormatInfo.bFormatGetted=true;
                         VmbUchar_t *pImage = NULL;
-                        err = pNewFrame->GetImage( pImage );
+                        err = TempPtr->GetImage( pImage );
 
                         if ( VmbErrorSuccess == err )
                         {
@@ -413,7 +425,7 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
         else{
             VmbUchar_t *pImage = NULL;
 
-            err = pNewFrame->GetImage( pImage );
+            err = TempPtr->GetImage( pImage );
 
             if ( VmbErrorSuccess == err )
             {
@@ -441,6 +453,7 @@ void * SaveCamera_IMU_DataFunc(void *){
         AssembleDevice.Camera_IMU_DataFifo.pop();
         pthread_mutex_unlock(&Camera_IMU_DataFifoMutex);
 
+        pthread_mutex_lock(&pSaveCamera_IMU_DataMutex);
         AssembleDevice.pSaveCamera_IMU_Data
                         <<(long)(TempCamera_IMU_Data.timestamp*Nano10_9)<<"," \
                         <<std::setiosflags(std::ios::fixed)\
@@ -448,6 +461,8 @@ void * SaveCamera_IMU_DataFunc(void *){
                         << TempCamera_IMU_Data.CameraPose.orientation.x<<","\
                         << TempCamera_IMU_Data.CameraPose.orientation.x<<","\
                         << TempCamera_IMU_Data.CameraPose.orientation.z<<std::endl;
+        pthread_mutex_unlock(&pSaveCamera_IMU_DataMutex);
+
         VmbUchar_t *pImage = TempCamera_IMU_Data.pImage;
         AVTBitmap bitmap;
         std::string pFileNametemp="./cam0/"+std::to_string((long)(TempCamera_IMU_Data.timestamp*Nano10_9))\

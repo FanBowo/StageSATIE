@@ -17,6 +17,8 @@ extern Assemble AssembleDevice;
 
 extern pthread_mutex_t Camera_IMU_DataFifoMutex;
 extern pthread_mutex_t IMU_RawDataFifoMutex;
+extern pthread_mutex_t pSaveRawIMU_DataMutex;
+extern pthread_mutex_t pSaveCamera_IMU_DataMutex;
 
 extern pthread_mutex_t Device_TimerCounterMutex;
 extern pthread_cond_t Device_TimeStampCond;
@@ -65,6 +67,8 @@ extern sem_t Camera_IMUDataFifoSem;
 
 extern pthread_mutex_t SaveCamera_IMU_DataMutex;
 extern pthread_cond_t SaveCamera_IMU_DataCond;
+
+extern pthread_mutex_t pNewFrameMutex;
 extern FramePtr pNewFrame;
 
 extern timer_t timerid_EXTERN_TRIGGER1;//Camera trigger pull up
