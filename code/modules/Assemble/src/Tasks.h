@@ -18,6 +18,8 @@ extern Assemble AssembleDevice;
 extern pthread_mutex_t Device_TimerCounterMutex;
 extern pthread_cond_t Device_TimeStampCond;
 extern pthread_mutex_t Device_TimeStampMutex;
+extern pthread_mutex_t RW_Device_TimeStampMutex;
+
 extern timer_t Device_Timer;
 extern int Device_TimerCounter;
 extern struct itimerspec Device_Timer_trigger;

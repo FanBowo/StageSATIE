@@ -24,6 +24,7 @@ FramePtr pNewFrame;
 pthread_mutex_t Device_TimerCounterMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t Device_TimeStampCond=PTHREAD_COND_INITIALIZER;
 pthread_mutex_t Device_TimeStampMutex=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t RW_Device_TimeStampMutex=PTHREAD_MUTEX_INITIALIZER;
 timer_t Device_Timer;
 int Device_TimerCounter=0;
 struct itimerspec Device_Timer_trigger;
@@ -155,8 +156,11 @@ void * UpdateDeviceTimeStampFunc(void *){
         pthread_mutex_lock(& TimeStampBaseReNewMutex );
         pthread_mutex_lock(&Device_TimerCounterMutex);
 
+        pthread_mutex_lock(&RW_Device_TimeStampMutex);
         AssembleDevice.DeviceTimeStamp=Device_TimerCounter*(1.0/(float)TimerDeviceFre)+ \
                                 AssembleDevice.GPS.GpsTimeGetted;
+        pthread_mutex_unlock(&RW_Device_TimeStampMutex);
+
         std::cout<<"DeviceTimeStamp: "<<AssembleDevice.DeviceTimeStamp<<std::endl;
 
         pthread_mutex_unlock(&Device_TimerCounterMutex);
@@ -271,9 +275,9 @@ void UpdateIMU_RawData(){
     //    std::cout<<"omega :"<<(float)event.gyro.x<<\
     //                       " "<<(float)event.gyro.y<<\
     //                       " "<<(float)event.gyro.z<<std::endl;
-
-        TempIMU_RawData.timestamp=AssembleDevice.IMU_TimeStamp;
-
+        pthread_mutex_lock(&RW_Device_TimeStampMutex);
+        TempIMU_RawData.timestamp=AssembleDevice.DeviceTimeStamp;
+        pthread_mutex_unlock(&RW_Device_TimeStampMutex);
 
         AssembleDevice.IMU_RawDataFifo.push(TempIMU_RawData);
 
@@ -355,7 +359,10 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
         //    std::cout<<"Received one new frame"<<std::endl;
         /*use PhotoFormatInfo to save frame format*/
         Camera_IMU_Data_t TempCamera_IMU_Data;
-        TempCamera_IMU_Data.timestamp=AssembleDevice.IMU_TimeStamp;
+
+        pthread_mutex_lock(&RW_Device_TimeStampMutex);
+        TempCamera_IMU_Data.timestamp=AssembleDevice.DeviceTimeStamp;
+        pthread_mutex_unlock(&RW_Device_TimeStampMutex);
 
         sensors_event_t event;
 
