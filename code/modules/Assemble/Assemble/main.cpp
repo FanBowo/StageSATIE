@@ -20,6 +20,7 @@ void CameraFailed(int sign_no){
         if(AssembleDevice.GPSSerial.IsOpen()){
             AssembleDevice.GPSSerial.close();
         }
+        timer_delete(Device_Timer);
         timer_delete(IMU_Timer);
         AssembleDevice.TheCamera.CameraFailed();
         AssembleDevice.pSaveRawIMU_Data.close();
@@ -37,6 +38,8 @@ void init()
     sem_init(&Camera_IMUDataFifoSem,0,0);
 
     AssembleDevice.InitIMU_Module();
+
+    InitTimerDevice();
 
     init_SerialPortInt();
     InitTimerIMU();//i2c1
@@ -63,6 +66,7 @@ int main() // run over and over again
         Interrupt: Cameras Timer interrupt to send signal to take photo
         Interrupt: Receiving a frame of photo Interrupt to dave photo into RAM and
                     to read IMU direction data
+        Interrupt: Timer interrupt of updating device timestamp timer
 
         Task:
         Task1:Update base time stamp
@@ -70,14 +74,15 @@ int main() // run over and over again
         Task3:Save raw IMU data to csv file
         Task4:Save photos and save IMU direction data to csv file
         Task5:Save photos and save IMU direction data to fifo
+        Task6: Update time stamp
 
         Schedule policy: RR
         Task1:MaxPriorityRR
         Task2:MaxPriorityRR-10
         Task3:MaxPriorityRR-25
         Task4:MaxPriorityRR-20
-        Task5:MaxPriorityRR-1
-
+        Task5:MaxPriorityRR-2
+        Task6:MaxPriorityRR-1
     */
 
     std::cout<<"Initialization finished"<<std::endl;
@@ -92,6 +97,17 @@ int main() // run over and over again
     pthread_attr_setschedpolicy(&ThreadUpdateTimeStampBaseParaAttr,SCHED_RR);
     pthread_attr_setschedparam(&ThreadUpdateTimeStampBaseParaAttr,&ThreadUpdateTimeStampBasePara);
     pthread_create(&ThreadUpdateTimeStampBase,&ThreadUpdateTimeStampBaseParaAttr,&UpdateTimeStampBaseFunc,NULL);
+
+    pthread_t ThreadDevice_UpdateTimeStamp;
+    struct sched_param ThreadDevice_UpdateTimeStampPara;
+    memset(&ThreadDevice_UpdateTimeStampPara,0,sizeof(sched_param));
+    ThreadDevice_UpdateTimeStampPara.__sched_priority=sched_get_priority_max(SCHED_RR)-1;
+    pthread_attr_t ThreadDevice_UpdateTimeStampParaAttr;
+    pthread_attr_init(&ThreadDevice_UpdateTimeStampParaAttr);
+    pthread_attr_setinheritsched(&ThreadDevice_UpdateTimeStampParaAttr,PTHREAD_EXPLICIT_SCHED);
+    pthread_attr_setschedpolicy(&ThreadDevice_UpdateTimeStampParaAttr,SCHED_RR);
+    pthread_attr_setschedparam(&ThreadDevice_UpdateTimeStampParaAttr,&ThreadDevice_UpdateTimeStampPara);
+    pthread_create(&ThreadDevice_UpdateTimeStamp,&ThreadDevice_UpdateTimeStampParaAttr,&UpdateDeviceTimeStampFunc,NULL);
 
     pthread_t ThreadIMU_UpdateTimeStamp;
     struct sched_param ThreadIMU_UpdateTimeStampPara;
@@ -132,7 +148,7 @@ int main() // run over and over again
     pthread_t ThreadSaveCamera_IMU_DataToFifo;
     struct sched_param ThreadSaveCamera_IMU_DataToFifoPara;
     memset(&ThreadSaveCamera_IMU_DataToFifoPara,0,sizeof(sched_param));
-    ThreadSaveCamera_IMU_DataToFifoPara.__sched_priority=sched_get_priority_max(SCHED_RR)-1;
+    ThreadSaveCamera_IMU_DataToFifoPara.__sched_priority=sched_get_priority_max(SCHED_RR)-2;
     pthread_attr_t ThreadSaveCamera_IMU_DataToFifoParaAttr;
     pthread_attr_init(&ThreadSaveCamera_IMU_DataToFifoParaAttr);
     pthread_attr_setinheritsched(&ThreadSaveCamera_IMU_DataToFifoParaAttr,PTHREAD_EXPLICIT_SCHED);
@@ -142,6 +158,7 @@ int main() // run over and over again
 
 
     pthread_join(ThreadUpdateTimeStampBase,NULL);
+    pthread_join(ThreadDevice_UpdateTimeStamp,NULL);
     pthread_join(ThreadIMU_UpdateTimeStamp,NULL);
     pthread_join(ThreadSaveIMU_RawData,NULL);
     pthread_join(ThreadSaveCamera_IMU_Data,NULL);

@@ -45,6 +45,7 @@ class Assemble{
     static struct PhotoFormat PhotoFormatInfo;
     bool bIMU_Data_Stable;
     double IMU_TimeStamp;
+    double DeviceTimeStamp;
     std::queue <IMU_RawData_t>IMU_RawDataFifo;
     std::ofstream pSaveRawIMU_Data;
     std::ofstream pSaveCamera_IMU_Data;

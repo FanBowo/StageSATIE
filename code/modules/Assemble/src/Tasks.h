@@ -15,6 +15,16 @@
 #define Nano10_9 1000000000
 extern Assemble AssembleDevice;
 
+extern pthread_mutex_t Device_TimerCounterMutex;
+extern pthread_cond_t Device_TimeStampCond;
+extern pthread_mutex_t Device_TimeStampMutex;
+extern timer_t Device_Timer;
+extern int Device_TimerCounter;
+extern struct itimerspec Device_Timer_trigger;
+#define TimerDeviceFre 100
+void InitTimerDevice();
+void TimerDevice_Feedback(union sigval sv);
+void * UpdateDeviceTimeStampFunc(void *);
 
 extern pthread_mutex_t ReadIMU_Mutex;
 extern pthread_mutex_t TimeStampBaseMutex;
