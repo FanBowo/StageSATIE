@@ -15,6 +15,9 @@
 #define Nano10_9 1000000000
 extern Assemble AssembleDevice;
 
+extern pthread_mutex_t Camera_IMU_DataFifoMutex;
+extern pthread_mutex_t IMU_RawDataFifoMutex;
+
 extern pthread_mutex_t Device_TimerCounterMutex;
 extern pthread_cond_t Device_TimeStampCond;
 extern pthread_mutex_t Device_TimeStampMutex;

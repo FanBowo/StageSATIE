@@ -2,6 +2,10 @@
 #include "Tasks.h"
 Assemble AssembleDevice;
 
+pthread_mutex_t Camera_IMU_DataFifoMutex=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t IMU_RawDataFifoMutex=PTHREAD_MUTEX_INITIALIZER;
+
+
 pthread_mutex_t ReadIMU_Mutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t TimeStampBaseMutex =PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t TimeStampBaseCond=PTHREAD_COND_INITIALIZER;
@@ -109,12 +113,6 @@ void signal_handler_IO (int status)
     //printf("received data from UART.\n");
 }
 
-//pthread_mutex_t Device_TimerCounterMutex=PTHREAD_MUTEX_INITIALIZER;
-//pthread_cond_t Device_TimeStampCond=PTHREAD_COND_INITIALIZER;
-//pthread_mutex_t Device_TimeStampMutex=PTHREAD_MUTEX_INITIALIZER;
-//timer_t Device_Timer;
-//int Device_TimerCounter=0;
-//struct itimerspec Device_Timer_trigger;
 
 void InitTimerDevice(){
     struct sigevent SevTimerDevice;
@@ -161,9 +159,9 @@ void * UpdateDeviceTimeStampFunc(void *){
                                 AssembleDevice.GPS.GpsTimeGetted;
 //        std::cout<<"Device_TimerCounter: "<<Device_TimerCounter<<std::endl;
         pthread_mutex_unlock(&RW_Device_TimeStampMutex);
-
-        std::cout<<"DeviceTimeStamp: "<<std::setiosflags(std::ios::fixed)\
-                        <<std::setprecision(4)<<AssembleDevice.DeviceTimeStamp<<std::endl;
+//
+//        std::cout<<"DeviceTimeStamp: "<<std::setiosflags(std::ios::fixed)\
+//                        <<std::setprecision(4)<<AssembleDevice.DeviceTimeStamp<<std::endl;
 
         pthread_mutex_unlock(&Device_TimerCounterMutex);
         pthread_mutex_unlock(& TimeStampBaseReNewMutex );
@@ -281,7 +279,9 @@ void UpdateIMU_RawData(){
         TempIMU_RawData.timestamp=AssembleDevice.DeviceTimeStamp;
         pthread_mutex_unlock(&RW_Device_TimeStampMutex);
 
+        pthread_mutex_lock(&IMU_RawDataFifoMutex);
         AssembleDevice.IMU_RawDataFifo.push(TempIMU_RawData);
+        pthread_mutex_unlock(&IMU_RawDataFifoMutex);
 
         sem_post(&IMU_RawDataFifoSem);
     }
@@ -325,7 +325,12 @@ void * SaveIMU_RawDataFunc(void *){
     std::cout<<"EnterThread_SaveIMU_RawData"<<std::endl;
     while(1){
         sem_wait(&IMU_RawDataFifoSem);
+
+        pthread_mutex_lock(&IMU_RawDataFifoMutex);
         IMU_RawData_t TempIMU_RawData=AssembleDevice.IMU_RawDataFifo.front();
+        AssembleDevice.IMU_RawDataFifo.pop();
+        pthread_mutex_unlock(&IMU_RawDataFifoMutex);
+
         AssembleDevice.pSaveRawIMU_Data
                         <<(long)(TempIMU_RawData.timestamp*Nano10_9)<<"," \
                         <<std::setiosflags(std::ios::fixed)\
@@ -336,7 +341,6 @@ void * SaveIMU_RawDataFunc(void *){
                         << TempIMU_RawData.acceleration.x<<","\
                         << TempIMU_RawData.acceleration.y<<","\
                         << TempIMU_RawData.acceleration.z<<std::endl;
-        AssembleDevice.IMU_RawDataFifo.pop();
 
     }
 }
@@ -350,7 +354,6 @@ void CreatAndSaveImag(const FramePtr pFrame ){
     pNewFrame=pFrame;
     pthread_cond_signal(&SaveCamera_IMU_DataCond);
     pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
-
 }
 
 void *SaveCamera_IMU_DataToFifoFunc(void *){
@@ -418,7 +421,10 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
             }
         }
 
+        pthread_mutex_lock(&Camera_IMU_DataFifoMutex);
         AssembleDevice.Camera_IMU_DataFifo.push(TempCamera_IMU_Data);
+        pthread_mutex_unlock(&Camera_IMU_DataFifoMutex);
+
         sem_post(&Camera_IMUDataFifoSem);
 
         pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
@@ -429,7 +435,12 @@ void * SaveCamera_IMU_DataFunc(void *){
     std::cout<<"EnterThread_SaveCamera_IMU_Data"<<std::endl;
     while(1){
         sem_wait(&Camera_IMUDataFifoSem);
+
+        pthread_mutex_lock(&Camera_IMU_DataFifoMutex);
         Camera_IMU_Data_t TempCamera_IMU_Data=AssembleDevice.Camera_IMU_DataFifo.front();
+        AssembleDevice.Camera_IMU_DataFifo.pop();
+        pthread_mutex_unlock(&Camera_IMU_DataFifoMutex);
+
         AssembleDevice.pSaveCamera_IMU_Data
                         <<(long)(TempCamera_IMU_Data.timestamp*Nano10_9)<<"," \
                         <<std::setiosflags(std::ios::fixed)\
@@ -468,7 +479,6 @@ void * SaveCamera_IMU_DataFunc(void *){
                 }
             }
         }
-        AssembleDevice.Camera_IMU_DataFifo.pop();
 
     }
 }
