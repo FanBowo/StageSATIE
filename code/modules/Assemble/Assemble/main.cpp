@@ -64,25 +64,25 @@ int main() // run over and over again
         Interrupt: IMU Timer interrupt to send signal of updating IMU timestamp
                     and of reading raw IMU data
         Interrupt: Cameras Timer interrupt to send signal to take photo
-        Interrupt: Receiving a frame of photo Interrupt to dave photo into RAM and
+        Interrupt: Receiving a frame of photo Interrupt to save photo into RAM and
                     to read IMU direction data
         Interrupt: Timer interrupt of updating device timestamp timer
 
         Task:
         Task1:Update base time stamp
-        Task2:Update IMU timestamp and read IMU raw data
+        Task2:Read IMU raw data and save into fifo
         Task3:Save raw IMU data to csv file
         Task4:Save photos and save IMU direction data to csv file
-        Task5:Save photos and save IMU direction data to fifo
-        Task6: Update time stamp
+        Task5-8:Save photos and save IMU direction data to fifo
+        Task9: Update time stamp
 
         Schedule policy: RR
         Task1:MaxPriorityRR
         Task2:MaxPriorityRR-10
         Task3:MaxPriorityRR-25
         Task4:MaxPriorityRR-20
-        Task5:MaxPriorityRR-2
-        Task6:MaxPriorityRR-1
+        Task5-8:MaxPriorityRR-2
+        Task9:MaxPriorityRR-1
     */
 
     std::cout<<"Initialization finished"<<std::endl;

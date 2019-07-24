@@ -257,7 +257,7 @@ void UpdateIMU_RawData(){
         sensors_event_t event;
 
         pthread_mutex_lock(&ReadIMU_Mutex);
-        AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_LINEARACCEL);
+        AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_ACCELEROMETER);
         pthread_mutex_unlock(&ReadIMU_Mutex);
 
         IMU_RawData_t TempIMU_RawData;
