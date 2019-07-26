@@ -1,0 +1,9 @@
+Camera trigger pins:
+SDO:Trigger pin
+GND
+
+IMU PIN:
+SDA1
+SCL1
+5V
+GND

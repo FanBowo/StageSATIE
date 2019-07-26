@@ -72,16 +72,16 @@ int main() // run over and over again
         Task1:Update base time stamp
         Task2:Read IMU raw data and save into fifo
         Task3:Save raw IMU data to csv file
-        Task4:Save photos and save IMU direction data to csv file
-        Task5-8:Save photos and save IMU direction data to fifo
+        Task4-7:Save photos and save IMU direction data to csv file
+        Task8:Save photos and save IMU direction data to fifo
         Task9: Update time stamp
 
         Schedule policy: RR
         Task1:MaxPriorityRR
-        Task2:MaxPriorityRR-10
+        Task2:MaxPriorityRR-3
         Task3:MaxPriorityRR-25
-        Task4:MaxPriorityRR-20
-        Task5-8:MaxPriorityRR-2
+        Task4-7:MaxPriorityRR-20
+        Task8:MaxPriorityRR-2
         Task9:MaxPriorityRR-1
     */
 
@@ -112,7 +112,7 @@ int main() // run over and over again
     pthread_t ThreadIMU_UpdateRawData;
     struct sched_param ThreadIMU_UpdateRawDataPara;
     memset(&ThreadIMU_UpdateRawDataPara,0,sizeof(sched_param));
-    ThreadIMU_UpdateRawDataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-10;
+    ThreadIMU_UpdateRawDataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-3;
     pthread_attr_t ThreadIMU_UpdateRawDataParaAttr;
     pthread_attr_init(&ThreadIMU_UpdateRawDataParaAttr);
     pthread_attr_setinheritsched(&ThreadIMU_UpdateRawDataParaAttr,PTHREAD_EXPLICIT_SCHED);
