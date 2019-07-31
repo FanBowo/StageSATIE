@@ -2,6 +2,8 @@
 #include "Tasks.h"
 Assemble AssembleDevice;
 
+pthread_mutex_t bIMU_Data_StableMutex=PTHREAD_MUTEX_INITIALIZER;
+
 pthread_mutex_t Camera_IMU_DataFifoMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t IMU_RawDataFifoMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t pSaveRawIMU_DataMutex=PTHREAD_MUTEX_INITIALIZER;
@@ -250,7 +252,12 @@ void UpdateIMU_RawData(){
         std::cout<<"System "<<(int)system<<"gyro "<<(int)gyro << \
                 "accel "<<(int)accel<<"mag "<<(int)mag<<std::endl;
         if((int)system==3){
+
+            pthread_mutex_lock(& bIMU_Data_StableMutex );
             AssembleDevice.bIMU_Data_Stable=true;
+            pthread_mutex_unlock(& bIMU_Data_StableMutex );
+
+
         }
     }
     else{
