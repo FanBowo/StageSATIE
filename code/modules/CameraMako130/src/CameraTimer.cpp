@@ -1,8 +1,8 @@
 
 #include "CameraTimer.h"
-#define ExternTriggerFre 20
+#define ExternTriggerFre 10
 #define Nanoseconds_0_5e10_9 1000000000
-#define ExposureTime 50000000
+#define ExposureTime 5000000
 
 
 
@@ -23,7 +23,7 @@ void InitTimer(){
     timer_create(CLOCK_REALTIME,&sev1,&timerid_EXTERN_TRIGGER1);//pull up
 
     trigger1.it_interval.tv_sec=0;//pull up
-    trigger1.it_interval.tv_nsec=Nanoseconds_0_5e10_9/ExternTriggerFre;//pull up
+    trigger1.it_interval.tv_nsec=(long)(Nanoseconds_0_5e10_9/ExternTriggerFre);///pull up
     //trigger.it_interval.tv_nsec=0;
     trigger1.it_value.tv_sec=0;//pull up
     trigger1.it_value.tv_nsec=1;//pull up
@@ -39,7 +39,7 @@ void InitTimer(){
     timer_create(CLOCK_REALTIME,&sev2,&timerid_EXTERN_TRIGGER2);//push down
 
     trigger2.it_interval.tv_sec=0;//push down
-    trigger2.it_interval.tv_nsec=Nanoseconds_0_5e10_9/ExternTriggerFre;//push down
+    trigger2.it_interval.tv_nsec=(long)(Nanoseconds_0_5e10_9/ExternTriggerFre);//push down
     //trigger.it_interval.tv_nsec=0;
     trigger2.it_value.tv_sec=0;//push down
     trigger2.it_value.tv_nsec=1+ExposureTime;//push down

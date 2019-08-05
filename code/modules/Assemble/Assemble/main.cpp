@@ -5,7 +5,7 @@
 
 
 #include "Tasks.h"
-
+#include <turbojpeg.h>
 
 
 // Set GPSECHO to 'false' to turn off echoing the GPS data to the Serial console
@@ -59,6 +59,7 @@ int main() // run over and over again
 {
 
     init();
+
     /*
         Interrupt: GPS serial port int to send signal of updating base timestamp
         Interrupt: IMU Timer interrupt to send signal of updating IMU timestamp

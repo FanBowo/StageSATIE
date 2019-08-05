@@ -76,7 +76,7 @@ void CameraMako130:: SetExposureTime(){
     }
 
     if(VmbErrorSuccess==camera->GetFeatureByName ("ExposureTime", pFeature )){
-        if(VmbErrorSuccess==pFeature -> SetValue (9999.9)){
+        if(VmbErrorSuccess==pFeature -> SetValue (4999.9)){
             std::cout<<"Successfully Set feature exposure time"<<std::endl;
         }
         else{

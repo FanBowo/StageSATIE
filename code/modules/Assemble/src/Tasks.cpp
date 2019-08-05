@@ -134,7 +134,7 @@ void InitTimerDevice(){
 
     timer_create(CLOCK_REALTIME, &SevTimerDevice,&Device_Timer);
     Device_Timer_trigger.it_interval.tv_sec=0;
-    Device_Timer_trigger.it_interval.tv_nsec=Nano10_9/TimerDeviceFre;
+    Device_Timer_trigger.it_interval.tv_nsec=(long)(Nano10_9/TimerDeviceFre);
     Device_Timer_trigger.it_value.tv_sec=0;
     Device_Timer_trigger.it_value.tv_nsec=1;
     Device_TimerCounter=0;
@@ -192,7 +192,7 @@ void InitTimerIMU(){
 
     timer_create(CLOCK_REALTIME, &SevTimerIMU,&IMU_Timer);
     IMU_Timer_trigger.it_interval.tv_sec=0;
-    IMU_Timer_trigger.it_interval.tv_nsec=Nano10_9/TimerIMUFre;
+    IMU_Timer_trigger.it_interval.tv_nsec=(long)(Nano10_9/TimerIMUFre);
     IMU_Timer_trigger.it_value.tv_sec=0;
     IMU_Timer_trigger.it_value.tv_nsec=1;
 //    IMU_TimerCounter=0;
@@ -333,9 +333,10 @@ void UpdateIMU_RawData(){
 
         pthread_mutex_lock(&IMU_RawDataFifoMutex);
         AssembleDevice.IMU_RawDataFifo.push(TempIMU_RawData);
+        sem_post(&IMU_RawDataFifoSem);
         pthread_mutex_unlock(&IMU_RawDataFifoMutex);
 
-        sem_post(&IMU_RawDataFifoSem);
+
 
         pthread_mutex_lock(& bCSV_PointerPreparedMutex );
         bool TempbCSV_PointerPreparedMutex=AssembleDevice.bCSV_PointerPrepared;
@@ -507,9 +508,9 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
 
         pthread_mutex_lock(&Camera_IMU_DataFifoMutex);
         AssembleDevice.Camera_IMU_DataFifo.push(TempCamera_IMU_Data);
+        sem_post(&Camera_IMUDataFifoSem);
         pthread_mutex_unlock(&Camera_IMU_DataFifoMutex);
 
-        sem_post(&Camera_IMUDataFifoSem);
 
         pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
     }
@@ -567,7 +568,7 @@ void * SaveCamera_IMU_DataFunc(void *){
             }
             else{
                 std::cout << "Bitmap successfully written to file \"" << pFileName << "\"\n" ;
-                // Release the bitmap's buffer
+//                // Release the bitmap's buffer
                 if ( 0 == AVTReleaseBitmap( &bitmap )){
                     std::cout << "Could not release the bitmap.\n";
                     err = VmbErrorInternalFault;
