@@ -151,11 +151,11 @@ int main() // run over and over again
     pthread_attr_setschedparam(&ThreadSaveCamera_IMU_DataParaAttr,&ThreadSaveCamera_IMU_DataPara);
     pthread_create(&ThreadSaveCamera_IMU_Data,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
 
-    pthread_t ThreadSaveCamera_IMU_Data1;
-    pthread_create(&ThreadSaveCamera_IMU_Data1,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
-
-    pthread_t ThreadSaveCamera_IMU_Data2;
-    pthread_create(&ThreadSaveCamera_IMU_Data2,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
+//    pthread_t ThreadSaveCamera_IMU_Data1;
+//    pthread_create(&ThreadSaveCamera_IMU_Data1,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
+//
+//    pthread_t ThreadSaveCamera_IMU_Data2;
+//    pthread_create(&ThreadSaveCamera_IMU_Data2,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
 
 //    pthread_t ThreadSaveCamera_IMU_Data3;
 //    pthread_create(&ThreadSaveCamera_IMU_Data3,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
@@ -177,8 +177,8 @@ int main() // run over and over again
     pthread_join(ThreadIMU_UpdateRawData,NULL);
     pthread_join(ThreadSaveIMU_RawData,NULL);
     pthread_join(ThreadSaveCamera_IMU_Data,NULL);
-    pthread_join(ThreadSaveCamera_IMU_Data1,NULL);
-    pthread_join(ThreadSaveCamera_IMU_Data2,NULL);
+//    pthread_join(ThreadSaveCamera_IMU_Data1,NULL);
+//    pthread_join(ThreadSaveCamera_IMU_Data2,NULL);
 //    pthread_join(ThreadSaveCamera_IMU_Data3,NULL);
     pthread_join(ThreadSaveCamera_IMU_DataToFifo,NULL);
 

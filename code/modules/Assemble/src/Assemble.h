@@ -26,10 +26,13 @@ typedef struct{
     sensors_save_vec_t   gyro;         /**< gyroscope values are in rad/s */
 } IMU_RawData_t;
 
+#define Default_Size  1310720
+#define Default_Width   1280
+#define Default_Height 1024
 typedef struct{
     float timestamp;                /**< time is in seconds */
     sensors_event_t   CameraPose;  /**< orientation values are in degrees *//**< orientation values are in degrees */
-    VmbUchar_t *pImage;/*Pointer of image data*/
+    VmbUchar_t pImage[Default_Size];/*Pointer of image data*/
 } Camera_IMU_Data_t;
 
 class Assemble{

@@ -48,7 +48,7 @@
 1546914088 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Assemble.cpp
 	"Assemble.h"
 
-1546913878 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Assemble.h
+1455208351 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Assemble.h
 	<queue>
 	<iostream>
 	<unistd.h>
@@ -58,10 +58,10 @@
 	"Adafruit_GPS.h"
 	"BNO055_Cali.h"
 
-1455208200 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
+1455208636 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
 	"Tasks.h"
 
-1455208616 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.h
+1455208621 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.h
 	"Assemble.h"
 	<pthread.h>
 	<signal.h>
@@ -74,7 +74,7 @@
 	<errno.h>
 	<turbojpeg.h>
 
-1455208302 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/Assemble/main.cpp
+1455208611 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/Assemble/main.cpp
 	"Tasks.h"
 
 1564546075 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/BNO055_Cali.h
@@ -427,7 +427,7 @@
 	<stdio.h>
 	<fcntl.h>
 
-1455208604 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraTimer.cpp
+1455208261 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraTimer.cpp
 	"CameraTimer.h"
 
 1562751330 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhoto/TestCameraMako130TakePhoto/CameraMakoCleanUpAndSaveImage.cpp

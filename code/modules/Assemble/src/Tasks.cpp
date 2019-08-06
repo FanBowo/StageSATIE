@@ -28,6 +28,9 @@ sem_t IMU_RawDataFifoSem;
 
 
 sem_t Camera_IMUDataFifoSem;
+//sem_t PhotoSem;
+//sem_t PhotoPositionSem;
+
 pthread_mutex_t SaveCamera_IMU_DataMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t SaveCamera_IMU_DataCond=PTHREAD_COND_INITIALIZER;
 
@@ -437,12 +440,15 @@ void CreatAndSaveImag(const FramePtr pFrame ){
     pthread_mutex_lock(&SaveCamera_IMU_DataMutex);
 
     pthread_mutex_lock(&pNewFrameMutex);
+
     pNewFrame=pFrame;
+
     pthread_mutex_unlock(&pNewFrameMutex);
 
     pthread_cond_signal(&SaveCamera_IMU_DataCond);
     pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
 }
+
 
 void *SaveCamera_IMU_DataToFifoFunc(void *){
     std::cout<<"Enter SaveCamera_IMU_DataToFifo thread "<<std::endl;
@@ -478,6 +484,8 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
 
         VmbErrorType    err         = VmbErrorSuccess;
         //VmbPixelFormatType ePixelFormat = VmbPixelFormatMono8;
+
+
         pthread_mutex_lock(&pNewFrameMutex);
         FramePtr TempPtr=pNewFrame;
         pthread_mutex_unlock(&pNewFrameMutex);
@@ -485,16 +493,19 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
         if(! AssembleDevice.PhotoFormatInfo.bFormatGetted){
             VmbUint32_t nImageSize = 0;
             err = TempPtr->GetImageSize( nImageSize );
+            std::cout<<"nImageSize "<<nImageSize<<std::endl;
             AssembleDevice.PhotoFormatInfo.nImageSize=nImageSize;
             if ( VmbErrorSuccess == err )
             {
                 VmbUint32_t nWidth = 0;
                 err = TempPtr->GetWidth( nWidth );
                  AssembleDevice.PhotoFormatInfo.nWidth=nWidth;
+                 std::cout<<"nWidth "<<nWidth<<std::endl;
                 if ( VmbErrorSuccess == err )
                 {
                     VmbUint32_t nHeight = 0;
                     err = TempPtr->GetHeight( nHeight );
+                    std::cout<<"nHeight "<<nHeight<<std::endl;
                      AssembleDevice.PhotoFormatInfo.nHeight=nHeight;
                     if ( VmbErrorSuccess == err )
                     {    AssembleDevice.PhotoFormatInfo.bFormatGetted=true;
@@ -503,8 +514,10 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
 
                         if ( VmbErrorSuccess == err )
                         {
-                            TempCamera_IMU_Data.pImage=pImage;
+                            memcpy(TempCamera_IMU_Data.pImage,pImage,Default_Size);
+//                            *(TempCamera_IMU_Data.pImage)=*(pImage);
                         }
+
                     }
                 }
             }
@@ -516,7 +529,7 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
 
             if ( VmbErrorSuccess == err )
             {
-                TempCamera_IMU_Data.pImage=pImage;
+                memcpy(TempCamera_IMU_Data.pImage,pImage,Default_Size);
             }
         }
 
@@ -525,12 +538,13 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
         sem_post(&Camera_IMUDataFifoSem);
         pthread_mutex_unlock(&Camera_IMU_DataFifoMutex);
 
-
         pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
+
+
     }
 }
 
-#define SaveImagAsJPEG
+//#define SaveImagAsJPEG
 #ifdef SaveImagAsJPEG
 
 #define THROW(action, message) { \
