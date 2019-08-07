@@ -1,0 +1,34 @@
+Performing C SOURCE FILE Test RIGHT_SHIFT_IS_UNSIGNED failed with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_72137/fast"
+/usr/bin/make -f CMakeFiles/cmTC_72137.dir/build.make CMakeFiles/cmTC_72137.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_72137.dir/src.c.o
+/usr/bin/cc    -DRIGHT_SHIFT_IS_UNSIGNED   -o CMakeFiles/cmTC_72137.dir/src.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_72137
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_72137.dir/link.txt --verbose=1
+/usr/bin/cc   -DRIGHT_SHIFT_IS_UNSIGNED    CMakeFiles/cmTC_72137.dir/src.c.o  -o cmTC_72137 -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+Return value: 1
+Source file was:
+
+      #include <stdio.h>
+      #include <stdlib.h>
+      int is_shifting_signed (long arg) {
+        long res = arg >> 4;
+        if (res == -0x7F7E80CL)
+          return 1; /* right shift is signed */
+        /* see if unsigned-shift hack will fix it. */
+        /* we can't just test exact value since it depends on width of long... */
+        res |= (~0L) << (32-4);
+        if (res == -0x7F7E80CL)
+          return 0; /* right shift is unsigned */
+        printf("Right shift isn't acting as I expect it to.\n");
+        printf("I fear the JPEG software will not work at all.\n\n");
+        return 0; /* try it with unsigned anyway */
+      }
+      int main (void) {
+        exit(is_shifting_signed(-0x7F7E80B1L));
+      }

@@ -1,0 +1,10 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/simd/arm64/jsimd_neon.S
+

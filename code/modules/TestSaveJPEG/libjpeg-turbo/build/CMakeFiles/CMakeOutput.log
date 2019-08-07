@@ -1,0 +1,473 @@
+The system is: Linux - 4.4.114-00003-g78cbf59-dirty - aarch64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /usr/bin/cc 
+Build flags: 
+Id flags: 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is GNU, found in "/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/3.5.1/CompilerIdC/a.out"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_35953/fast"
+/usr/bin/make -f CMakeFiles/cmTC_35953.dir/build.make CMakeFiles/cmTC_35953.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_35953.dir/testCCompiler.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_35953.dir/testCCompiler.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_35953
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_35953.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_35953.dir/testCCompiler.c.o  -o cmTC_35953 -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4379a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_4379a.dir/build.make CMakeFiles/cmTC_4379a.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4379a.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_4379a.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_4379a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4379a.dir/link.txt --verbose=1
+/usr/bin/cc      -v CMakeFiles/cmTC_4379a.dir/CMakeCCompilerABI.c.o  -o cmTC_4379a -rdynamic  
+Using built-in specs.
+COLLECT_GCC=/usr/bin/cc
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/5/lto-wrapper
+Target: aarch64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu/Linaro 5.4.0-6ubuntu1~16.04.11' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-arm64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-arm64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-arm64 --with-arch-directory=aarch64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu
+Thread model: posix
+gcc version 5.4.0 20160609 (Ubuntu/Linaro 5.4.0-6ubuntu1~16.04.11) 
+COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_4379a' '-rdynamic' '-mlittle-endian' '-mabi=lp64'
+ /usr/lib/gcc/aarch64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccB7iAoS.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -z relro -o cmTC_4379a /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crt1.o /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/aarch64-linux-gnu/5 -L/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/5/../../.. CMakeFiles/cmTC_4379a.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/aarch64-linux-gnu/5/crtend.o /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crtn.o
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_4379a/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_4379a.dir/build.make CMakeFiles/cmTC_4379a.dir/build]
+  ignore line: [make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_4379a.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc     -o CMakeFiles/cmTC_4379a.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTC_4379a]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4379a.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc      -v CMakeFiles/cmTC_4379a.dir/CMakeCCompilerABI.c.o  -o cmTC_4379a -rdynamic  ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/usr/bin/cc]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/5/lto-wrapper]
+  ignore line: [Target: aarch64-linux-gnu]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu/Linaro 5.4.0-6ubuntu1~16.04.11' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-arm64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-arm64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-arm64 --with-arch-directory=aarch64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 5.4.0 20160609 (Ubuntu/Linaro 5.4.0-6ubuntu1~16.04.11) ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_4379a' '-rdynamic' '-mlittle-endian' '-mabi=lp64']
+  link line: [ /usr/lib/gcc/aarch64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccB7iAoS.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -z relro -o cmTC_4379a /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crt1.o /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/aarch64-linux-gnu/5 -L/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/5/../../.. CMakeFiles/cmTC_4379a.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/aarch64-linux-gnu/5/crtend.o /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crtn.o]
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/collect2] ==> ignore
+    arg [-plugin] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/5/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccB7iAoS.res] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [--sysroot=/] ==> ignore
+    arg [--build-id] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [--hash-style=gnu] ==> ignore
+    arg [--as-needed] ==> ignore
+    arg [-export-dynamic] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib/ld-linux-aarch64.so.1] ==> ignore
+    arg [-X] ==> ignore
+    arg [-EL] ==> ignore
+    arg [-maarch64linux] ==> ignore
+    arg [--fix-cortex-a53-843419] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_4379a] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crt1.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crti.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/crtbegin.o] ==> ignore
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/5] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/5]
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu]
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib]
+    arg [-L/lib/aarch64-linux-gnu] ==> dir [/lib/aarch64-linux-gnu]
+    arg [-L/lib/../lib] ==> dir [/lib/../lib]
+    arg [-L/usr/lib/aarch64-linux-gnu] ==> dir [/usr/lib/aarch64-linux-gnu]
+    arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/5/../../..] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../..]
+    arg [CMakeFiles/cmTC_4379a.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [-lc] ==> lib [c]
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/crtend.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crtn.o] ==> ignore
+  remove lib [gcc]
+  remove lib [gcc_s]
+  remove lib [gcc]
+  remove lib [gcc_s]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/5] ==> [/usr/lib/gcc/aarch64-linux-gnu/5]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib] ==> [/usr/lib]
+  collapse library dir [/lib/aarch64-linux-gnu] ==> [/lib/aarch64-linux-gnu]
+  collapse library dir [/lib/../lib] ==> [/lib]
+  collapse library dir [/usr/lib/aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
+  collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../..] ==> [/usr/lib]
+  implicit libs: [c]
+  implicit dirs: [/usr/lib/gcc/aarch64-linux-gnu/5;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib]
+  implicit fwks: []
+
+
+
+
+Detecting C [-std=c11] compiler features compiled with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f510a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f510a.dir/build.make CMakeFiles/cmTC_f510a.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f510a.dir/feature_tests.c.o
+/usr/bin/cc    -std=c11 -o CMakeFiles/cmTC_f510a.dir/feature_tests.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_f510a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f510a.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_f510a.dir/feature_tests.c.o  -o cmTC_f510a -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:1c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c99] compiler features compiled with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_06900/fast"
+/usr/bin/make -f CMakeFiles/cmTC_06900.dir/build.make CMakeFiles/cmTC_06900.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_06900.dir/feature_tests.c.o
+/usr/bin/cc    -std=c99 -o CMakeFiles/cmTC_06900.dir/feature_tests.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_06900
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_06900.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_06900.dir/feature_tests.c.o  -o cmTC_06900 -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c90] compiler features compiled with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_33d8a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_33d8a.dir/build.make CMakeFiles/cmTC_33d8a.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_33d8a.dir/feature_tests.c.o
+/usr/bin/cc    -std=c90 -o CMakeFiles/cmTC_33d8a.dir/feature_tests.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_33d8a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_33d8a.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_33d8a.dir/feature_tests.c.o  -o cmTC_33d8a -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:0c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:0c_variadic_macros
+Determining if the include file sys/types.h exists passed with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6d20c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6d20c.dir/build.make CMakeFiles/cmTC_6d20c.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6d20c.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_6d20c.dir/CheckIncludeFile.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_6d20c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6d20c.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_6d20c.dir/CheckIncludeFile.c.o  -o cmTC_6d20c -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file stdint.h exists passed with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b3269/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b3269.dir/build.make CMakeFiles/cmTC_b3269.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b3269.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_b3269.dir/CheckIncludeFile.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_b3269
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b3269.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_b3269.dir/CheckIncludeFile.c.o  -o cmTC_b3269 -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the include file stddef.h exists passed with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_3d970/fast"
+/usr/bin/make -f CMakeFiles/cmTC_3d970.dir/build.make CMakeFiles/cmTC_3d970.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_3d970.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_3d970.dir/CheckIncludeFile.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_3d970
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3d970.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_3d970.dir/CheckIncludeFile.c.o  -o cmTC_3d970 -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+
+Determining size of size_t passed with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_fd327/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fd327.dir/build.make CMakeFiles/cmTC_fd327.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_fd327.dir/SIZE_T.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_fd327.dir/SIZE_T.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CheckTypeSize/SIZE_T.c
+Linking C executable cmTC_fd327
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fd327.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_fd327.dir/SIZE_T.c.o  -o cmTC_fd327 -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+
+Determining size of unsigned long passed with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6e78e/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6e78e.dir/build.make CMakeFiles/cmTC_6e78e.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6e78e.dir/UNSIGNED_LONG.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_6e78e.dir/UNSIGNED_LONG.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CheckTypeSize/UNSIGNED_LONG.c
+Linking C executable cmTC_6e78e
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6e78e.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_6e78e.dir/UNSIGNED_LONG.c.o  -o cmTC_6e78e -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+
+Performing C SOURCE FILE Test HAVE_BUILTIN_CTZL succeeded with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_e91ff/fast"
+/usr/bin/make -f CMakeFiles/cmTC_e91ff.dir/build.make CMakeFiles/cmTC_e91ff.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e91ff.dir/src.c.o
+/usr/bin/cc    -DHAVE_BUILTIN_CTZL   -o CMakeFiles/cmTC_e91ff.dir/src.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_e91ff
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e91ff.dir/link.txt --verbose=1
+/usr/bin/cc   -DHAVE_BUILTIN_CTZL    CMakeFiles/cmTC_e91ff.dir/src.c.o  -o cmTC_e91ff -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(int argc, char **argv) { unsigned long a = argc;  return __builtin_ctzl(a); }
+Determining if files locale.h exist passed with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4158f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_4158f.dir/build.make CMakeFiles/cmTC_4158f.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4158f.dir/CheckIncludeFiles.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_4158f.dir/CheckIncludeFiles.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_4158f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4158f.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_4158f.dir/CheckIncludeFiles.c.o  -o cmTC_4158f -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+
+Determining if files stdlib.h exist passed with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a0750/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a0750.dir/build.make CMakeFiles/cmTC_a0750.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a0750.dir/CheckIncludeFiles.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_a0750.dir/CheckIncludeFiles.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_a0750
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a0750.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_a0750.dir/CheckIncludeFiles.c.o  -o cmTC_a0750 -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+
+Determining if files sys/types.h exist passed with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_db7f5/fast"
+/usr/bin/make -f CMakeFiles/cmTC_db7f5.dir/build.make CMakeFiles/cmTC_db7f5.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_db7f5.dir/CheckIncludeFiles.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_db7f5.dir/CheckIncludeFiles.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+Linking C executable cmTC_db7f5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_db7f5.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_db7f5.dir/CheckIncludeFiles.c.o  -o cmTC_db7f5 -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+
+Determining if the memset exist passed with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_47eeb/fast"
+/usr/bin/make -f CMakeFiles/cmTC_47eeb.dir/build.make CMakeFiles/cmTC_47eeb.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_47eeb.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_47eeb.dir/CheckSymbolExists.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_47eeb
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_47eeb.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_47eeb.dir/CheckSymbolExists.c.o  -o cmTC_47eeb -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+File /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <string.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef memset
+  return ((int*)(&memset))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the memcpy exist passed with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1fff3/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1fff3.dir/build.make CMakeFiles/cmTC_1fff3.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1fff3.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_1fff3.dir/CheckSymbolExists.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_1fff3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1fff3.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_1fff3.dir/CheckSymbolExists.c.o  -o cmTC_1fff3 -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+File /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <string.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef memcpy
+  return ((int*)(&memcpy))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining size of unsigned char passed with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6fe03/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6fe03.dir/build.make CMakeFiles/cmTC_6fe03.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6fe03.dir/UNSIGNED_CHAR.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_6fe03.dir/UNSIGNED_CHAR.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CheckTypeSize/UNSIGNED_CHAR.c
+Linking C executable cmTC_6fe03
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6fe03.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_6fe03.dir/UNSIGNED_CHAR.c.o  -o cmTC_6fe03 -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+
+Determining size of unsigned short passed with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_919dc/fast"
+/usr/bin/make -f CMakeFiles/cmTC_919dc.dir/build.make CMakeFiles/cmTC_919dc.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_919dc.dir/UNSIGNED_SHORT.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_919dc.dir/UNSIGNED_SHORT.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CheckTypeSize/UNSIGNED_SHORT.c
+Linking C executable cmTC_919dc
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_919dc.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_919dc.dir/UNSIGNED_SHORT.c.o  -o cmTC_919dc -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+
+Performing C SOURCE FILE Test INCOMPLETE_TYPES succeeded with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_56b86/fast"
+/usr/bin/make -f CMakeFiles/cmTC_56b86.dir/build.make CMakeFiles/cmTC_56b86.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_56b86.dir/src.c.o
+/usr/bin/cc    -DINCOMPLETE_TYPES   -o CMakeFiles/cmTC_56b86.dir/src.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_56b86
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_56b86.dir/link.txt --verbose=1
+/usr/bin/cc   -DINCOMPLETE_TYPES    CMakeFiles/cmTC_56b86.dir/src.c.o  -o cmTC_56b86 -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { typedef struct undefined_structure *undef_struct_ptr;  undef_struct_ptr ptr = 0;  return ptr != 0; }
+Performing C SOURCE FILE Test __CHAR_UNSIGNED__ succeeded with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4b9c7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_4b9c7.dir/build.make CMakeFiles/cmTC_4b9c7.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4b9c7.dir/src.c.o
+/usr/bin/cc    -D__CHAR_UNSIGNED__   -o CMakeFiles/cmTC_4b9c7.dir/src.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_4b9c7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4b9c7.dir/link.txt --verbose=1
+/usr/bin/cc   -D__CHAR_UNSIGNED__    CMakeFiles/cmTC_4b9c7.dir/src.c.o  -o cmTC_4b9c7 -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+Return value: 1
+Source file was:
+int main(void) { return ((char) -1 < 0); }
+Performing C SOURCE FILE Test INLINE_WORKS succeeded with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7312f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7312f.dir/build.make CMakeFiles/cmTC_7312f.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7312f.dir/src.c.o
+/usr/bin/cc    -DINLINE_WORKS   -o CMakeFiles/cmTC_7312f.dir/src.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_7312f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7312f.dir/link.txt --verbose=1
+/usr/bin/cc   -DINLINE_WORKS    CMakeFiles/cmTC_7312f.dir/src.c.o  -o cmTC_7312f -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+__inline__ __attribute__((always_inline)) static int foo(void) { return 0; } int main(void) { return foo(); }
+Performing C SOURCE FILE Test HAVE_VERSION_SCRIPT succeeded with the following output:
+Change Dir: /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_993ce/fast"
+/usr/bin/make -f CMakeFiles/cmTC_993ce.dir/build.make CMakeFiles/cmTC_993ce.dir/build
+make[1]: Entering directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_993ce.dir/src.c.o
+/usr/bin/cc    -DHAVE_VERSION_SCRIPT -Wl,--version-script,/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/conftest.map   -o CMakeFiles/cmTC_993ce.dir/src.c.o   -c /home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_993ce
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_993ce.dir/link.txt --verbose=1
+/usr/bin/cc   -DHAVE_VERSION_SCRIPT -Wl,--version-script,/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/conftest.map    CMakeFiles/cmTC_993ce.dir/src.c.o  -o cmTC_993ce -rdynamic 
+make[1]: Leaving directory '/home/firefly/Desktop/StageSATIE/code/modules/TestSaveJPEG/libjpeg-turbo/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(void) { return 0; }
