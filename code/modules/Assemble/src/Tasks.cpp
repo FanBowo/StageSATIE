@@ -509,7 +509,8 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
                      AssembleDevice.PhotoFormatInfo.nHeight=nHeight;
                     if ( VmbErrorSuccess == err )
                     {    AssembleDevice.PhotoFormatInfo.bFormatGetted=true;
-                        VmbUchar_t *pImage = NULL;
+                        VmbUchar_t ImageBuffer[Default_Size];
+                        VmbUchar_t *pImage = ImageBuffer;
                         err = TempPtr->GetImage( pImage );
 
                         if ( VmbErrorSuccess == err )
@@ -523,8 +524,8 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
             }
         }
         else{
-            VmbUchar_t *pImage = NULL;
-
+            VmbUchar_t ImageBuffer[Default_Size];
+            VmbUchar_t *pImage = ImageBuffer;
             err = TempPtr->GetImage( pImage );
 
             if ( VmbErrorSuccess == err )
