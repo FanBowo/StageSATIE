@@ -449,7 +449,7 @@ void CreatAndSaveImag(const FramePtr pFrame ){
     pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
 }
 
-
+#define UseDefaultPhotoFormat
 void *SaveCamera_IMU_DataToFifoFunc(void *){
     std::cout<<"Enter SaveCamera_IMU_DataToFifo thread "<<std::endl;
 
@@ -458,7 +458,12 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
     std::cout<<"wait bIMU_Data_StableCond Signal"<<std::endl;
     pthread_mutex_unlock(& bIMU_Data_StableMutex );
     std::cout<<"Reiceived IMU_Data_Stable condition signal"<<std::endl;
-
+#ifdef UseDefaultPhotoFormat
+    AssembleDevice.PhotoFormatInfo.nImageSize=Default_Size;
+    AssembleDevice.PhotoFormatInfo.nWidth=Default_Width;
+    AssembleDevice.PhotoFormatInfo.nWidth=Default_Height;
+    AssembleDevice.PhotoFormatInfo.bFormatGetted=true;
+#endif // UseDefaultPhotoFormat
     while(1){
         pthread_mutex_lock(&SaveCamera_IMU_DataMutex);
         pthread_cond_wait(&SaveCamera_IMU_DataCond,&SaveCamera_IMU_DataMutex);
@@ -489,7 +494,7 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
         pthread_mutex_lock(&pNewFrameMutex);
         FramePtr TempPtr=pNewFrame;
         pthread_mutex_unlock(&pNewFrameMutex);
-
+#ifndef UseDefaultPhotoFormat
         if(! AssembleDevice.PhotoFormatInfo.bFormatGetted){
             VmbUint32_t nImageSize = 0;
             err = TempPtr->GetImageSize( nImageSize );
@@ -509,13 +514,13 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
                      AssembleDevice.PhotoFormatInfo.nHeight=nHeight;
                     if ( VmbErrorSuccess == err )
                     {    AssembleDevice.PhotoFormatInfo.bFormatGetted=true;
-                        VmbUchar_t ImageBuffer[Default_Size];
+                        VmbUchar_t ImageBuffer[nImageSize];
                         VmbUchar_t *pImage = ImageBuffer;
                         err = TempPtr->GetImage( pImage );
 
                         if ( VmbErrorSuccess == err )
                         {
-                            memcpy(TempCamera_IMU_Data.pImage,pImage,Default_Size);
+                            memcpy(TempCamera_IMU_Data.pImage,pImage,nImageSize);
 //                            *(TempCamera_IMU_Data.pImage)=*(pImage);
                         }
 
@@ -524,16 +529,26 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
             }
         }
         else{
-            VmbUchar_t ImageBuffer[Default_Size];
+            VmbUint32_t nImageSize=AssembleDevice.PhotoFormatInfo.nImageSize;
+            VmbUchar_t ImageBuffer[nImageSize];
             VmbUchar_t *pImage = ImageBuffer;
             err = TempPtr->GetImage( pImage );
 
             if ( VmbErrorSuccess == err )
             {
-                memcpy(TempCamera_IMU_Data.pImage,pImage,Default_Size);
+                memcpy(TempCamera_IMU_Data.pImage,pImage,nImageSize);
             }
         }
+#endif // UseDefaultPhotoFormat
+#ifdef UseDefaultPhotoFormat
+        VmbUchar_t ImageBuffer[Default_Size];
+        VmbUchar_t *pImage = ImageBuffer;
+        err = TempPtr->GetImage( pImage );
 
+        if ( VmbErrorSuccess == err ){
+            memcpy(TempCamera_IMU_Data.pImage,pImage,Default_Size);
+        }
+#endif // UseDefaultPhotoFormat
         pthread_mutex_lock(&Camera_IMU_DataFifoMutex);
         AssembleDevice.Camera_IMU_DataFifo.push(TempCamera_IMU_Data);
         sem_post(&Camera_IMUDataFifoSem);
@@ -660,10 +675,16 @@ void * SaveCamera_IMU_DataFunc(void *){
         const char *pFileName=pFileNametemp.c_str();
 
         bitmap.colorCode = ColorCodeMono8;
-        bitmap.bufferSize =  AssembleDevice.PhotoFormatInfo.nImageSize;
-        bitmap.width =  AssembleDevice.PhotoFormatInfo.nWidth;
-        bitmap.height =  AssembleDevice.PhotoFormatInfo.nHeight;
-
+        #ifndef UseDefaultPhotoFormat
+            bitmap.bufferSize =  AssembleDevice.PhotoFormatInfo.nImageSize;
+            bitmap.width =  AssembleDevice.PhotoFormatInfo.nWidth;
+            bitmap.height =  AssembleDevice.PhotoFormatInfo.nHeight;
+        #endif // UseDefaultPhotoFormat
+        #ifdef UseDefaultPhotoFormat
+            bitmap.bufferSize=Default_Size;
+            bitmap.width=Default_Width;
+            bitmap.height=Default_Height;
+        #endif // UseDefaultPhotoFormat
         VmbError_t err =VmbErrorSuccess;
         if ( 0 == AVTCreateBitmap( &bitmap, pImage )){
             std::cout << "Could not create bitmap.\n";
@@ -675,6 +696,11 @@ void * SaveCamera_IMU_DataFunc(void *){
             if ( 0 == AVTWriteBitmapToFile( &bitmap, pFileName )){
                 std::cout << "Could not write bitmap to file.\n";
                 err = VmbErrorOther;
+                //                // Release the bitmap's buffer
+                if ( 0 == AVTReleaseBitmap( &bitmap )){
+                    std::cout << "Could not release the bitmap.\n";
+                    err = VmbErrorInternalFault;
+                }
             }
             else{
                 std::cout << "Bitmap successfully written to file \"" << pFileName << "\"\n" ;
