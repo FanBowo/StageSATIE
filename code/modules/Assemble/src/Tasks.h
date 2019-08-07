@@ -79,7 +79,7 @@ extern sem_t Camera_IMUDataFifoSem;
 
 //extern sem_t PhotoSem;
 //extern sem_t PhotoPositionSem;
-
+extern pthread_mutex_t OnlySaveCamera_IMU_DataPthreadMutex;
 extern pthread_mutex_t SaveCamera_IMU_DataMutex;
 extern pthread_cond_t SaveCamera_IMU_DataCond;
 

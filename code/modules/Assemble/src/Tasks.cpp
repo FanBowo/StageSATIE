@@ -30,7 +30,7 @@ sem_t IMU_RawDataFifoSem;
 sem_t Camera_IMUDataFifoSem;
 //sem_t PhotoSem;
 //sem_t PhotoPositionSem;
-
+pthread_mutex_t OnlySaveCamera_IMU_DataPthreadMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t SaveCamera_IMU_DataMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t SaveCamera_IMU_DataCond=PTHREAD_COND_INITIALIZER;
 
@@ -346,8 +346,8 @@ void UpdateIMU_RawData(){
 
         pthread_mutex_lock(&IMU_RawDataFifoMutex);
         AssembleDevice.IMU_RawDataFifo.push(TempIMU_RawData);
-        pthread_mutex_unlock(&IMU_RawDataFifoMutex);
         sem_post(&IMU_RawDataFifoSem);
+        pthread_mutex_unlock(&IMU_RawDataFifoMutex);
 
 
         pthread_mutex_lock(& bCSV_PointerPreparedMutex );
@@ -550,8 +550,8 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
 #endif // UseDefaultPhotoFormat
         pthread_mutex_lock(&Camera_IMU_DataFifoMutex);
         AssembleDevice.Camera_IMU_DataFifo.push(TempCamera_IMU_Data);
-        pthread_mutex_unlock(&Camera_IMU_DataFifoMutex);
         sem_post(&Camera_IMUDataFifoSem);
+        pthread_mutex_unlock(&Camera_IMU_DataFifoMutex);
 
         pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
 
@@ -564,7 +564,7 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
 
 #define THROW(action, message) { \
   printf("ERROR in line %d while %s:\n%s\n", __LINE__, action, message); \
-  retval = -1;  goto bailout; \
+  goto bailout; \
 }
 
 #define THROW_TJ(action)  THROW(action, tjGetErrorStr2(tjInstance))
@@ -590,6 +590,9 @@ void * SaveCamera_IMU_DataFunc(void *){
     std::cout<<"Get bCSV_PointerPreparedCond signal"<<std::endl;
 
     while(1){
+
+        pthread_mutex_lock(&OnlySaveCamera_IMU_DataPthreadMutex);
+
         sem_wait(&Camera_IMUDataFifoSem);
 
         pthread_mutex_lock(&Camera_IMU_DataFifoMutex);
@@ -615,7 +618,6 @@ void * SaveCamera_IMU_DataFunc(void *){
 
 
 #ifdef SaveImagAsJPEG
-        VmbUchar_t *pImage = TempCamera_IMU_Data.pImage;
 
         std::string pFileNametemp="./cam0/"+std::to_string((long)(TempCamera_IMU_Data.timestamp*Nano10_9))\
                         + ".jpg";
@@ -629,14 +631,23 @@ void * SaveCamera_IMU_DataFunc(void *){
         unsigned long jpegSize=0;
         int outSubsamp=TJSAMP_GRAY;
         int flags=0;
-        int retval=0;
+//        int retval=0;
 
         if ((tjInstance = tjInitCompress()) == NULL)
           THROW_TJ("initializing compressor");
-        if (tjCompress2(tjInstance, pImage, AssembleDevice.PhotoFormatInfo.nWidth, \
-            0, AssembleDevice.PhotoFormatInfo.nHeight, pixelFormat,
+        #ifdef UseDefaultPhotoFormat
+            if (tjCompress2(tjInstance, TempCamera_IMU_Data.pImage, Default_Width, \
+            0, Default_Height, pixelFormat,
             &jpegBuf, &jpegSize, outSubsamp, outQual, flags) < 0)
           THROW_TJ("compressing image");
+        #endif // UseDefaultPhotoFormat
+        #ifndef UseDefaultPhotoFormat
+            if (tjCompress2(tjInstance, TempCamera_IMU_Data.pImage, AssembleDevice.PhotoFormatInfo.nWidth, \
+                0, AssembleDevice.PhotoFormatInfo.nHeight, pixelFormat,
+                &jpegBuf, &jpegSize, outSubsamp, outQual, flags) < 0)
+              THROW_TJ("compressing image");
+        #endif // UseDefaultPhotoFormat
+
         tjDestroy(tjInstance);
         tjInstance = NULL;
 
@@ -666,7 +677,6 @@ void * SaveCamera_IMU_DataFunc(void *){
 #endif // SaveImagAsJPEG
 #ifndef SaveImagAsJPEG
 
-        VmbUchar_t *pImage = TempCamera_IMU_Data.pImage;
         AVTBitmap bitmap;
 
         std::string pFileNametemp="./cam0/"+std::to_string((long)(TempCamera_IMU_Data.timestamp*Nano10_9))\
@@ -685,7 +695,7 @@ void * SaveCamera_IMU_DataFunc(void *){
             bitmap.height=Default_Height;
         #endif // UseDefaultPhotoFormat
         VmbError_t err =VmbErrorSuccess;
-        if ( 0 == AVTCreateBitmap( &bitmap, pImage )){
+        if ( 0 == AVTCreateBitmap( &bitmap, TempCamera_IMU_Data.pImage )){
             std::cout << "Could not create bitmap.\n";
             err = VmbErrorResources;
         }
@@ -712,7 +722,7 @@ void * SaveCamera_IMU_DataFunc(void *){
             pthread_mutex_unlock(&Write2EmmcMutex);
         }
 #endif // SaveImagAsJPEG
-
+        pthread_mutex_unlock(&OnlySaveCamera_IMU_DataPthreadMutex);
     }
 }
 

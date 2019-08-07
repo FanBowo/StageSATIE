@@ -58,10 +58,10 @@
 	"Adafruit_GPS.h"
 	"BNO055_Cali.h"
 
-1565165905 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
+1565172285 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
 	"Tasks.h"
 
-1565161749 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.h
+1565176767 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.h
 	"Assemble.h"
 	<pthread.h>
 	<signal.h>
@@ -74,7 +74,7 @@
 	<errno.h>
 	<turbojpeg.h>
 
-1565167246 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/Assemble/main.cpp
+1565172567 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/Assemble/main.cpp
 	"Tasks.h"
 
 1565160846 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/BNO055_Cali.h
