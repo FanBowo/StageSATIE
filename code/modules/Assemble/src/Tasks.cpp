@@ -346,9 +346,8 @@ void UpdateIMU_RawData(){
 
         pthread_mutex_lock(&IMU_RawDataFifoMutex);
         AssembleDevice.IMU_RawDataFifo.push(TempIMU_RawData);
-        sem_post(&IMU_RawDataFifoSem);
         pthread_mutex_unlock(&IMU_RawDataFifoMutex);
-
+        sem_post(&IMU_RawDataFifoSem);
 
 
         pthread_mutex_lock(& bCSV_PointerPreparedMutex );
@@ -551,8 +550,8 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
 #endif // UseDefaultPhotoFormat
         pthread_mutex_lock(&Camera_IMU_DataFifoMutex);
         AssembleDevice.Camera_IMU_DataFifo.push(TempCamera_IMU_Data);
-        sem_post(&Camera_IMUDataFifoSem);
         pthread_mutex_unlock(&Camera_IMU_DataFifoMutex);
+        sem_post(&Camera_IMUDataFifoSem);
 
         pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
 

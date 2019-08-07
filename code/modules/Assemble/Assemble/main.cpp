@@ -166,6 +166,7 @@ int main() // run over and over again
     ThreadSaveCamera_IMU_DataToFifoPara.__sched_priority=sched_get_priority_max(SCHED_RR)-2;
     pthread_attr_t ThreadSaveCamera_IMU_DataToFifoParaAttr;
     pthread_attr_init(&ThreadSaveCamera_IMU_DataToFifoParaAttr);
+    pthread_attr_setstacksize(&ThreadSaveCamera_IMU_DataToFifoParaAttr,33554432);
     pthread_attr_setinheritsched(&ThreadSaveCamera_IMU_DataToFifoParaAttr,PTHREAD_EXPLICIT_SCHED);
     pthread_attr_setschedpolicy(&ThreadSaveCamera_IMU_DataToFifoParaAttr,SCHED_RR);
     pthread_attr_setschedparam(&ThreadSaveCamera_IMU_DataToFifoParaAttr,&ThreadSaveCamera_IMU_DataToFifoPara);
