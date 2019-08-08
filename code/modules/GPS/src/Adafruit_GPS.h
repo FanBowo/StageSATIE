@@ -127,7 +127,8 @@ class Adafruit_GPS {
   boolean wakeup(void);
   boolean standby(void);
 
-  volatile float GpsTimeGetted;
+  pthread_mutex_t GpsTimeGettedMutex;
+  volatile double GpsTimeGetted;
   uint8_t hour;                                     ///< GMT hours
   uint8_t minute;                                   ///< GMT minutes
   uint8_t seconds;                                  ///< GMT seconds

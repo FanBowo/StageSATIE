@@ -213,13 +213,18 @@ boolean Adafruit_GPS::parse(char *nmea) {
     uint32_t time = timef;
 
     /*GetRawTime*/
-    GpsTimeGetted=timef;
 
-//    hour = time / 10000;
-//    minute = (time % 10000) / 100;
-//    seconds = (time % 100);
-//
-//    milliseconds = fmod(timef, 1.0) * 1000;
+
+    hour = time / 10000;
+    minute = (time % 10000) / 100;
+    seconds = (time % 100);
+
+    milliseconds = fmod(timef, 1.0) * 1000;
+
+    long tempGpsTimeGetted=hour*3600+minute*60+seconds;
+    pthread_mutex_lock(&GpsTimeGettedMutex);
+    GpsTimeGetted=(double)tempGpsTimeGetted+fmod(timef, 1.0);
+    pthread_mutex_unlock(&GpsTimeGettedMutex);
 //
 //    p = strchr(p, ',')+1;
 //    // Serial.println(p);
@@ -394,6 +399,7 @@ Adafruit_GPS::Adafruit_GPS(SoftwareSerial *ser)
 Adafruit_GPS::Adafruit_GPS(LinuxSerialPackage *ser) {
   common_init();  // Set everything to common state, then...
   gpsHwSerial = ser; // ...override gpsHwSerial with value passed.
+  pthread_mutex_t GpsTimeGettedMutex=PTHREAD_MUTEX_INITIALIZER;
 }
 
 /**************************************************************************/

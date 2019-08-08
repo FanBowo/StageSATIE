@@ -69,7 +69,9 @@ void * UpdateTimeStampBaseFunc(void *){
             if(EnableParseOutput){
                 AssembleDevice.GPS.ResetRecvdRMCflag();
                 #ifdef EnableConsoleDisplay
+                pthread_mutex_lock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
                     std::cout<<"Timestamp base:"<<AssembleDevice.GPS.GpsTimeGetted<<std::endl;
+                pthread_mutex_unlock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
                 #endif // EnableConsoleDisplay
             }
         }
@@ -175,8 +177,10 @@ void * UpdateDeviceTimeStampFunc(void *){
         pthread_mutex_lock(&Device_TimerCounterMutex);
 
         pthread_mutex_lock(&RW_Device_TimeStampMutex);
+        pthread_mutex_lock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
         AssembleDevice.DeviceTimeStamp=Device_TimerCounter*(1.0/(double)TimerDeviceFre)+ \
                                 AssembleDevice.GPS.GpsTimeGetted;
+        pthread_mutex_unlock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
 //        std::cout<<"Device_TimerCounter: "<<Device_TimerCounter<<std::endl;
         pthread_mutex_unlock(&RW_Device_TimeStampMutex);
 //
@@ -567,7 +571,7 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
     }
 }
 
-//#define SaveImagAsJPEG
+#define SaveImagAsJPEG
 #ifdef SaveImagAsJPEG
 
 #define THROW(action, message) { \
