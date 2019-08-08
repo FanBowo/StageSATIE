@@ -35,20 +35,34 @@ typedef enum
     ColorCodeBGR24  = 4,
     ColorCodeRGB24  = 8
 } ColorCode;
-
+#define UseDefaultPhotoFormat
+#ifdef UseDefaultPhotoFormat
+    #define BitMapFormatBufferSize 1311798
+#endif // UseDefaultPhotoFormat
 typedef struct
 {
-    void*           buffer;
+    unsigned char   buffer[BitMapFormatBufferSize];
     unsigned long   bufferSize;
-    unsigned long   width; 
+    unsigned long   width;
     unsigned long   height;
     ColorCode       colorCode;
 } AVTBitmap;
 
+#ifndef UseDefaultPhotoFormat
+    typedef struct
+    {
+        void*           buffer;
+        unsigned long   bufferSize;
+        unsigned long   width;
+        unsigned long   height;
+        ColorCode       colorCode;
+    } AVTBitmap;
+#endif // UseDefaultPhotoFormat
+
 //
 // Creates a MS Windows bitmap with header and color palette.
 // Fills it with the content of the given byte buffer
-// 
+//
 // Parameters:
 //  [out]   pBitmap         A pointer to an AVTBitmap that will get filled
 //  [in]    pBuffer         The buffer that will be used to fill the created bitmap

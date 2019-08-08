@@ -54,6 +54,8 @@ timer_t IMU_Timer;
 struct itimerspec IMU_Timer_trigger;
 //int IMU_TimerCounter=0;
 
+#define EnableConsoleDisplay
+
 void * UpdateTimeStampBaseFunc(void *){
     std::cout<<"EnterThread_UpdateTimeStampBase"<<std::endl;
     while(1){
@@ -66,7 +68,9 @@ void * UpdateTimeStampBaseFunc(void *){
         // this also sets the newNMEAreceived() flag to false
             if(EnableParseOutput){
                 AssembleDevice.GPS.ResetRecvdRMCflag();
-                std::cout<<"Timestamp base:"<<AssembleDevice.GPS.GpsTimeGetted<<std::endl;
+                #ifdef EnableConsoleDisplay
+                    std::cout<<"Timestamp base:"<<AssembleDevice.GPS.GpsTimeGetted<<std::endl;
+                #endif // EnableConsoleDisplay
             }
         }
 
@@ -408,8 +412,12 @@ void * SaveIMU_RawDataFunc(void *){
         sem_wait(&IMU_RawDataFifoSem);
 
         pthread_mutex_lock(&IMU_RawDataFifoMutex);
-        IMU_RawData_t TempIMU_RawData=AssembleDevice.IMU_RawDataFifo.front();
-        AssembleDevice.IMU_RawDataFifo.pop();
+            if(AssembleDevice.IMU_RawDataFifo.empty()){
+                pthread_mutex_unlock(&IMU_RawDataFifoMutex);
+                continue;
+            }
+            IMU_RawData_t TempIMU_RawData=AssembleDevice.IMU_RawDataFifo.front();
+            AssembleDevice.IMU_RawDataFifo.pop();
         pthread_mutex_unlock(&IMU_RawDataFifoMutex);
 
         pthread_mutex_lock(&pSaveRawIMU_DataMutex);
@@ -591,13 +599,16 @@ void * SaveCamera_IMU_DataFunc(void *){
 
     while(1){
 
-        pthread_mutex_lock(&OnlySaveCamera_IMU_DataPthreadMutex);
 
         sem_wait(&Camera_IMUDataFifoSem);
 
         pthread_mutex_lock(&Camera_IMU_DataFifoMutex);
-        Camera_IMU_Data_t TempCamera_IMU_Data=AssembleDevice.Camera_IMU_DataFifo.front();
-        AssembleDevice.Camera_IMU_DataFifo.pop();
+            if( AssembleDevice.Camera_IMU_DataFifo.empty()){
+                pthread_mutex_unlock(&Camera_IMU_DataFifoMutex);
+                continue;
+            }
+            Camera_IMU_Data_t TempCamera_IMU_Data=AssembleDevice.Camera_IMU_DataFifo.front();
+            AssembleDevice.Camera_IMU_DataFifo.pop();
         pthread_mutex_unlock(&Camera_IMU_DataFifoMutex);
 
         pthread_mutex_lock(&pSaveCamera_IMU_DataMutex);
@@ -618,6 +629,7 @@ void * SaveCamera_IMU_DataFunc(void *){
 
 
 #ifdef SaveImagAsJPEG
+//        pthread_mutex_lock(&OnlySaveCamera_IMU_DataPthreadMutex);
 
         std::string pFileNametemp="./cam0/"+std::to_string((long)(TempCamera_IMU_Data.timestamp*Nano10_9))\
                         + ".jpg";
@@ -674,8 +686,11 @@ void * SaveCamera_IMU_DataFunc(void *){
           if (tjInstance) tjDestroy(tjInstance);
           if (jpegBuf) tjFree(jpegBuf);
           if (jpegFile) fclose(jpegFile);
+//        pthread_mutex_unlock(&OnlySaveCamera_IMU_DataPthreadMutex);
 #endif // SaveImagAsJPEG
 #ifndef SaveImagAsJPEG
+
+//    pthread_mutex_lock(&OnlySaveCamera_IMU_DataPthreadMutex);
 
         AVTBitmap bitmap;
 
@@ -695,6 +710,8 @@ void * SaveCamera_IMU_DataFunc(void *){
             bitmap.height=Default_Height;
         #endif // UseDefaultPhotoFormat
         VmbError_t err =VmbErrorSuccess;
+
+
         if ( 0 == AVTCreateBitmap( &bitmap, TempCamera_IMU_Data.pImage )){
             std::cout << "Could not create bitmap.\n";
             err = VmbErrorResources;
@@ -710,19 +727,24 @@ void * SaveCamera_IMU_DataFunc(void *){
                     std::cout << "Could not release the bitmap.\n";
                     err = VmbErrorInternalFault;
                 }
+                pthread_mutex_unlock(&Write2EmmcMutex);
             }
             else{
-                std::cout << "Bitmap successfully written to file \"" << pFileName << "\"\n" ;
-//                // Release the bitmap's buffer
+                pthread_mutex_unlock(&Write2EmmcMutex);
+                #ifdef EnableConsoleDisplay
+                    std::cout << "Bitmap successfully written to file \"" << pFileName << "\"\n" ;
+                #endif // EnableConsoleDisplay
+
+                // Release the bitmap's buffer
                 if ( 0 == AVTReleaseBitmap( &bitmap )){
                     std::cout << "Could not release the bitmap.\n";
                     err = VmbErrorInternalFault;
                 }
             }
-            pthread_mutex_unlock(&Write2EmmcMutex);
         }
+//        pthread_mutex_unlock(&OnlySaveCamera_IMU_DataPthreadMutex);
 #endif // SaveImagAsJPEG
-        pthread_mutex_unlock(&OnlySaveCamera_IMU_DataPthreadMutex);
+
     }
 }
 

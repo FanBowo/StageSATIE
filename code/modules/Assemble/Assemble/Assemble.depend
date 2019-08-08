@@ -58,7 +58,7 @@
 	"Adafruit_GPS.h"
 	"BNO055_Cali.h"
 
-1565172285 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
+1455209514 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
 	"Tasks.h"
 
 1565176767 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.h
@@ -171,15 +171,16 @@
 
 1565160846 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/MahonyAHRS.hpp
 
-1565160852 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/Bitmap.cpp
+1455212748 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/Bitmap.cpp
 	<stdio.h>
 	<string.h>
 	<stdlib.h>
+	<iostream>
 	"Bitmap.h"
 
-1565160852 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/Bitmap.h
+1455211288 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/Bitmap.h
 
-1565160852 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.cpp
+1455208144 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.cpp
 	"CameraMako130.h"
 
 1565160852 /home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraMako130.h

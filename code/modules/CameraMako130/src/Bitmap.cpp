@@ -28,7 +28,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include <iostream>
 #include "Bitmap.h"
 
 enum { THREE_CHANNEL    = 0xC,};
@@ -38,7 +38,7 @@ enum { ALIGNMENT_SIZE   = 4, };
 //
 // Creates a MS Windows bitmap with header and color palette.
 // Fills it with the content of the given byte buffer
-// 
+//
 // Parameters:
 //  [out]   pBitmap         A pointer to an AVTBitmap that will get filled
 //  [in]    pBuffer         The buffer that will be used to fill the created bitmap
@@ -47,6 +47,10 @@ enum { ALIGNMENT_SIZE   = 4, };
 //  0 in case of error
 //  1 in case of success
 //
+
+#define UseDefaultPhotoFormat
+
+
 unsigned char AVTCreateBitmap( AVTBitmap * const pBitmap, const void* pBuffer )
 {
     unsigned char   nNumColors;                     // Number of colors of our image
@@ -54,7 +58,9 @@ unsigned char AVTCreateBitmap( AVTBitmap * const pBitmap, const void* pBuffer )
     unsigned long   nPaletteSize = 0;               // The size of the bitmap's palette
     unsigned long   nHeaderSize;                    // The size of the bitmap's header
     unsigned long   nFileSize;                      // The size of the bitmap file
+    #ifndef UseDefaultPhotoFormat
     unsigned char*  pBitmapBuffer;                  // A buffer we use for creating the bitmap
+    #endif // UseDefaultPhotoFormat
     unsigned char*  pCurBitmapBuf;                  // A cursor to move over "pBitmapBuffer"
     unsigned char*  pCurSrc;                        // A cursor to move over the given buffer "pBuffer"
     unsigned long   px;                             // A single pixel for storing transformed color information
@@ -81,6 +87,7 @@ unsigned char AVTCreateBitmap( AVTBitmap * const pBitmap, const void* pBuffer )
         return 0;
     }
 
+
     if ( pBitmap->colorCode == (pBitmap->colorCode & THREE_CHANNEL) )
     {
         nNumColors = 3;
@@ -101,10 +108,17 @@ unsigned char AVTCreateBitmap( AVTBitmap * const pBitmap, const void* pBuffer )
     {
         nPaletteSize = 256;
     }
-    
+
+
     nHeaderSize     = BMP_HEADER_SIZE + nPaletteSize * 4;
+#ifdef UseDefaultPhotoFormat
+    unsigned char pBitmapBuffer[BitMapFormatBufferSize];
+    nFileSize=BitMapFormatBufferSize;
+#endif // UseDefaultPhotoFormat
+#ifndef UseDefaultPhotoFormat
     pBitmapBuffer   = (unsigned char*)malloc( nHeaderSize + pBitmap->bufferSize + (nPadLength * pBitmap->height) );
     nFileSize       = nHeaderSize + pBitmap->bufferSize + (nPadLength * pBitmap->height);
+#endif // UseDefaultPhotoFormat
 
     // File size
     fileHeader[ 2]  = (char)(nFileSize);
@@ -175,7 +189,7 @@ unsigned char AVTCreateBitmap( AVTBitmap * const pBitmap, const void* pBuffer )
                 px = 0;
                 // Create a 4 Byte structure to store ARGB (we don't use A)
                 px = px | (pCurSrc[0] << 16) | (pCurSrc[1] << 8) | pCurSrc[2];
-                // Due to endianess ARGB is stored as BGRA 
+                // Due to endianess ARGB is stored as BGRA
                 // and we only have to write the first three Bytes
                 memcpy( pCurBitmapBuf, &px, 3 );
             }
@@ -208,8 +222,14 @@ unsigned char AVTCreateBitmap( AVTBitmap * const pBitmap, const void* pBuffer )
             }
         }
     }
-
+#ifdef UseDefaultPhotoFormat
+    memcpy(pBitmap->buffer,pBitmapBuffer,BitMapFormatBufferSize);
+#endif // UseDefaultPhotoFormat
+#ifndef UseDefaultPhotoFormat
     pBitmap->buffer     = pBitmapBuffer;
+#endif // UseDefaultPhotoFormat
+
+//    std::cout<<"nFileSize :"<<nFileSize<<std::endl;
     pBitmap->bufferSize = nFileSize;
     return 1;
 }
@@ -226,6 +246,10 @@ unsigned char AVTCreateBitmap( AVTBitmap * const pBitmap, const void* pBuffer )
 //
 unsigned char AVTReleaseBitmap( AVTBitmap * const pBitmap )
 {
+#ifdef UseDefaultPhotoFormat
+    return 1;
+#endif // UseDefaultPhotoFormat
+#ifndef UseDefaultPhotoFormat
     if (    NULL != pBitmap
          && NULL != pBitmap->buffer
          && 0 < pBitmap->bufferSize )
@@ -236,6 +260,7 @@ unsigned char AVTReleaseBitmap( AVTBitmap * const pBitmap )
     }
 
     return 0;
+#endif // UseDefaultPhotoFormat
 }
 
 //
