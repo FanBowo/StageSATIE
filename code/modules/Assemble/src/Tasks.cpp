@@ -62,29 +62,29 @@ void * UpdateTimeStampBaseFunc(void *){
         pthread_mutex_lock(& TimeStampBaseMutex );
 
         pthread_cond_wait(&TimeStampBaseCond,&TimeStampBaseMutex);
-        pthread_mutex_lock(& TimeStampBaseReNewMutex );
+            pthread_mutex_lock(& TimeStampBaseReNewMutex );
 
-        if (( AssembleDevice.GPS.parse(AssembleDevice.GPS.lastNMEA()) && AssembleDevice.GPS.bRecvdRMCflag() )){
-        // this also sets the newNMEAreceived() flag to false
-            if(EnableParseOutput){
-                AssembleDevice.GPS.ResetRecvdRMCflag();
-                #ifdef EnableConsoleDisplay
-                pthread_mutex_lock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
-                    std::cout<<"Timestamp base:"<<AssembleDevice.GPS.GpsTimeGetted<<std::endl;
-                pthread_mutex_unlock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
-                #endif // EnableConsoleDisplay
+            if (( AssembleDevice.GPS.parse(AssembleDevice.GPS.lastNMEA()) && AssembleDevice.GPS.bRecvdRMCflag() )){
+            // this also sets the newNMEAreceived() flag to false
+                if(EnableParseOutput){
+                    AssembleDevice.GPS.ResetRecvdRMCflag();
+                    #ifdef EnableConsoleDisplay
+                    pthread_mutex_lock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
+                        std::cout<<"Timestamp base:"<<AssembleDevice.GPS.GpsTimeGetted<<std::endl;
+                    pthread_mutex_unlock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
+                    #endif // EnableConsoleDisplay
+                }
             }
-        }
 
 //        pthread_mutex_lock(&IMU_TimerCounterMutex);
 //        IMU_TimerCounter=0;
 //        timer_settime(IMU_Timer,0,&IMU_Timer_trigger,NULL);
 //        pthread_mutex_unlock(&IMU_TimerCounterMutex);
 
-        pthread_mutex_lock(&Device_TimerCounterMutex);
-        Device_TimerCounter=0;
-        timer_settime(Device_Timer,0,&Device_Timer_trigger,NULL);
-        pthread_mutex_unlock(&Device_TimerCounterMutex);
+            pthread_mutex_lock(&Device_TimerCounterMutex);
+                Device_TimerCounter=0;
+                timer_settime(Device_Timer,0,&Device_Timer_trigger,NULL);
+            pthread_mutex_unlock(&Device_TimerCounterMutex);
 
         pthread_mutex_unlock(& TimeStampBaseReNewMutex );
 
@@ -174,20 +174,22 @@ void * UpdateDeviceTimeStampFunc(void *){
         pthread_cond_wait(&Device_TimeStampCond,&Device_TimeStampMutex);
 
         pthread_mutex_lock(& TimeStampBaseReNewMutex );
-        pthread_mutex_lock(&Device_TimerCounterMutex);
+            pthread_mutex_lock(&Device_TimerCounterMutex);
 
-        pthread_mutex_lock(&RW_Device_TimeStampMutex);
-        pthread_mutex_lock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
-        AssembleDevice.DeviceTimeStamp=Device_TimerCounter*(1.0/(double)TimerDeviceFre)+ \
-                                AssembleDevice.GPS.GpsTimeGetted;
-        pthread_mutex_unlock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
+                pthread_mutex_lock(&RW_Device_TimeStampMutex);
+                    pthread_mutex_lock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
+
+                    AssembleDevice.DeviceTimeStamp=Device_TimerCounter*(1.0/(double)TimerDeviceFre)+ \
+                                    AssembleDevice.GPS.GpsTimeGetted;
+                    pthread_mutex_unlock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
+
 //        std::cout<<"Device_TimerCounter: "<<Device_TimerCounter<<std::endl;
-        pthread_mutex_unlock(&RW_Device_TimeStampMutex);
+                pthread_mutex_unlock(&RW_Device_TimeStampMutex);
 //
 //        std::cout<<"DeviceTimeStamp: "<<std::setiosflags(std::ios::fixed)\
 //                        <<std::setprecision(4)<<AssembleDevice.DeviceTimeStamp<<std::endl;
 
-        pthread_mutex_unlock(&Device_TimerCounterMutex);
+            pthread_mutex_unlock(&Device_TimerCounterMutex);
         pthread_mutex_unlock(& TimeStampBaseReNewMutex );
 
         pthread_mutex_unlock(&Device_TimeStampMutex);
@@ -468,7 +470,8 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
     pthread_cond_wait(&bIMU_Data_StableCond,&bIMU_Data_StableMutex);
     std::cout<<"wait bIMU_Data_StableCond Signal"<<std::endl;
     pthread_mutex_unlock(& bIMU_Data_StableMutex );
-    std::cout<<"Reiceived IMU_Data_Stable condition signal"<<std::endl;
+    std::cout<<"Reiceived IMU_Data_Stable condition signal and begin taking photo"<<std::endl;
+    AssembleDevice.TheCamera.InitCameraTriggrtTimer();
 #ifdef UseDefaultPhotoFormat
     AssembleDevice.PhotoFormatInfo.nImageSize=Default_Size;
     AssembleDevice.PhotoFormatInfo.nWidth=Default_Width;

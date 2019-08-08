@@ -80,6 +80,7 @@ void Adafruit_GPS::ResetRecvdRMCflag(){
 /**************************************************************************/
 boolean Adafruit_GPS::parse(char *nmea) {
   // do checksum check
+  pthread_mutex_lock(&parseMutex);
 
   // first look if we even have one
   if (nmea[strlen(nmea)-4] == '*') {
@@ -92,6 +93,7 @@ boolean Adafruit_GPS::parse(char *nmea) {
     }
     if (sum != 0) {
       // bad checksum :(
+      pthread_mutex_unlock(&parseMutex);
       return false;
     }
   }
@@ -139,7 +141,10 @@ boolean Adafruit_GPS::parse(char *nmea) {
       if (p[0] == 'N') lat = 'N';
       else if (p[0] == 'S') lat = 'S';
       else if (p[0] == ',') lat = 0;
-      else return false;
+      else {
+          pthread_mutex_unlock(&parseMutex);
+          return false;
+      }
     }
 
     // parse out longitude
@@ -168,7 +173,10 @@ boolean Adafruit_GPS::parse(char *nmea) {
       if (p[0] == 'W') lon = 'W';
       else if (p[0] == 'E') lon = 'E';
       else if (p[0] == ',') lon = 0;
-      else return false;
+      else {
+          pthread_mutex_unlock(&parseMutex);
+          return false;
+      }
     }
 
     p = strchr(p, ',')+1;
@@ -200,7 +208,9 @@ boolean Adafruit_GPS::parse(char *nmea) {
     if (',' != *p)
     {
       geoidheight = atof(p);
+
     }
+    pthread_mutex_unlock(&parseMutex);
     return true;
   }
   if (strstr(nmea, "$GPRMC")) {
@@ -317,9 +327,10 @@ boolean Adafruit_GPS::parse(char *nmea) {
 
 	recvdRMCflag=true;
     // we dont parse the remaining, yet!
+    pthread_mutex_unlock(&parseMutex);
     return true;
   }
-
+   pthread_mutex_unlock(&parseMutex);
   return false;
 }
 
@@ -400,6 +411,7 @@ Adafruit_GPS::Adafruit_GPS(LinuxSerialPackage *ser) {
   common_init();  // Set everything to common state, then...
   gpsHwSerial = ser; // ...override gpsHwSerial with value passed.
   pthread_mutex_t GpsTimeGettedMutex=PTHREAD_MUTEX_INITIALIZER;
+  pthread_mutex_t parseMutex=PTHREAD_MUTEX_INITIALIZER;
 }
 
 /**************************************************************************/

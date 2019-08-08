@@ -45,7 +45,6 @@ void init()
     InitTimerIMU();//i2c1
 
     AssembleDevice.TheCamera.InitCameraTriggerGPIO();//CAMERA TRIGGER SDO1
-    AssembleDevice.TheCamera.InitCameraTriggrtTimer();
     AssembleDevice.TheCamera.InitCameraParas();
 
     signal(SIGINT,CameraFailed);
