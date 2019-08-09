@@ -1,51 +1,51 @@
 # depslib dependency file v1.0
-1562751329 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/Adafruit_BNO055.cpp
+1565160846 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/Adafruit_BNO055.cpp
 	<math.h>
 	<iostream>
 	"LinuxClk.h"
 	"Adafruit_BNO055.h"
 
-1562751329 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/LinuxClk.h
+1565160846 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/LinuxClk.h
 	<unistd.h>
 	<sys/time.h>
 	<stdint.h>
 
-1562751329 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/Adafruit_BNO055.h
+1565160846 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/Adafruit_BNO055.h
 	"Adafruit_Sensor.h"
 	"imumaths.h"
 	"I2Cdev.h"
 
-1562751329 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/Adafruit_Sensor.h
+1565160846 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/Adafruit_Sensor.h
 	<stdint.h>
 	"Arduino.h"
 	"Print.h"
 	"WProgram.h"
 
-1562751329 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/imumaths.h
+1565160846 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/imumaths.h
 	"vector.h"
 	"matrix.h"
 	"quaternion.h"
 
-1562751329 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/vector.h
+1565160846 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/vector.h
 	<string.h>
 	<stdint.h>
-	<math.h>
+	<cmath>
 
-1562751329 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/matrix.h
+1565160846 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/matrix.h
 	<string.h>
 	<stdint.h>
 	"vector.h"
 
-1562751329 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/quaternion.h
+1565160846 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/quaternion.h
 	<stdlib.h>
 	<string.h>
 	<stdint.h>
 	<math.h>
 	"matrix.h"
 
-1562751329 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/I2Cdev.h
+1565160846 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/I2Cdev.h
 
-1562751329 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/I2Cdev.cpp
+1565160846 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/I2Cdev.cpp
 	<stdio.h>
 	<stdint.h>
 	<stdlib.h>
@@ -59,36 +59,30 @@
 	<linux/i2c-dev.h>
 	"I2Cdev.h"
 
-1562751329 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/LinuxClk.cpp
+1565160846 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/LinuxClk.cpp
 	"LinuxClk.h"
 
-1558530812 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/TestBNO055/main.cpp
-	<iostream>
-	<fstream>
-	"Adafruit_Sensor.h"
-	"Adafruit_BNO055.h"
+1455209557 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/TestBNO055/main.cpp
 	"BNO055_Cali.h"
-	"imumaths.h"
-	"LinuxClk.h"
 
-1562751329 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/DataCalibration.cpp
+1565160846 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/DataCalibration.cpp
 	"DataCalibration.h"
 	<fstream>
 	<iostream>
 	<math.h>
 
-1562751329 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/DataCalibration.h
+1565160846 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/util/DataCalibration.h
 	<eigen3/Eigen/Dense>
 	<eigen3/Eigen/Eigenvalues>
 	<vector>
 
-1562751329 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/BNO055_Cali.cpp
+1565160846 source:/home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/BNO055_Cali.cpp
 	"BNO055_Cali.h"
 	<iostream>
 	"LinuxClk.h"
 	<fstream>
 
-1563284776 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/BNO055_Cali.h
+1565160846 /home/firefly/Desktop/StageSATIE/code/modules/BNO 055/src/BNO055_Cali.h
 	"Adafruit_BNO055.h"
 	"util/DataCalibration.h"
 	"imumaths.h"

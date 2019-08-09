@@ -252,6 +252,7 @@ void * IMU_UpdateRawDataFunc(void *){
 
 }
 
+#define RADIAN2DEG (57.3f)
 void OpenCSVfile(){
 
     pthread_mutex_lock(& bCSV_PointerPreparedMutex );
@@ -344,9 +345,9 @@ void UpdateIMU_RawData(){
         AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_GYROSCOPE);
         pthread_mutex_unlock(&ReadIMU_Mutex);
 
-        TempIMU_RawData.gyro.x=(float)event.gyro.x;
-        TempIMU_RawData.gyro.y=(float)event.gyro.y;
-        TempIMU_RawData.gyro.z=(float)event.gyro.z;
+        TempIMU_RawData.gyro.x=(float)event.gyro.x/RADIAN2DEG;
+        TempIMU_RawData.gyro.y=(float)event.gyro.y/RADIAN2DEG;
+        TempIMU_RawData.gyro.z=(float)event.gyro.z/RADIAN2DEG;
     //    std::cout<<"omega :"<<(float)event.gyro.x<<\
     //                       " "<<(float)event.gyro.y<<\
     //                       " "<<(float)event.gyro.z<<std::endl;
@@ -430,7 +431,7 @@ void * SaveIMU_RawDataFunc(void *){
         pthread_mutex_lock(&Write2EmmcMutex);
 
         AssembleDevice.pSaveRawIMU_Data
-                        <<(long)(TempIMU_RawData.timestamp*Nano10_9)<<"," \
+                        <<(unsigned long long int )(TempIMU_RawData.timestamp*Nano10_9)<<"," \
                         <<std::setiosflags(std::ios::fixed)\
                         <<std::setprecision(4)\
                         << TempIMU_RawData.gyro.x<<","\
@@ -622,7 +623,7 @@ void * SaveCamera_IMU_DataFunc(void *){
         pthread_mutex_lock(&Write2EmmcMutex);
 
         AssembleDevice.pSaveCamera_IMU_Data
-                        <<(long)(TempCamera_IMU_Data.timestamp*Nano10_9)<<"," \
+                        <<(unsigned long long int)(TempCamera_IMU_Data.timestamp*Nano10_9)<<"," \
                         <<std::setiosflags(std::ios::fixed)\
                         <<std::setprecision(4)\
                         << TempCamera_IMU_Data.CameraPose.orientation.x<<","\
