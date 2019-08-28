@@ -11,11 +11,17 @@
 #include <fcntl.h> //define O_WRONLY and O_RDONLY
 #include <errno.h>
 #include <turbojpeg.h>
+//#include <gmpxx.h>
 
 #define EnableParseOutput true
 #define GPSECHO false
 #define Nano10_9 1000000000
 extern Assemble AssembleDevice;
+
+extern pthread_mutex_t GPS_DataFifoMutex;
+extern sem_t GPS_DataFifoSem;
+extern pthread_mutex_t pSaveGPS_DataMutex;
+void * SaveGPS_DataFunc(void *);
 
 extern pthread_mutex_t Write2EmmcMutex;
 extern pthread_mutex_t Write2TerminalMutex;
@@ -37,7 +43,7 @@ extern pthread_mutex_t Device_TimeStampMutex;
 extern pthread_mutex_t RW_Device_TimeStampMutex;
 
 extern timer_t Device_Timer;
-extern int Device_TimerCounter;
+extern long Device_TimerCounter;
 extern struct itimerspec Device_Timer_trigger;
 #define TimerDeviceFre 157
 void InitTimerDevice();
@@ -66,7 +72,7 @@ void * SaveIMU_RawDataFunc(void *);
 //extern pthread_mutex_t SaveIMU_RawDataMutex;
 //extern pthread_cond_t SaveIMU_RawDataCond;
 
-#define TimerIMUFre 50
+#define TimerIMUFre 80
 
 /*cameras*/
 void *SaveCamera_IMU_DataToFifoFunc(void *);
@@ -99,7 +105,7 @@ extern int fd_GPIO_P2_c4;//GPIO file descriptor
 #define SYSFS_GPIO_RST_VAL_H        "1"
 #define SYSFS_GPIO_RST_VAL_L        "0"
 
-#define ExternTriggerFre 10
+//#define ExternTriggerFre 10
 #define ExposureTime 50000000
 
 //extern timer_t timerid_EXTERN_TRIGGER;

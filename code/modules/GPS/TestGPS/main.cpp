@@ -6,7 +6,8 @@
 #include <unistd.h>
 #include <sys/signal.h>
 #include <fcntl.h>
-
+#include <fstream>
+#include <sstream>
 #define delay(a) usleep(1000*a);
 
 
@@ -66,11 +67,23 @@ void init()
     fcntl(fd, F_SETOWN, getpid());
 }
 
+#define Nano10_9 1000000000
 #define EnableParseOutput true
 int main() // run over and over again
 {
     init();
     std::cout<<"Initialization finished"<<std::endl;
+
+    std::ofstream pSaveGPS_Data;
+
+    std::string pGPS_CSV_FileNameTemp="GPS.csv";
+    const char *pGPS_CSV_FileName=pGPS_CSV_FileNameTemp.c_str();
+
+    pSaveGPS_Data.open(pGPS_CSV_FileName,std::ios::out|std::ios::trunc);
+    pSaveGPS_Data<<"timestamp"<<","\
+                    <<"hour"<<","<<"minute"<<","<<"seconds"<<","\
+                    <<"milliseconds"<<std::endl;
+
     while(1){
         if(RevNewPack){
             RevNewPack=false;
@@ -78,7 +91,6 @@ int main() // run over and over again
         // this also sets the newNMEAreceived() flag to false
             continue;
         }
-
 
         if(EnableParseOutput){
                 GPS.ResetRecvdRMCflag();
@@ -103,6 +115,8 @@ int main() // run over and over again
                     std::cout<<"Satellites:: "<<std::endl;
                     std::cout<<GPS.satellites<<std::endl;
                 }
+                pSaveGPS_Data<<std::to_string((unsigned long long int )(GPS.GpsTimeGetted*Nano10_9))<<"," \
+                        <<(int)GPS.hour<<":"<<(int)GPS.minute<<":"<<(int)GPS.seconds<<":"<<GPS.milliseconds<<std::endl;
                 //delay(2000);
             }
         }

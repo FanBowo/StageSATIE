@@ -120,7 +120,7 @@ class Adafruit_GPS {
   uint8_t parseHex(char c);
 
   char read(void);
-  pthread_mutex_t parseMutex; //We do not need multithread to parse GPS info
+//  pthread_mutex_t parseMutex; //We do not need multithread to parse GPS info
   boolean parse(char *);
   boolean bRecvdRMCflag();
   void ResetRecvdRMCflag();

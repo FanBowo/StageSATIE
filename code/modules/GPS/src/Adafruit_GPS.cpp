@@ -80,7 +80,7 @@ void Adafruit_GPS::ResetRecvdRMCflag(){
 /**************************************************************************/
 boolean Adafruit_GPS::parse(char *nmea) {
   // do checksum check
-  pthread_mutex_lock(&parseMutex);
+//  pthread_mutex_lock(&parseMutex);
 
   // first look if we even have one
   if (nmea[strlen(nmea)-4] == '*') {
@@ -93,7 +93,7 @@ boolean Adafruit_GPS::parse(char *nmea) {
     }
     if (sum != 0) {
       // bad checksum :(
-      pthread_mutex_unlock(&parseMutex);
+//      pthread_mutex_unlock(&parseMutex);
       return false;
     }
   }
@@ -142,7 +142,7 @@ boolean Adafruit_GPS::parse(char *nmea) {
       else if (p[0] == 'S') lat = 'S';
       else if (p[0] == ',') lat = 0;
       else {
-          pthread_mutex_unlock(&parseMutex);
+//          pthread_mutex_unlock(&parseMutex);
           return false;
       }
     }
@@ -174,7 +174,7 @@ boolean Adafruit_GPS::parse(char *nmea) {
       else if (p[0] == 'E') lon = 'E';
       else if (p[0] == ',') lon = 0;
       else {
-          pthread_mutex_unlock(&parseMutex);
+//          pthread_mutex_unlock(&parseMutex);
           return false;
       }
     }
@@ -210,7 +210,7 @@ boolean Adafruit_GPS::parse(char *nmea) {
       geoidheight = atof(p);
 
     }
-    pthread_mutex_unlock(&parseMutex);
+//    pthread_mutex_unlock(&parseMutex);
     return true;
   }
   if (strstr(nmea, "$GPRMC")) {
@@ -233,104 +233,104 @@ boolean Adafruit_GPS::parse(char *nmea) {
 
     long tempGpsTimeGetted=hour*3600+minute*60+seconds;
     pthread_mutex_lock(&GpsTimeGettedMutex);
-    GpsTimeGetted=(double)tempGpsTimeGetted+fmod(timef, 1.0);
+    GpsTimeGetted=(double)tempGpsTimeGetted+(double)(fmod(timef, 1.0));
     pthread_mutex_unlock(&GpsTimeGettedMutex);
-//
-//    p = strchr(p, ',')+1;
-//    // Serial.println(p);
-//    if (p[0] == 'A')
-//      fix = true;
-//    else if (p[0] == 'V')
-//      fix = false;
-//    else
-//      return false;
-//
-//    // parse out latitude
-//    p = strchr(p, ',')+1;
-//    if (',' != *p)
-//    {
-//      strncpy(degreebuff, p, 2);
-//      p += 2;
-//      degreebuff[2] = '\0';
-//      long degree = atol(degreebuff) * 10000000;
-//      strncpy(degreebuff, p, 2); // minutes
-//      p += 3; // skip decimal point
-//      strncpy(degreebuff + 2, p, 4);
-//      degreebuff[6] = '\0';
-//      long minutes = 50 * atol(degreebuff) / 3;
-//      latitude_fixed = degree + minutes;
-//      latitude = degree / 100000 + minutes * 0.000006F;
-//      latitudeDegrees = (latitude-100*int(latitude/100))/60.0;
-//      latitudeDegrees += int(latitude/100);
-//    }
-//
-//    p = strchr(p, ',')+1;
-//    if (',' != *p)
-//    {
-//      if (p[0] == 'S') latitudeDegrees *= -1.0;
-//      if (p[0] == 'N') lat = 'N';
-//      else if (p[0] == 'S') lat = 'S';
-//      else if (p[0] == ',') lat = 0;
-//      else return false;
-//    }
-//
-//    // parse out longitude
-//    p = strchr(p, ',')+1;
-//    if (',' != *p)
-//    {
-//      strncpy(degreebuff, p, 3);
-//      p += 3;
-//      degreebuff[3] = '\0';
-//      degree = atol(degreebuff) * 10000000;
-//      strncpy(degreebuff, p, 2); // minutes
-//      p += 3; // skip decimal point
-//      strncpy(degreebuff + 2, p, 4);
-//      degreebuff[6] = '\0';
-//      minutes = 50 * atol(degreebuff) / 3;
-//      longitude_fixed = degree + minutes;
-//      longitude = degree / 100000 + minutes * 0.000006F;
-//      longitudeDegrees = (longitude-100*int(longitude/100))/60.0;
-//      longitudeDegrees += int(longitude/100);
-//    }
-//
-//    p = strchr(p, ',')+1;
-//    if (',' != *p)
-//    {
-//      if (p[0] == 'W') longitudeDegrees *= -1.0;
-//      if (p[0] == 'W') lon = 'W';
-//      else if (p[0] == 'E') lon = 'E';
-//      else if (p[0] == ',') lon = 0;
-//      else return false;
-//    }
-//    // speed
-//    p = strchr(p, ',')+1;
-//    if (',' != *p)
-//    {
-//      speed = atof(p);
-//    }
-//
-//    // angle
-//    p = strchr(p, ',')+1;
-//    if (',' != *p)
-//    {
-//      angle = atof(p);
-//    }
-//
-//    p = strchr(p, ',')+1;
-//    if (',' != *p)
-//    {
-//      uint32_t fulldate = atof(p);
-//      day = fulldate / 10000;
-//      month = (fulldate % 10000) / 100;
-//      year = (fulldate % 100);
-//    }
+
+    p = strchr(p, ',')+1;
+    // Serial.println(p);
+    if (p[0] == 'A')
+      fix = true;
+    else if (p[0] == 'V')
+      fix = false;
+    else
+      return false;
+
+    // parse out latitude
+    p = strchr(p, ',')+1;
+    if (',' != *p)
+    {
+      strncpy(degreebuff, p, 2);
+      p += 2;
+      degreebuff[2] = '\0';
+      long degree = atol(degreebuff) * 10000000;
+      strncpy(degreebuff, p, 2); // minutes
+      p += 3; // skip decimal point
+      strncpy(degreebuff + 2, p, 4);
+      degreebuff[6] = '\0';
+      long minutes = 50 * atol(degreebuff) / 3;
+      latitude_fixed = degree + minutes;
+      latitude = degree / 100000 + minutes * 0.000006F;
+      latitudeDegrees = (latitude-100*int(latitude/100))/60.0;
+      latitudeDegrees += int(latitude/100);
+    }
+
+    p = strchr(p, ',')+1;
+    if (',' != *p)
+    {
+      if (p[0] == 'S') latitudeDegrees *= -1.0;
+      if (p[0] == 'N') lat = 'N';
+      else if (p[0] == 'S') lat = 'S';
+      else if (p[0] == ',') lat = 0;
+      else return false;
+    }
+
+    // parse out longitude
+    p = strchr(p, ',')+1;
+    if (',' != *p)
+    {
+      strncpy(degreebuff, p, 3);
+      p += 3;
+      degreebuff[3] = '\0';
+      degree = atol(degreebuff) * 10000000;
+      strncpy(degreebuff, p, 2); // minutes
+      p += 3; // skip decimal point
+      strncpy(degreebuff + 2, p, 4);
+      degreebuff[6] = '\0';
+      minutes = 50 * atol(degreebuff) / 3;
+      longitude_fixed = degree + minutes;
+      longitude = degree / 100000 + minutes * 0.000006F;
+      longitudeDegrees = (longitude-100*int(longitude/100))/60.0;
+      longitudeDegrees += int(longitude/100);
+    }
+
+    p = strchr(p, ',')+1;
+    if (',' != *p)
+    {
+      if (p[0] == 'W') longitudeDegrees *= -1.0;
+      if (p[0] == 'W') lon = 'W';
+      else if (p[0] == 'E') lon = 'E';
+      else if (p[0] == ',') lon = 0;
+      else return false;
+    }
+    // speed
+    p = strchr(p, ',')+1;
+    if (',' != *p)
+    {
+      speed = atof(p);
+    }
+
+    // angle
+    p = strchr(p, ',')+1;
+    if (',' != *p)
+    {
+      angle = atof(p);
+    }
+
+    p = strchr(p, ',')+1;
+    if (',' != *p)
+    {
+      uint32_t fulldate = atof(p);
+      day = fulldate / 10000;
+      month = (fulldate % 10000) / 100;
+      year = (fulldate % 100);
+    }
 
 	recvdRMCflag=true;
     // we dont parse the remaining, yet!
-    pthread_mutex_unlock(&parseMutex);
+//    pthread_mutex_unlock(&parseMutex);
     return true;
   }
-   pthread_mutex_unlock(&parseMutex);
+//   pthread_mutex_unlock(&parseMutex);
   return false;
 }
 

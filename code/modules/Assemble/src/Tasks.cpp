@@ -2,6 +2,10 @@
 #include "Tasks.h"
 Assemble AssembleDevice;
 
+pthread_mutex_t GPS_DataFifoMutex=PTHREAD_MUTEX_INITIALIZER;
+sem_t GPS_DataFifoSem;
+pthread_mutex_t pSaveGPS_DataMutex=PTHREAD_MUTEX_INITIALIZER;
+
 pthread_mutex_t Write2EmmcMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t Write2TerminalMutex=PTHREAD_MUTEX_INITIALIZER;
 
@@ -46,7 +50,7 @@ pthread_cond_t Device_TimeStampCond=PTHREAD_COND_INITIALIZER;
 pthread_mutex_t Device_TimeStampMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t RW_Device_TimeStampMutex=PTHREAD_MUTEX_INITIALIZER;
 timer_t Device_Timer;
-int Device_TimerCounter=0;
+long Device_TimerCounter=0;
 struct itimerspec Device_Timer_trigger;
 
 
@@ -54,7 +58,7 @@ timer_t IMU_Timer;
 struct itimerspec IMU_Timer_trigger;
 //int IMU_TimerCounter=0;
 
-#define EnableConsoleDisplay
+//#define EnableConsoleDisplay
 
 void * UpdateTimeStampBaseFunc(void *){
     std::cout<<"EnterThread_UpdateTimeStampBase"<<std::endl;
@@ -73,6 +77,41 @@ void * UpdateTimeStampBaseFunc(void *){
                         std::cout<<"Timestamp base:"<<AssembleDevice.GPS.GpsTimeGetted<<std::endl;
                     pthread_mutex_unlock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
                     #endif // EnableConsoleDisplay
+
+                    pthread_mutex_lock(& bIMU_Data_StableMutex );
+                    bool bTempIMU_Data_Stable=AssembleDevice.bIMU_Data_Stable;
+                    pthread_mutex_unlock(& bIMU_Data_StableMutex );
+
+                    if(bTempIMU_Data_Stable){
+                        GPS_data_t TempGPS_Data;
+                        TempGPS_Data.fix=AssembleDevice.GPS.fix;
+                        TempGPS_Data.TimeStamp=AssembleDevice.GPS.GpsTimeGetted;
+                        TempGPS_Data.fixquality=AssembleDevice.GPS.fixquality;
+                        if(TempGPS_Data.fix){
+                            TempGPS_Data.latitude=AssembleDevice.GPS.latitude;
+                            TempGPS_Data.lat=AssembleDevice.GPS.lat;
+                            TempGPS_Data.longitude=AssembleDevice.GPS.longitude;
+                            TempGPS_Data.lon=AssembleDevice.GPS.lon;
+                            TempGPS_Data.speed=AssembleDevice.GPS.speed;
+                            TempGPS_Data.angle=AssembleDevice.GPS.angle;
+                            TempGPS_Data.satellites=AssembleDevice.GPS.satellites;
+                        }
+                        else{
+                            TempGPS_Data.latitude=0.0;
+                            TempGPS_Data.lat='0';
+                            TempGPS_Data.longitude=0.0;
+                            TempGPS_Data.lon='0';
+                            TempGPS_Data.speed=0.0;
+                            TempGPS_Data.angle=0.0;
+                            TempGPS_Data.satellites=0;
+                        }
+
+                        pthread_mutex_lock(&GPS_DataFifoMutex);
+                        AssembleDevice.GPS_DataFifo.push(TempGPS_Data);
+                        sem_post(&GPS_DataFifoSem);
+                        pthread_mutex_unlock(&GPS_DataFifoMutex);
+                    }
+
                 }
             }
 
@@ -81,10 +120,12 @@ void * UpdateTimeStampBaseFunc(void *){
 //        timer_settime(IMU_Timer,0,&IMU_Timer_trigger,NULL);
 //        pthread_mutex_unlock(&IMU_TimerCounterMutex);
 
+
             pthread_mutex_lock(&Device_TimerCounterMutex);
                 Device_TimerCounter=0;
                 timer_settime(Device_Timer,0,&Device_Timer_trigger,NULL);
             pthread_mutex_unlock(&Device_TimerCounterMutex);
+
 
         pthread_mutex_unlock(& TimeStampBaseReNewMutex );
 
@@ -274,7 +315,22 @@ void OpenCSVfile(){
 
     pthread_mutex_unlock(&Write2EmmcMutex);
 
-    std::string pCamera_IMU_CSV_FileNameTemp=std::to_string((long)(timestamp*Nano10_9))\
+    std::string pGPS_CSV_FileNameTemp=std::to_string((unsigned long long int)(timestamp*Nano10_9))\
+                        + "GPS.csv";
+    const char *pGPS_CSV_FileName=pGPS_CSV_FileNameTemp.c_str();
+
+    pthread_mutex_lock(&Write2EmmcMutex);
+
+    AssembleDevice.pSaveGPS_Data.open(pGPS_CSV_FileName,std::ios::out|std::ios::trunc);
+    AssembleDevice.pSaveGPS_Data<<"timestamp"<<","\
+                    <<"fix"<<","<<"fixquality"<<","<<"latitude"<<","\
+                    <<"lat"<<","<<"longitude"<<","<<"lon"<<","\
+                    <<"speed"<<","<<"angle"<<","<<"satellites"\
+                    <<std::endl;
+
+    pthread_mutex_unlock(&Write2EmmcMutex);
+
+        std::string pCamera_IMU_CSV_FileNameTemp=std::to_string((unsigned long long int)(timestamp*Nano10_9))\
                         + "Camera_IMU.csv";
     const char *pCamera_IMU_CSV_FileName=pCamera_IMU_CSV_FileNameTemp.c_str();
 
@@ -431,7 +487,7 @@ void * SaveIMU_RawDataFunc(void *){
         pthread_mutex_lock(&Write2EmmcMutex);
 
         AssembleDevice.pSaveRawIMU_Data
-                        <<(unsigned long long int )(TempIMU_RawData.timestamp*Nano10_9)<<"," \
+                        <<std::to_string((unsigned long long int )(TempIMU_RawData.timestamp*Nano10_9))<<"," \
                         <<std::setiosflags(std::ios::fixed)\
                         <<std::setprecision(4)\
                         << TempIMU_RawData.gyro.x<<","\
@@ -443,6 +499,51 @@ void * SaveIMU_RawDataFunc(void *){
 
         pthread_mutex_unlock(&Write2EmmcMutex);
         pthread_mutex_unlock(&pSaveRawIMU_DataMutex);
+    }
+}
+
+/*GPS*/
+
+void * SaveGPS_DataFunc(void *){
+    std::cout<<"SaveGPS_DataFunc"<<std::endl;
+
+    pthread_mutex_lock(& bCSV_PointerPreparedMutex );
+    pthread_cond_wait(&bCSV_PointerPreparedCond,&bCSV_PointerPreparedMutex);
+    std::cout<<"Wait for bCSV_PointerPreparedCond signal"<<std::endl;
+    pthread_mutex_unlock(& bCSV_PointerPreparedMutex );
+
+    std::cout<<"Get bCSV_PointerPreparedCond signal"<<std::endl;
+
+    while(1){
+        sem_wait(&GPS_DataFifoSem);
+
+        pthread_mutex_lock(&GPS_DataFifoMutex);
+            if(AssembleDevice.GPS_DataFifo.empty()){
+                pthread_mutex_unlock(&GPS_DataFifoMutex);
+                continue;
+            }
+            GPS_data_t TempGPS_data=AssembleDevice.GPS_DataFifo.front();
+            AssembleDevice.GPS_DataFifo.pop();
+        pthread_mutex_unlock(&GPS_DataFifoMutex);
+
+        pthread_mutex_lock(&pSaveGPS_DataMutex);
+        pthread_mutex_lock(&Write2EmmcMutex);
+
+        AssembleDevice.pSaveGPS_Data
+                        <<std::to_string((unsigned long long int )(TempGPS_data.TimeStamp*Nano10_9))<<"," \
+                        << (int)TempGPS_data.fix<<","\
+                        << TempGPS_data.fixquality<<","\
+                        << TempGPS_data.latitude<<","\
+                        << TempGPS_data.lat<<","\
+                        << TempGPS_data.longitude<<","\
+                        << TempGPS_data.lon<<","\
+                        << TempGPS_data.speed<<","\
+                        << TempGPS_data.angle<<","\
+                        << TempGPS_data.satellites<<","\
+                        <<std::endl;
+
+        pthread_mutex_unlock(&Write2EmmcMutex);
+        pthread_mutex_unlock(&pSaveGPS_DataMutex);
     }
 }
 
@@ -623,11 +724,11 @@ void * SaveCamera_IMU_DataFunc(void *){
         pthread_mutex_lock(&Write2EmmcMutex);
 
         AssembleDevice.pSaveCamera_IMU_Data
-                        <<(unsigned long long int)(TempCamera_IMU_Data.timestamp*Nano10_9)<<"," \
+                        <<std::to_string((unsigned long long int)(TempCamera_IMU_Data.timestamp*Nano10_9))<<"," \
                         <<std::setiosflags(std::ios::fixed)\
                         <<std::setprecision(4)\
                         << TempCamera_IMU_Data.CameraPose.orientation.x<<","\
-                        << TempCamera_IMU_Data.CameraPose.orientation.x<<","\
+                        << TempCamera_IMU_Data.CameraPose.orientation.y<<","\
                         << TempCamera_IMU_Data.CameraPose.orientation.z<<std::endl;
 
         pthread_mutex_unlock(&Write2EmmcMutex);
@@ -639,7 +740,7 @@ void * SaveCamera_IMU_DataFunc(void *){
 #ifdef SaveImagAsJPEG
 //        pthread_mutex_lock(&OnlySaveCamera_IMU_DataPthreadMutex);
 
-        std::string pFileNametemp="./cam0/"+std::to_string((long)(TempCamera_IMU_Data.timestamp*Nano10_9))\
+        std::string pFileNametemp="./cam0/"+std::to_string((unsigned long long int)(TempCamera_IMU_Data.timestamp*Nano10_9))\
                         + ".jpg";
         const char *pFileName=pFileNametemp.c_str();
 
@@ -679,7 +780,9 @@ void * SaveCamera_IMU_DataFunc(void *){
           THROW_UNIX("opening output file");
         if (fwrite(jpegBuf, jpegSize, 1, jpegFile) < 1)
           THROW_UNIX("writing output file");
+        #ifdef EnableConsoleDisplay
         std::cout<<"write one jpg"<<std::endl;
+        #endif // EnableConsoleDisplay
         pthread_mutex_unlock(&Write2EmmcMutex);
 
         tjDestroy(tjInstance);

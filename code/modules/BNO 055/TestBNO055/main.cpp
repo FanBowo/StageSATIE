@@ -31,6 +31,8 @@
 void CaliMagneDataCollectAndCali();
 BNO055_Cali bno = BNO055_Cali();
 
+std::ofstream pSaveMagn_Data;
+
 /**************************************************************************/
 /*
     Arduino setup function (automatically called at startup)
@@ -99,6 +101,15 @@ void loop(void)
 //  std::cout<<"omega :"<<(float)event.gyro.x<<\
 //                       " "<<(float)event.gyro.y<<\
 //                       " "<<(float)event.gyro.z<<std::endl;
+//  bno.getEvent(& event,Adafruit_BNO055::VECTOR_MAGNETOMETER);
+//  std::cout<<"omega :"<<(float)event.magnetic.x<<\
+//                       " "<<(float)event.magnetic.y<<\
+//                       " "<<(float)event.magnetic.z<<std::endl;
+//
+//    pSaveMagn_Data<<(float)event.magnetic.x<<\
+//                       " "<<(float)event.magnetic.y<<\
+//                       " "<<(float)event.magnetic.z<<std::endl;
+
 
   bno.getEvent(& event,Adafruit_BNO055::VECTOR_ACCELEROMETER);
   std::cout<<"acc :"<<(float)event.acceleration.x<<\
@@ -175,6 +186,11 @@ adafruit_bno055_offsets_t CaliProfileData;
 #endif // Debug
 int main(){
     setup();
+
+
+    std::string pMagn_FileNameTemp="Magn.txt";
+    const char *pMagn_FileName=pMagn_FileNameTemp.c_str();
+    pSaveMagn_Data.open(pMagn_FileName,std::ios::trunc|std::ios::binary |std::ios::in|std::ios::out);
     #ifdef UsingProfileConfig
         #ifdef ManuCaliMagn
         bno.CaliMagneDataCollectAndCali();

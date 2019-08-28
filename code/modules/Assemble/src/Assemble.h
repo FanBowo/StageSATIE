@@ -38,6 +38,28 @@ typedef struct{
     VmbUchar_t pImage[Default_Size];/*Pointer of image data*/
 } Camera_IMU_Data_t;
 
+typedef struct{
+  float latitude;   ///< Floating point latitude value in degrees/minutes as received from the GPS (DDMM.MMMM)
+  float longitude;  ///< Floating point longitude value in degrees/minutes as received from the GPS (DDDMM.MMMM)
+
+//  float latitudeDegrees;    ///< Latitude in decimal degrees
+//  float longitudeDegrees;   ///< Longitude in decimal degrees
+//  float geoidheight;        ///< Diff between geoid height and WGS84 height
+//  float altitude;           ///< Altitude in meters above MSL
+  float speed;              ///< Current speed over ground in knots
+  float angle;              ///< Course in degrees from true north
+//  float magvariation;       ///< Magnetic variation in degrees (vs. true north)
+//  float HDOP;               ///< Horizontal Dilution of Precision - relative accuracy of horizontal position
+  char lat;                 ///< N/S
+  char lon;                 ///< E/W
+//  char mag;                 ///< Magnetic variation direction
+  boolean fix;              ///< Have a fix?
+  int fixquality;       ///< Fix quality (0, 1, 2 = Invalid, GPS, DGPS)
+  int satellites;       ///< Number of satellites in use
+  double TimeStamp;
+
+} GPS_data_t;
+
 class Assemble{
 
     public:
@@ -56,7 +78,9 @@ class Assemble{
     std::queue <IMU_RawData_t>IMU_RawDataFifo;
     std::ofstream pSaveRawIMU_Data;
     std::ofstream pSaveCamera_IMU_Data;
+    std::ofstream pSaveGPS_Data;
     std::queue <Camera_IMU_Data_t>Camera_IMU_DataFifo;
+    std::queue <GPS_data_t>GPS_DataFifo;
     ~Assemble();
 };
 

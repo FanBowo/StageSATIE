@@ -36,6 +36,8 @@ void init()
 
     sem_init(&IMU_RawDataFifoSem,0,0);
     sem_init(&Camera_IMUDataFifoSem,0,0);
+    sem_init(&GPS_DataFifoSem,0,0);
+
 
     AssembleDevice.InitIMU_Module();
 
@@ -151,9 +153,9 @@ int main() // run over and over again
     pthread_attr_setschedparam(&ThreadSaveCamera_IMU_DataParaAttr,&ThreadSaveCamera_IMU_DataPara);
     pthread_create(&ThreadSaveCamera_IMU_Data,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
 //
-//    pthread_t ThreadSaveCamera_IMU_Data1;
-//    pthread_create(&ThreadSaveCamera_IMU_Data1,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
-////
+    //    pthread_t ThreadSaveCamera_IMU_Data1;
+    //    pthread_create(&ThreadSaveCamera_IMU_Data1,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
+//
 //    pthread_t ThreadSaveCamera_IMU_Data2;
 //    pthread_create(&ThreadSaveCamera_IMU_Data2,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
 
@@ -172,6 +174,16 @@ int main() // run over and over again
     pthread_attr_setschedparam(&ThreadSaveCamera_IMU_DataToFifoParaAttr,&ThreadSaveCamera_IMU_DataToFifoPara);
     pthread_create(&ThreadSaveCamera_IMU_DataToFifo,&ThreadSaveCamera_IMU_DataToFifoParaAttr,&SaveCamera_IMU_DataToFifoFunc,NULL);
 
+    pthread_t ThreadSaveGPS_Data;
+    struct sched_param ThreadSaveGPS_DataPara;
+    memset(&ThreadSaveGPS_DataPara,0,sizeof(sched_param));
+    ThreadSaveGPS_DataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-25;
+    pthread_attr_t ThreadSaveGPS_DataParaAttr;
+    pthread_attr_init(&ThreadSaveGPS_DataParaAttr);
+    pthread_attr_setinheritsched(&ThreadSaveGPS_DataParaAttr,PTHREAD_EXPLICIT_SCHED);
+    pthread_attr_setschedpolicy(&ThreadSaveGPS_DataParaAttr,SCHED_RR);
+    pthread_attr_setschedparam(&ThreadSaveGPS_DataParaAttr,&ThreadSaveGPS_DataPara);
+    pthread_create(&ThreadSaveGPS_Data,&ThreadSaveGPS_DataParaAttr,&SaveGPS_DataFunc,NULL);
 
     pthread_join(ThreadUpdateTimeStampBase,NULL);
     pthread_join(ThreadDevice_UpdateTimeStamp,NULL);
@@ -182,6 +194,8 @@ int main() // run over and over again
 //    pthread_join(ThreadSaveCamera_IMU_Data2,NULL);
 //    pthread_join(ThreadSaveCamera_IMU_Data3,NULL);
     pthread_join(ThreadSaveCamera_IMU_DataToFifo,NULL);
+    pthread_join(ThreadSaveGPS_Data,NULL);
+
 
     std::cout<<"End of programme"<<std::endl;
 }

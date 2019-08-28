@@ -8,7 +8,7 @@
 #include <iostream>
 #include <fstream>
 
-#define BNO055_SAMPLERATE_DELAY_MS (100)
+#define BNO055_SAMPLERATE_DELAY_MS (20)
 #define delay(a) Linux_delay_ms(a)
 
 class BNO055_Cali:public Adafruit_BNO055, public DataCalibration{
