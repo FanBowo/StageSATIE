@@ -392,7 +392,7 @@ void UpdateIMU_RawData(){
 
         TempIMU_RawData.acceleration.x=(float)event.acceleration.x;
         TempIMU_RawData.acceleration.y=(float)event.acceleration.y;
-        TempIMU_RawData.acceleration.z=(float)event.acceleration.z;
+        TempIMU_RawData.acceleration.z=0.0f-(float)event.acceleration.z;
     //    std::cout<<"acc :"<<(float)event.acceleration.x<<\
     //                           " "<<(float)event.acceleration.y<<\
     //                           " "<<(float)event.acceleration.z<<std::endl;
@@ -403,7 +403,7 @@ void UpdateIMU_RawData(){
 
         TempIMU_RawData.gyro.x=(float)event.gyro.x/RADIAN2DEG;
         TempIMU_RawData.gyro.y=(float)event.gyro.y/RADIAN2DEG;
-        TempIMU_RawData.gyro.z=(float)event.gyro.z/RADIAN2DEG;
+        TempIMU_RawData.gyro.z=0.0f-(float)event.gyro.z/RADIAN2DEG;
     //    std::cout<<"omega :"<<(float)event.gyro.x<<\
     //                       " "<<(float)event.gyro.y<<\
     //                       " "<<(float)event.gyro.z<<std::endl;
@@ -599,6 +599,10 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
         AssembleDevice.IMU_BNO055.getEvent(& event);
         pthread_mutex_unlock(&ReadIMU_Mutex);
 
+        event.orientation.x=event.orientation.x+90.0f;
+        if(event.orientation.x>360.0f){
+            event.orientation.x=event.orientation.x-360.0f;
+        }
         TempCamera_IMU_Data.CameraPose.orientation.x=(float)event.orientation.x;
         TempCamera_IMU_Data.CameraPose.orientation.y=(float)event.orientation.y;
         TempCamera_IMU_Data.CameraPose.orientation.z=(float)event.orientation.z;

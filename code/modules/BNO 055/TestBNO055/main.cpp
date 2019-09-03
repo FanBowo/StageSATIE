@@ -57,8 +57,8 @@ void setup(void)
 //    bno.setAxisRemap(Adafruit_BNO055::REMAP_CONFIG_P1);
 //    bno.setAxisSign(Adafruit_BNO055::REMAP_SIGN_P6);
     // Tested repere
-    bno.setAxisRemap(Adafruit_BNO055::REMAP_CONFIG_P0);
-    bno.setAxisSign(Adafruit_BNO055::REMAP_SIGN_P4);
+//    bno.setAxisRemap(Adafruit_BNO055::REMAP_CONFIG_P0);
+//    bno.setAxisSign(Adafruit_BNO055::REMAP_SIGN_P4);
   delay(1000);
   #ifdef Debug
   if(bno.bMagnBiasGeted){
@@ -95,15 +95,15 @@ void loop(void)
   // - VECTOR_GRAVITY       - m/s^2
   sensors_event_t event;
   bno.getEvent(& event);
-  std::cout<<"Orientation :"<<(float)event.orientation.x<<\
-                       " "<<(float)event.orientation.y<<\
-                       " "<<(float)event.orientation.z\
-                       <<std::endl;
+//  std::cout<<"Orientation :"<<(float)event.orientation.x<<\
+//                       " "<<(float)event.orientation.y<<\
+//                       " "<<(float)event.orientation.z\
+//                       <<std::endl;
 
-//  bno.getEvent(& event,Adafruit_BNO055::VECTOR_GYROSCOPE);
-//  std::cout<<"omega :"<<(float)event.gyro.x<<\
-//                       " "<<(float)event.gyro.y<<\
-//                       " "<<(float)event.gyro.z<<std::endl;
+  bno.getEvent(& event,Adafruit_BNO055::VECTOR_GYROSCOPE);
+  std::cout<<"omega :"<<(float)event.gyro.x<<\
+                       " "<<(float)event.gyro.y<<\
+                       " "<<(float)event.gyro.z<<std::endl;
 //  bno.getEvent(& event,Adafruit_BNO055::VECTOR_MAGNETOMETER);
 //  std::cout<<"omega :"<<(float)event.magnetic.x<<\
 //                       " "<<(float)event.magnetic.y<<\
@@ -114,10 +114,10 @@ void loop(void)
 //                       " "<<(float)event.magnetic.z<<std::endl;
 
 
-  bno.getEvent(& event,Adafruit_BNO055::VECTOR_ACCELEROMETER);
-  std::cout<<"acc :"<<(float)event.acceleration.x<<\
-                       " "<<(float)event.acceleration.y<<\
-                       " "<<(float)event.acceleration.z<<std::endl;
+//  bno.getEvent(& event,Adafruit_BNO055::VECTOR_ACCELEROMETER);
+//  std::cout<<"acc :"<<(float)event.acceleration.x<<\
+//                       " "<<(float)event.acceleration.y<<\
+//                       " "<<(float)event.acceleration.z<<std::endl;
 
 //  imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
 
@@ -145,10 +145,10 @@ void loop(void)
   */
 
   /* Display calibration status for each sensor. */
-  uint8_t system, gyro, accel, mag = 0;
-  bno.getCalibration(&system, &gyro, &accel, &mag);
-  std::cout<<"System "<<(int)system<<"gyro "<<(int)gyro << \
-            "accel "<<(int)accel<<"mag "<<(int)mag<<std::endl;
+//  uint8_t system, gyro, accel, mag = 0;
+//  bno.getCalibration(&system, &gyro, &accel, &mag);
+//  std::cout<<"System "<<(int)system<<"gyro "<<(int)gyro << \
+//            "accel "<<(int)accel<<"mag "<<(int)mag<<std::endl;
   #ifdef ManuCaliMagn
     if(system>=1){
         imu::Vector<3> magn = bno.getVector(Adafruit_BNO055::VECTOR_MAGNETOMETER);

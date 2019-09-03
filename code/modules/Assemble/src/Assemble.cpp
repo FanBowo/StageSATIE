@@ -88,8 +88,8 @@ void Assemble::InitIMU_Module(){
     delay(1000);
   }
   #endif // Debug
-    IMU_BNO055.setAxisRemap(Adafruit_BNO055::REMAP_CONFIG_P0);
-    IMU_BNO055.setAxisSign(Adafruit_BNO055::REMAP_SIGN_P4);
+//    IMU_BNO055.setAxisRemap(Adafruit_BNO055::REMAP_CONFIG_P0);
+//    IMU_BNO055.setAxisSign(Adafruit_BNO055::REMAP_SIGN_P4);
   /* Display the current temperature */
   int8_t temp = IMU_BNO055.getTemp();
   std::cout<<"Current Temperature: "<<temp<<" C"<<std::endl;
