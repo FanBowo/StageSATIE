@@ -6,6 +6,10 @@ pthread_mutex_t GPS_DataFifoMutex=PTHREAD_MUTEX_INITIALIZER;
 sem_t GPS_DataFifoSem;
 pthread_mutex_t pSaveGPS_DataMutex=PTHREAD_MUTEX_INITIALIZER;
 
+pthread_cond_t Update_GPS_FifoMutexCond=PTHREAD_COND_INITIALIZER;
+pthread_mutex_t Update_GPS_FifoMutex=PTHREAD_MUTEX_INITIALIZER;
+
+
 pthread_mutex_t Write2EmmcMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t Write2TerminalMutex=PTHREAD_MUTEX_INITIALIZER;
 
@@ -19,6 +23,7 @@ pthread_mutex_t Camera_IMU_DataFifoMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t IMU_RawDataFifoMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t pSaveRawIMU_DataMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t pSaveCamera_IMU_DataMutex=PTHREAD_MUTEX_INITIALIZER;
+
 
 pthread_mutex_t ReadIMU_Mutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t TimeStampBaseMutex =PTHREAD_MUTEX_INITIALIZER;
@@ -68,57 +73,11 @@ void * UpdateTimeStampBaseFunc(void *){
         pthread_cond_wait(&TimeStampBaseCond,&TimeStampBaseMutex);
             pthread_mutex_lock(& TimeStampBaseReNewMutex );
 
-            if (( AssembleDevice.GPS.parse(AssembleDevice.GPS.lastNMEA()) && AssembleDevice.GPS.bRecvdRMCflag() )){
-            // this also sets the newNMEAreceived() flag to false
-                if(EnableParseOutput){
-                    AssembleDevice.GPS.ResetRecvdRMCflag();
-                    #ifdef EnableConsoleDisplay
-                    pthread_mutex_lock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
-                        std::cout<<"Timestamp base:"<<AssembleDevice.GPS.GpsTimeGetted<<std::endl;
-                    pthread_mutex_unlock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
-                    #endif // EnableConsoleDisplay
-
-                    pthread_mutex_lock(& bIMU_Data_StableMutex );
-                    bool bTempIMU_Data_Stable=AssembleDevice.bIMU_Data_Stable;
-                    pthread_mutex_unlock(& bIMU_Data_StableMutex );
-
-                    if(bTempIMU_Data_Stable){
-                        GPS_data_t TempGPS_Data;
-                        TempGPS_Data.fix=AssembleDevice.GPS.fix;
-                        TempGPS_Data.TimeStamp=AssembleDevice.GPS.GpsTimeGetted;
-                        TempGPS_Data.fixquality=AssembleDevice.GPS.fixquality;
-                        if(TempGPS_Data.fix){
-                            TempGPS_Data.latitude=AssembleDevice.GPS.latitude;
-                            TempGPS_Data.lat=AssembleDevice.GPS.lat;
-                            TempGPS_Data.longitude=AssembleDevice.GPS.longitude;
-                            TempGPS_Data.lon=AssembleDevice.GPS.lon;
-                            TempGPS_Data.speed=AssembleDevice.GPS.speed;
-                            TempGPS_Data.angle=AssembleDevice.GPS.angle;
-                            TempGPS_Data.satellites=AssembleDevice.GPS.satellites;
-                        }
-                        else{
-                            TempGPS_Data.latitude=0.0;
-                            TempGPS_Data.lat='0';
-                            TempGPS_Data.longitude=0.0;
-                            TempGPS_Data.lon='0';
-                            TempGPS_Data.speed=0.0;
-                            TempGPS_Data.angle=0.0;
-                            TempGPS_Data.satellites=0;
-                        }
-
-                        pthread_mutex_lock(&GPS_DataFifoMutex);
-                        AssembleDevice.GPS_DataFifo.push(TempGPS_Data);
-                        sem_post(&GPS_DataFifoSem);
-                        pthread_mutex_unlock(&GPS_DataFifoMutex);
-                    }
-
-                }
+            if (!( AssembleDevice.GPS.parse(AssembleDevice.GPS.lastNMEA()) && AssembleDevice.GPS.bRecvdRMCflag() )){
+                pthread_mutex_unlock(& TimeStampBaseReNewMutex );
+                pthread_mutex_unlock(& TimeStampBaseMutex );
+                continue;
             }
-
-//        pthread_mutex_lock(&IMU_TimerCounterMutex);
-//        IMU_TimerCounter=0;
-//        timer_settime(IMU_Timer,0,&IMU_Timer_trigger,NULL);
-//        pthread_mutex_unlock(&IMU_TimerCounterMutex);
 
 
             pthread_mutex_lock(&Device_TimerCounterMutex);
@@ -126,10 +85,22 @@ void * UpdateTimeStampBaseFunc(void *){
                 timer_settime(Device_Timer,0,&Device_Timer_trigger,NULL);
             pthread_mutex_unlock(&Device_TimerCounterMutex);
 
+            // this also sets the newNMEAreceived() flag to false
+            if(EnableParseOutput){
+                AssembleDevice.GPS.ResetRecvdRMCflag();
+                #ifdef EnableConsoleDisplay
+                pthread_mutex_lock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
+                    std::cout<<"Timestamp base:"<<AssembleDevice.GPS.GpsTimeGetted<<std::endl;
+                pthread_mutex_unlock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
+                #endif // EnableConsoleDisplay
+                pthread_mutex_lock(&Update_GPS_FifoMutex);
+                pthread_cond_signal(&Update_GPS_FifoMutexCond);
+                pthread_mutex_unlock(&Update_GPS_FifoMutex);
+
+            }
+
 
         pthread_mutex_unlock(& TimeStampBaseReNewMutex );
-
-
         pthread_mutex_unlock(& TimeStampBaseMutex );
     }
 }
@@ -270,6 +241,49 @@ void TimerIMU_Feedback(union sigval sv){
 
 }
 
+void *GPS_UpdateFIFOFunc(void *){
+    std::cout<<"Enter SaveCamera_IMU_DataToFifo thread "<<std::endl;
+
+    pthread_mutex_lock(& bIMU_Data_StableMutex );
+    pthread_cond_wait(&bIMU_Data_StableCond,&bIMU_Data_StableMutex);
+    std::cout<<"wait bIMU_Data_StableCond Signal"<<std::endl;
+    pthread_mutex_unlock(& bIMU_Data_StableMutex );
+    std::cout<<"Reiceived IMU_Data_Stable condition signal and begin taking photo"<<std::endl;
+    while(1){
+        pthread_mutex_lock(&Update_GPS_FifoMutex);
+        pthread_cond_wait(&Update_GPS_FifoMutexCond,&Update_GPS_FifoMutex);
+
+        GPS_data_t TempGPS_Data;
+        TempGPS_Data.fix=AssembleDevice.GPS.fix;
+        TempGPS_Data.TimeStamp=AssembleDevice.GPS.GpsTimeGetted;
+        TempGPS_Data.fixquality=AssembleDevice.GPS.fixquality;
+        if(TempGPS_Data.fix){
+            TempGPS_Data.latitude=AssembleDevice.GPS.latitude;
+            TempGPS_Data.lat=AssembleDevice.GPS.lat;
+            TempGPS_Data.longitude=AssembleDevice.GPS.longitude;
+            TempGPS_Data.lon=AssembleDevice.GPS.lon;
+            TempGPS_Data.speed=AssembleDevice.GPS.speed;
+            TempGPS_Data.angle=AssembleDevice.GPS.angle;
+            TempGPS_Data.satellites=AssembleDevice.GPS.satellites;
+        }
+        else{
+            TempGPS_Data.latitude=0.0;
+            TempGPS_Data.lat='0';
+            TempGPS_Data.longitude=0.0;
+            TempGPS_Data.lon='0';
+            TempGPS_Data.speed=0.0;
+            TempGPS_Data.angle=0.0;
+            TempGPS_Data.satellites=0;
+        }
+
+        pthread_mutex_lock(&GPS_DataFifoMutex);
+        AssembleDevice.GPS_DataFifo.push(TempGPS_Data);
+        sem_post(&GPS_DataFifoSem);
+        pthread_mutex_unlock(&GPS_DataFifoMutex);
+
+        pthread_mutex_unlock(&Update_GPS_FifoMutex);
+    }
+}
 void * IMU_UpdateRawDataFunc(void *){
     std::cout<<"EnterThread_IMU_UpdateRawData"<<std::endl;
 
@@ -278,15 +292,7 @@ void * IMU_UpdateRawDataFunc(void *){
         pthread_mutex_lock(&IMU_RawDataMutex);
         pthread_cond_wait(&IMU_RawDataCond,&IMU_RawDataMutex);
 
-//        pthread_mutex_lock(& TimeStampBaseReNewMutex );
-//        pthread_mutex_lock(&IMU_TimerCounterMutex);
-
-//        AssembleDevice.IMU_TimeStamp=IMU_TimerCounter*(1.0/(float)TimerIMUFre)+ \
-//                                AssembleDevice.GPS.GpsTimeGetted;
-//        std::cout<<"TimeStamp: "<<AssembleDevice.IMU_TimeStamp<<std::endl;
         UpdateIMU_RawData();
-//        pthread_mutex_unlock(&IMU_TimerCounterMutex);
-//        pthread_mutex_unlock(& TimeStampBaseReNewMutex );
 
         pthread_mutex_unlock(&IMU_RawDataMutex);
     }
@@ -349,6 +355,7 @@ void OpenCSVfile(){
 }
 
 
+#define KALIBR
 void UpdateIMU_RawData(){
     // Possible vector values can be:
     // - VECTOR_ACCELEROMETER - m/s^2
@@ -382,6 +389,8 @@ void UpdateIMU_RawData(){
         }
     }
     else{
+        #ifdef KALIBR
+
         sensors_event_t event;
 
         pthread_mutex_lock(&ReadIMU_Mutex);
@@ -390,9 +399,22 @@ void UpdateIMU_RawData(){
 
         IMU_RawData_t TempIMU_RawData;
 
-        TempIMU_RawData.acceleration.x=(float)event.acceleration.x;
-        TempIMU_RawData.acceleration.y=(float)event.acceleration.y;
-        TempIMU_RawData.acceleration.z=0.0f-(float)event.acceleration.z;
+
+        static double oldTimeStamp=0.0f;
+        pthread_mutex_lock(&RW_Device_TimeStampMutex);
+        TempIMU_RawData.timestamp=AssembleDevice.DeviceTimeStamp;
+        pthread_mutex_unlock(&RW_Device_TimeStampMutex);
+
+        if((TempIMU_RawData.timestamp-oldTimeStamp)<0.005f){
+            return;
+        }
+        oldTimeStamp=TempIMU_RawData.timestamp;
+
+
+
+        TempIMU_RawData.acceleration.x=(float)event.acceleration.z;
+        TempIMU_RawData.acceleration.y=0.0f-(float)event.acceleration.y;
+        TempIMU_RawData.acceleration.z=(float)event.acceleration.x;
     //    std::cout<<"acc :"<<(float)event.acceleration.x<<\
     //                           " "<<(float)event.acceleration.y<<\
     //                           " "<<(float)event.acceleration.z<<std::endl;
@@ -401,29 +423,31 @@ void UpdateIMU_RawData(){
         AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_GYROSCOPE);
         pthread_mutex_unlock(&ReadIMU_Mutex);
 
-        TempIMU_RawData.gyro.x=(float)event.gyro.x/RADIAN2DEG;
-        TempIMU_RawData.gyro.y=(float)event.gyro.y/RADIAN2DEG;
-        TempIMU_RawData.gyro.z=0.0f-(float)event.gyro.z/RADIAN2DEG;
+        TempIMU_RawData.gyro.x=(float)event.gyro.z/RADIAN2DEG;
+        TempIMU_RawData.gyro.y=0.0f-(float)event.gyro.y/RADIAN2DEG;
+        TempIMU_RawData.gyro.z=(float)event.gyro.x/RADIAN2DEG;
     //    std::cout<<"omega :"<<(float)event.gyro.x<<\
     //                       " "<<(float)event.gyro.y<<\
     //                       " "<<(float)event.gyro.z<<std::endl;
-        pthread_mutex_lock(&RW_Device_TimeStampMutex);
-        TempIMU_RawData.timestamp=AssembleDevice.DeviceTimeStamp;
-        pthread_mutex_unlock(&RW_Device_TimeStampMutex);
+
 
         pthread_mutex_lock(&IMU_RawDataFifoMutex);
         AssembleDevice.IMU_RawDataFifo.push(TempIMU_RawData);
         sem_post(&IMU_RawDataFifoSem);
         pthread_mutex_unlock(&IMU_RawDataFifoMutex);
 
+        #endif // KALIBR
+
 
         pthread_mutex_lock(& bCSV_PointerPreparedMutex );
         bool TempbCSV_PointerPreparedMutex=AssembleDevice.bCSV_PointerPrepared;
         pthread_mutex_unlock(& bCSV_PointerPreparedMutex );
 
+
         if(!TempbCSV_PointerPreparedMutex){
             OpenCSVfile();
         }
+
     }
 
 
@@ -564,6 +588,7 @@ void CreatAndSaveImag(const FramePtr pFrame ){
     pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
 }
 
+//#define RECORD_IMU_ANG_DATA
 #define UseDefaultPhotoFormat
 void *SaveCamera_IMU_DataToFifoFunc(void *){
     std::cout<<"Enter SaveCamera_IMU_DataToFifo thread "<<std::endl;
@@ -586,12 +611,21 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
 
         //    std::cout<<"Received one new frame"<<std::endl;
         /*use PhotoFormatInfo to save frame format*/
+
         Camera_IMU_Data_t TempCamera_IMU_Data;
 
+        static double OldTimeStamp=0.0f;
         pthread_mutex_lock(&RW_Device_TimeStampMutex);
         TempCamera_IMU_Data.timestamp=AssembleDevice.DeviceTimeStamp;
         pthread_mutex_unlock(&RW_Device_TimeStampMutex);
 
+        if((TempCamera_IMU_Data.timestamp-OldTimeStamp)<0.005f){
+            pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
+            continue;
+        }
+        OldTimeStamp=TempCamera_IMU_Data.timestamp;
+
+        #ifdef RECORD_IMU_ANG_DATA
         sensors_event_t event;
 
         pthread_mutex_lock(&ReadIMU_Mutex);
@@ -619,6 +653,15 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
         pthread_mutex_unlock(&ReadIMU_Mutex);
 
         TempCamera_IMU_Data.Sys_cali_level=Temp_Sys_cali_level;
+        #endif // RECORD_IMU_ANG_DATA
+
+        #ifndef RECORD_IMU_ANG_DATA
+            TempCamera_IMU_Data.CameraPose.orientation.x=0.0f;
+            TempCamera_IMU_Data.CameraPose.orientation.y=0.0f;
+            TempCamera_IMU_Data.CameraPose.orientation.z=0.0f;
+            TempCamera_IMU_Data.Sys_cali_level=0;
+
+        #endif // RECORD_IMU_ANG_DATA
 
         VmbErrorType    err         = VmbErrorSuccess;
         //VmbPixelFormatType ePixelFormat = VmbPixelFormatMono8;

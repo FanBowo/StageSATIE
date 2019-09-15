@@ -55,6 +55,10 @@ extern pthread_mutex_t TimeStampBaseMutex;
 extern pthread_cond_t TimeStampBaseCond;
 void * UpdateTimeStampBaseFunc(void *);
 
+void * GPS_UpdateFIFOFunc(void *);
+extern pthread_cond_t Update_GPS_FifoMutexCond;
+extern pthread_mutex_t Update_GPS_FifoMutex;
+
 //extern pthread_mutex_t IMU_TimerCounterMutex;
 extern pthread_cond_t IMU_RawDataCond;
 extern pthread_mutex_t IMU_RawDataMutex;
@@ -72,7 +76,7 @@ void * SaveIMU_RawDataFunc(void *);
 //extern pthread_mutex_t SaveIMU_RawDataMutex;
 //extern pthread_cond_t SaveIMU_RawDataCond;
 
-#define TimerIMUFre 30
+#define TimerIMUFre 80
 
 /*cameras*/
 void *SaveCamera_IMU_DataToFifoFunc(void *);

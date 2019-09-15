@@ -32,8 +32,9 @@ void CameraFailed(int sign_no){
 //bool RevNewPack =false;
 void init()
 {
-    AssembleDevice.InitGPS_Module();
-
+//    AssembleDevice.InitGPS_Module();
+    AssembleDevice.GPS.begin(9600);
+    delay(1000);
     sem_init(&IMU_RawDataFifoSem,0,0);
     sem_init(&Camera_IMUDataFifoSem,0,0);
     sem_init(&GPS_DataFifoSem,0,0);
@@ -92,7 +93,7 @@ int main() // run over and over again
     pthread_t ThreadUpdateTimeStampBase;
     struct sched_param ThreadUpdateTimeStampBasePara;
     memset(&ThreadUpdateTimeStampBasePara,0,sizeof(sched_param));
-    ThreadUpdateTimeStampBasePara.__sched_priority=sched_get_priority_max(SCHED_RR);
+    ThreadUpdateTimeStampBasePara.__sched_priority=sched_get_priority_max(SCHED_RR)-2;
     pthread_attr_t ThreadUpdateTimeStampBaseParaAttr;
     pthread_attr_init(&ThreadUpdateTimeStampBaseParaAttr);
     pthread_attr_setinheritsched(&ThreadUpdateTimeStampBaseParaAttr,PTHREAD_EXPLICIT_SCHED);
@@ -103,7 +104,7 @@ int main() // run over and over again
     pthread_t ThreadDevice_UpdateTimeStamp;
     struct sched_param ThreadDevice_UpdateTimeStampPara;
     memset(&ThreadDevice_UpdateTimeStampPara,0,sizeof(sched_param));
-    ThreadDevice_UpdateTimeStampPara.__sched_priority=sched_get_priority_max(SCHED_RR)-1;
+    ThreadDevice_UpdateTimeStampPara.__sched_priority=sched_get_priority_max(SCHED_RR)-6;
     pthread_attr_t ThreadDevice_UpdateTimeStampParaAttr;
     pthread_attr_init(&ThreadDevice_UpdateTimeStampParaAttr);
     pthread_attr_setinheritsched(&ThreadDevice_UpdateTimeStampParaAttr,PTHREAD_EXPLICIT_SCHED);
@@ -111,10 +112,21 @@ int main() // run over and over again
     pthread_attr_setschedparam(&ThreadDevice_UpdateTimeStampParaAttr,&ThreadDevice_UpdateTimeStampPara);
     pthread_create(&ThreadDevice_UpdateTimeStamp,&ThreadDevice_UpdateTimeStampParaAttr,&UpdateDeviceTimeStampFunc,NULL);
 
+    pthread_t ThreadGPS_UpdateFIFO;
+    struct sched_param ThreadGPS_UpdateFIFOPara;
+    memset(&ThreadGPS_UpdateFIFOPara,0,sizeof(sched_param));
+    ThreadGPS_UpdateFIFOPara.__sched_priority=sched_get_priority_max(SCHED_RR)-3;
+    pthread_attr_t ThreadGPS_UpdateFIFOParaAttr;
+    pthread_attr_init(&ThreadGPS_UpdateFIFOParaAttr);
+    pthread_attr_setinheritsched(&ThreadGPS_UpdateFIFOParaAttr,PTHREAD_EXPLICIT_SCHED);
+    pthread_attr_setschedpolicy(&ThreadGPS_UpdateFIFOParaAttr,SCHED_RR);
+    pthread_attr_setschedparam(&ThreadGPS_UpdateFIFOParaAttr,&ThreadGPS_UpdateFIFOPara);
+    pthread_create(&ThreadGPS_UpdateFIFO,&ThreadGPS_UpdateFIFOParaAttr,&GPS_UpdateFIFOFunc,NULL);
+
     pthread_t ThreadIMU_UpdateRawData;
     struct sched_param ThreadIMU_UpdateRawDataPara;
     memset(&ThreadIMU_UpdateRawDataPara,0,sizeof(sched_param));
-    ThreadIMU_UpdateRawDataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-3;
+    ThreadIMU_UpdateRawDataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-10;
     pthread_attr_t ThreadIMU_UpdateRawDataParaAttr;
     pthread_attr_init(&ThreadIMU_UpdateRawDataParaAttr);
     pthread_attr_setinheritsched(&ThreadIMU_UpdateRawDataParaAttr,PTHREAD_EXPLICIT_SCHED);
@@ -133,7 +145,7 @@ int main() // run over and over again
     pthread_t ThreadSaveIMU_RawData;
     struct sched_param ThreadSaveIMU_RawDataPara;
     memset(&ThreadSaveIMU_RawDataPara,0,sizeof(sched_param));
-    ThreadSaveIMU_RawDataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-25;
+    ThreadSaveIMU_RawDataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-30;
     pthread_attr_t ThreadSaveIMU_RawDataParaAttr;
     pthread_attr_init(&ThreadSaveIMU_RawDataParaAttr);
     pthread_attr_setinheritsched(&ThreadSaveIMU_RawDataParaAttr,PTHREAD_EXPLICIT_SCHED);
@@ -144,7 +156,7 @@ int main() // run over and over again
     pthread_t ThreadSaveCamera_IMU_Data;
     struct sched_param ThreadSaveCamera_IMU_DataPara;
     memset(&ThreadSaveCamera_IMU_DataPara,0,sizeof(sched_param));
-    ThreadSaveCamera_IMU_DataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-20;
+    ThreadSaveCamera_IMU_DataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-30;
     pthread_attr_t ThreadSaveCamera_IMU_DataParaAttr;
     pthread_attr_init(&ThreadSaveCamera_IMU_DataParaAttr);
     pthread_attr_setstacksize(&ThreadSaveCamera_IMU_DataParaAttr,33554432);
@@ -152,12 +164,12 @@ int main() // run over and over again
     pthread_attr_setschedpolicy(&ThreadSaveCamera_IMU_DataParaAttr,SCHED_RR);
     pthread_attr_setschedparam(&ThreadSaveCamera_IMU_DataParaAttr,&ThreadSaveCamera_IMU_DataPara);
     pthread_create(&ThreadSaveCamera_IMU_Data,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
-//
-    //    pthread_t ThreadSaveCamera_IMU_Data1;
-    //    pthread_create(&ThreadSaveCamera_IMU_Data1,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
-//
-//    pthread_t ThreadSaveCamera_IMU_Data2;
-//    pthread_create(&ThreadSaveCamera_IMU_Data2,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
+
+    pthread_t ThreadSaveCamera_IMU_Data1;
+    pthread_create(&ThreadSaveCamera_IMU_Data1,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
+
+    pthread_t ThreadSaveCamera_IMU_Data2;
+    pthread_create(&ThreadSaveCamera_IMU_Data2,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
 
 //    pthread_t ThreadSaveCamera_IMU_Data3;
 //    pthread_create(&ThreadSaveCamera_IMU_Data3,&ThreadSaveCamera_IMU_DataParaAttr,&SaveCamera_IMU_DataFunc,NULL);
@@ -165,7 +177,7 @@ int main() // run over and over again
     pthread_t ThreadSaveCamera_IMU_DataToFifo;
     struct sched_param ThreadSaveCamera_IMU_DataToFifoPara;
     memset(&ThreadSaveCamera_IMU_DataToFifoPara,0,sizeof(sched_param));
-    ThreadSaveCamera_IMU_DataToFifoPara.__sched_priority=sched_get_priority_max(SCHED_RR)-2;
+    ThreadSaveCamera_IMU_DataToFifoPara.__sched_priority=sched_get_priority_max(SCHED_RR)-12;
     pthread_attr_t ThreadSaveCamera_IMU_DataToFifoParaAttr;
     pthread_attr_init(&ThreadSaveCamera_IMU_DataToFifoParaAttr);
     pthread_attr_setstacksize(&ThreadSaveCamera_IMU_DataToFifoParaAttr,33554432);
@@ -177,7 +189,7 @@ int main() // run over and over again
     pthread_t ThreadSaveGPS_Data;
     struct sched_param ThreadSaveGPS_DataPara;
     memset(&ThreadSaveGPS_DataPara,0,sizeof(sched_param));
-    ThreadSaveGPS_DataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-25;
+    ThreadSaveGPS_DataPara.__sched_priority=sched_get_priority_max(SCHED_RR)-30;
     pthread_attr_t ThreadSaveGPS_DataParaAttr;
     pthread_attr_init(&ThreadSaveGPS_DataParaAttr);
     pthread_attr_setinheritsched(&ThreadSaveGPS_DataParaAttr,PTHREAD_EXPLICIT_SCHED);
@@ -187,11 +199,12 @@ int main() // run over and over again
 
     pthread_join(ThreadUpdateTimeStampBase,NULL);
     pthread_join(ThreadDevice_UpdateTimeStamp,NULL);
+    pthread_join(ThreadGPS_UpdateFIFO,NULL);
     pthread_join(ThreadIMU_UpdateRawData,NULL);
     pthread_join(ThreadSaveIMU_RawData,NULL);
     pthread_join(ThreadSaveCamera_IMU_Data,NULL);
-//    pthread_join(ThreadSaveCamera_IMU_Data1,NULL);
-//    pthread_join(ThreadSaveCamera_IMU_Data2,NULL);
+    pthread_join(ThreadSaveCamera_IMU_Data1,NULL);
+    pthread_join(ThreadSaveCamera_IMU_Data2,NULL);
 //    pthread_join(ThreadSaveCamera_IMU_Data3,NULL);
     pthread_join(ThreadSaveCamera_IMU_DataToFifo,NULL);
     pthread_join(ThreadSaveGPS_Data,NULL);

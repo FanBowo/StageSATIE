@@ -1,6 +1,6 @@
 
 #include "CameraTimer.h"
-#define ExternTriggerFre 10
+#define ExternTriggerFre 20
 #define Nanoseconds_0_5e10_9 1000000000
 #define ExposureTime 5000000
 
