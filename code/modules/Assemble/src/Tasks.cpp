@@ -391,12 +391,6 @@ void UpdateIMU_RawData(){
     else{
         #ifdef KALIBR
 
-        sensors_event_t event;
-
-        pthread_mutex_lock(&ReadIMU_Mutex);
-        AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_ACCELEROMETER);
-        pthread_mutex_unlock(&ReadIMU_Mutex);
-
         IMU_RawData_t TempIMU_RawData;
 
 
@@ -410,6 +404,11 @@ void UpdateIMU_RawData(){
         }
         oldTimeStamp=TempIMU_RawData.timestamp;
 
+        sensors_event_t event;
+
+        pthread_mutex_lock(&ReadIMU_Mutex);
+        AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_ACCELEROMETER);
+        pthread_mutex_unlock(&ReadIMU_Mutex);
 
 
         TempIMU_RawData.acceleration.x=(float)event.acceleration.z;
@@ -629,7 +628,6 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
         sensors_event_t event;
 
         pthread_mutex_lock(&ReadIMU_Mutex);
-    //    std::cout<<"CreatAndSaveImag event get ReadIMU_Mutex"<<std::endl;
         AssembleDevice.IMU_BNO055.getEvent(& event);
         pthread_mutex_unlock(&ReadIMU_Mutex);
 
@@ -644,7 +642,6 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
         uint8_t Temp_Sys_cali_level,Temp_Gyro_cali_level,Temp_Acc_cali_level,Temp_Magn_cali_level=0;
 
         pthread_mutex_lock(&ReadIMU_Mutex);
-    //    std::cout<<"CreatAndSaveImag event get ReadIMU_Mutex"<<std::endl;
         AssembleDevice.IMU_BNO055.getCalibration(&Temp_Sys_cali_level,
                                                     &Temp_Gyro_cali_level,
                                                     &Temp_Acc_cali_level,
@@ -731,8 +728,6 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
         pthread_mutex_unlock(&Camera_IMU_DataFifoMutex);
 
         pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
-
-
     }
 }
 
