@@ -76,7 +76,7 @@ void * SaveIMU_RawDataFunc(void *);
 //extern pthread_mutex_t SaveIMU_RawDataMutex;
 //extern pthread_cond_t SaveIMU_RawDataCond;
 
-#define TimerIMUFre 30
+#define TimerIMUFre 80
 
 /*cameras*/
 void *SaveCamera_IMU_DataToFifoFunc(void *);

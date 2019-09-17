@@ -58,10 +58,10 @@
 	"Adafruit_GPS.h"
 	"BNO055_Cali.h"
 
-1455208157 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
+1455208298 source:/home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.cpp
 	"Tasks.h"
 
-1455208388 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.h
+1455208661 /home/firefly/Desktop/StageSATIE/code/modules/Assemble/src/Tasks.h
 	"Assemble.h"
 	<pthread.h>
 	<signal.h>
@@ -428,7 +428,7 @@
 	<stdio.h>
 	<fcntl.h>
 
-1455208355 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraTimer.cpp
+1455208182 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/src/CameraTimer.cpp
 	"CameraTimer.h"
 
 1562751330 source:/home/firefly/Desktop/StageSATIE/code/modules/CameraMako130/TestCameraMako130TakePhoto/TestCameraMako130TakePhoto/CameraMakoCleanUpAndSaveImage.cpp

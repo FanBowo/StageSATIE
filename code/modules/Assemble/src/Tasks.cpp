@@ -587,7 +587,7 @@ void CreatAndSaveImag(const FramePtr pFrame ){
     pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
 }
 
-#define RECORD_IMU_ANG_DATA
+//#define RECORD_IMU_ANG_DATA
 #define UseDefaultPhotoFormat
 void *SaveCamera_IMU_DataToFifoFunc(void *){
     std::cout<<"Enter SaveCamera_IMU_DataToFifo thread "<<std::endl;
