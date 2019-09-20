@@ -37,7 +37,7 @@ void init()
     delay(1000);
     sem_init(&SEM_FIFO_BRUT_IMU,0,0);
     sem_init(&SEM_FIFO_IMAGE_IMU,0,0);
-    sem_init(&SEM_ FIFO_INFO_GPS,0,0);
+    sem_init(&SEM_FIFO_INFO_GPS,0,0);
 
 
     AssembleDevice.InitIMU_Module();

@@ -3,7 +3,7 @@
 Assemble AssembleDevice;
 
 pthread_mutex_t MUTEX_FIFO_INFO_GPS=PTHREAD_MUTEX_INITIALIZER;
-sem_t SEM_ FIFO_INFO_GPS;
+sem_t SEM_FIFO_INFO_GPS;
 pthread_mutex_t POINTEUR_CSV_INFO_GPS=PTHREAD_MUTEX_INITIALIZER;
 
 pthread_cond_t Update_GPS_FifoMutexCond=PTHREAD_COND_INITIALIZER;
@@ -268,7 +268,7 @@ void *GPS_UpdateFIFOFunc(void *){
 
         pthread_mutex_lock(&MUTEX_FIFO_INFO_GPS);
         AssembleDevice.GPS_DataFifo.push(TempGPS_Data);
-        sem_post(&SEM_ FIFO_INFO_GPS);
+        sem_post(&SEM_FIFO_INFO_GPS);
         pthread_mutex_unlock(&MUTEX_FIFO_INFO_GPS);
 
         pthread_mutex_unlock(&Update_GPS_FifoMutex);
@@ -528,7 +528,7 @@ void * SaveGPS_DataFunc(void *){
     std::cout<<"Get bCSV_PointerPreparedCond signal"<<std::endl;
 
     while(1){
-        sem_wait(&SEM_ FIFO_INFO_GPS);
+        sem_wait(&SEM_FIFO_INFO_GPS);
 
         pthread_mutex_lock(&MUTEX_FIFO_INFO_GPS);
             if(AssembleDevice.GPS_DataFifo.empty()){

@@ -19,7 +19,7 @@
 extern Assemble AssembleDevice;
 
 extern pthread_mutex_t MUTEX_FIFO_INFO_GPS;
-extern sem_t SEM_ FIFO_INFO_GPS;
+extern sem_t SEM_FIFO_INFO_GPS;
 extern pthread_mutex_t POINTEUR_CSV_INFO_GPS;
 void * SaveGPS_DataFunc(void *);
 
