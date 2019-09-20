@@ -4,7 +4,7 @@ Assemble AssembleDevice;
 
 pthread_mutex_t MUTEX_FIFO_INFO_GPS=PTHREAD_MUTEX_INITIALIZER;
 sem_t SEM_FIFO_INFO_GPS;
-pthread_mutex_t POINTEUR_CSV_INFO_GPS=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t MUTEX_CSV_INFO_GPS=PTHREAD_MUTEX_INITIALIZER;
 
 pthread_cond_t Update_GPS_FifoMutexCond=PTHREAD_COND_INITIALIZER;
 pthread_mutex_t Update_GPS_FifoMutex=PTHREAD_MUTEX_INITIALIZER;
@@ -30,7 +30,7 @@ pthread_mutex_t MUTEX_SIGNAL_RENOUVELER_BASE_HORODATAGE =PTHREAD_MUTEX_INITIALIZ
 pthread_cond_t SIGNAL_RENOUVELER_BASE_HORODATAGE=PTHREAD_COND_INITIALIZER;
 pthread_mutex_t TimeStampBaseReNewMutex =PTHREAD_MUTEX_INITIALIZER;
 
-pthread_cond_t IMU_RawDataCond=PTHREAD_COND_INITIALIZER;
+pthread_cond_t SIGNAL_LIRE_IMU_BRUT=PTHREAD_COND_INITIALIZER;
 pthread_mutex_t MUTEX_SIGNAL_LIRE_IMU_BRUT =PTHREAD_MUTEX_INITIALIZER;
 sem_t SEM_FIFO_BRUT_IMU;
 
@@ -226,7 +226,7 @@ void InitTimerIMU(){
 void TimerIMU_Feedback(union sigval sv){
 
     pthread_mutex_lock(&MUTEX_SIGNAL_LIRE_IMU_BRUT);
-    pthread_cond_signal(&IMU_RawDataCond);
+    pthread_cond_signal(&SIGNAL_LIRE_IMU_BRUT);
     pthread_mutex_unlock(&MUTEX_SIGNAL_LIRE_IMU_BRUT);
 
 }
@@ -539,7 +539,7 @@ void * SaveGPS_DataFunc(void *){
             AssembleDevice.GPS_DataFifo.pop();
         pthread_mutex_unlock(&MUTEX_FIFO_INFO_GPS);
 
-        pthread_mutex_lock(&POINTEUR_CSV_INFO_GPS);
+        pthread_mutex_lock(&MUTEX_CSV_INFO_GPS);
         pthread_mutex_lock(&MUTEX_CARTE_MEMOIRE);
 
         AssembleDevice.pSaveGPS_Data
@@ -556,7 +556,7 @@ void * SaveGPS_DataFunc(void *){
                         <<std::endl;
 
         pthread_mutex_unlock(&MUTEX_CARTE_MEMOIRE);
-        pthread_mutex_unlock(&POINTEUR_CSV_INFO_GPS);
+        pthread_mutex_unlock(&MUTEX_CSV_INFO_GPS);
     }
 }
 
