@@ -2,15 +2,15 @@
 #include "Tasks.h"
 Assemble AssembleDevice;
 
-pthread_mutex_t GPS_DataFifoMutex=PTHREAD_MUTEX_INITIALIZER;
-sem_t GPS_DataFifoSem;
-pthread_mutex_t pSaveGPS_DataMutex=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t MUTEX_FIFO_INFO_GPS=PTHREAD_MUTEX_INITIALIZER;
+sem_t SEM_ FIFO_INFO_GPS;
+pthread_mutex_t POINTEUR_CSV_INFO_GPS=PTHREAD_MUTEX_INITIALIZER;
 
 pthread_cond_t Update_GPS_FifoMutexCond=PTHREAD_COND_INITIALIZER;
 pthread_mutex_t Update_GPS_FifoMutex=PTHREAD_MUTEX_INITIALIZER;
 
 
-pthread_mutex_t Write2EmmcMutex=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t MUTEX_CARTE_MEMOIRE=PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t Write2TerminalMutex=PTHREAD_MUTEX_INITIALIZER;
 
 pthread_mutex_t bIMU_Data_StableMutex=PTHREAD_MUTEX_INITIALIZER;
@@ -19,29 +19,25 @@ pthread_cond_t bIMU_Data_StableCond=PTHREAD_COND_INITIALIZER;
 pthread_mutex_t bCSV_PointerPreparedMutex=PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t bCSV_PointerPreparedCond=PTHREAD_COND_INITIALIZER;
 
-pthread_mutex_t Camera_IMU_DataFifoMutex=PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t IMU_RawDataFifoMutex=PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t pSaveRawIMU_DataMutex=PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t pSaveCamera_IMU_DataMutex=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t MUTEX_FIFO_IMAGE_IMU=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t MUTEX_FIFO_BRUT_IMU=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t MUTEX_CSV_BRUT_IMU=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t MUTEX_CSV_POSE_IMU=PTHREAD_MUTEX_INITIALIZER;
 
 
-pthread_mutex_t ReadIMU_Mutex=PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t TimeStampBaseMutex =PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t TimeStampBaseCond=PTHREAD_COND_INITIALIZER;
+pthread_mutex_t MUTEX_I2C=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t MUTEX_SIGNAL_RENOUVELER_BASE_HORODATAGE =PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t SIGNAL_RENOUVELER_BASE_HORODATAGE=PTHREAD_COND_INITIALIZER;
 pthread_mutex_t TimeStampBaseReNewMutex =PTHREAD_MUTEX_INITIALIZER;
 
 pthread_cond_t IMU_RawDataCond=PTHREAD_COND_INITIALIZER;
-pthread_mutex_t IMU_RawDataMutex =PTHREAD_MUTEX_INITIALIZER;
-//pthread_mutex_t IMU_TimerCounterMutex=PTHREAD_MUTEX_INITIALIZER;
-sem_t IMU_RawDataFifoSem;
+pthread_mutex_t MUTEX_SIGNAL_LIRE_IMU_BRUT =PTHREAD_MUTEX_INITIALIZER;
+sem_t SEM_FIFO_BRUT_IMU;
 
 
-sem_t Camera_IMUDataFifoSem;
-//sem_t PhotoSem;
-//sem_t PhotoPositionSem;
-pthread_mutex_t OnlySaveCamera_IMU_DataPthreadMutex=PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t SaveCamera_IMU_DataMutex=PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t SaveCamera_IMU_DataCond=PTHREAD_COND_INITIALIZER;
+sem_t SEM_FIFO_IMAGE_IMU;
+pthread_mutex_t MUTEX_SIGNAL_REV_IMAGE=PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t SIGNAL_REV_IMAGE=PTHREAD_COND_INITIALIZER;
 
 FramePtr pNewFrame;
 pthread_mutex_t pNewFrameMutex=PTHREAD_MUTEX_INITIALIZER;
@@ -50,40 +46,39 @@ pthread_mutex_t pNewFrameMutex=PTHREAD_MUTEX_INITIALIZER;
 //timer_t timerid_EXTERN_TRIGGER2;//Camera trigger push down
 //int fd_GPIO_P2_c4;//GPIO file descriptor
 
-pthread_mutex_t Device_TimerCounterMutex=PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t Device_TimeStampCond=PTHREAD_COND_INITIALIZER;
-pthread_mutex_t Device_TimeStampMutex=PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t RW_Device_TimeStampMutex=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t MUTEX_HORODATAGE_COMPTEUR=PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t SIGNAL_RENOUVELER_HORODATAGE=PTHREAD_COND_INITIALIZER;
+pthread_mutex_t MUTEX_HORODATAGE=PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t RW_MUTEX_HORODATAGE=PTHREAD_MUTEX_INITIALIZER;
 timer_t Device_Timer;
-long Device_TimerCounter=0;
+long HORODATAGE_COMPTEUR=0;
 struct itimerspec Device_Timer_trigger;
 
 
 timer_t IMU_Timer;
 struct itimerspec IMU_Timer_trigger;
-//int IMU_TimerCounter=0;
 
 //#define EnableConsoleDisplay
 
 void * UpdateTimeStampBaseFunc(void *){
     std::cout<<"EnterThread_UpdateTimeStampBase"<<std::endl;
     while(1){
-        pthread_mutex_lock(& TimeStampBaseMutex );
+        pthread_mutex_lock(& MUTEX_SIGNAL_RENOUVELER_BASE_HORODATAGE );
 
-        pthread_cond_wait(&TimeStampBaseCond,&TimeStampBaseMutex);
+        pthread_cond_wait(&SIGNAL_RENOUVELER_BASE_HORODATAGE,&MUTEX_SIGNAL_RENOUVELER_BASE_HORODATAGE);
             pthread_mutex_lock(& TimeStampBaseReNewMutex );
 
             if (!( AssembleDevice.GPS.parse(AssembleDevice.GPS.lastNMEA()) && AssembleDevice.GPS.bRecvdRMCflag() )){
                 pthread_mutex_unlock(& TimeStampBaseReNewMutex );
-                pthread_mutex_unlock(& TimeStampBaseMutex );
+                pthread_mutex_unlock(& MUTEX_SIGNAL_RENOUVELER_BASE_HORODATAGE );
                 continue;
             }
 
 
-            pthread_mutex_lock(&Device_TimerCounterMutex);
-                Device_TimerCounter=0;
+            pthread_mutex_lock(&MUTEX_HORODATAGE_COMPTEUR);
+                HORODATAGE_COMPTEUR=0;
                 timer_settime(Device_Timer,0,&Device_Timer_trigger,NULL);
-            pthread_mutex_unlock(&Device_TimerCounterMutex);
+            pthread_mutex_unlock(&MUTEX_HORODATAGE_COMPTEUR);
 
             // this also sets the newNMEAreceived() flag to false
             if(EnableParseOutput){
@@ -101,7 +96,7 @@ void * UpdateTimeStampBaseFunc(void *){
 
 
         pthread_mutex_unlock(& TimeStampBaseReNewMutex );
-        pthread_mutex_unlock(& TimeStampBaseMutex );
+        pthread_mutex_unlock(& MUTEX_SIGNAL_RENOUVELER_BASE_HORODATAGE );
     }
 }
 
@@ -136,9 +131,9 @@ void signal_handler_IO (int status)
         // we end up not listening and catching other sentences!
         // so be very wary if using OUTPUT_ALLDATA and trytng to print out data
     //std::cout<<GPS.lastNMEA()<<std::endl; // this also sets the newNMEAreceived() flag to false
-    pthread_mutex_lock(&TimeStampBaseMutex);
-    pthread_cond_signal(&TimeStampBaseCond);
-    pthread_mutex_unlock(&TimeStampBaseMutex);
+    pthread_mutex_lock(&MUTEX_SIGNAL_RENOUVELER_BASE_HORODATAGE);
+    pthread_cond_signal(&SIGNAL_RENOUVELER_BASE_HORODATAGE);
+    pthread_mutex_unlock(&MUTEX_SIGNAL_RENOUVELER_BASE_HORODATAGE);
             //continue; // we can fail to parse a sentence in which case we should just wait for another
     //tempCounter++;
     //std::cout<<"TempCounter"<<tempCounter<<std::endl;
@@ -161,50 +156,51 @@ void InitTimerDevice(){
     Device_Timer_trigger.it_interval.tv_nsec=(long)(Nano10_9/TimerDeviceFre);
     Device_Timer_trigger.it_value.tv_sec=0;
     Device_Timer_trigger.it_value.tv_nsec=1;
-    Device_TimerCounter=0;
+    HORODATAGE_COMPTEUR=0;
 //    timer_settime(Device_Timer,0,&Device_Timer_trigger,NULL);
 
 }
 
 void TimerDevice_Feedback(union sigval sv){
 
-    pthread_mutex_lock(&Device_TimeStampMutex);
-    pthread_mutex_lock(&Device_TimerCounterMutex);
+    pthread_mutex_lock(&MUTEX_HORODATAGE);
+    pthread_mutex_lock(&MUTEX_HORODATAGE_COMPTEUR);
 
-    pthread_cond_signal(&Device_TimeStampCond);
-    Device_TimerCounter++;
+	HORODATAGE_COMPTEUR++;
+    pthread_cond_signal(&SIGNAL_RENOUVELER_HORODATAGE);
+    
 
-    pthread_mutex_unlock(&Device_TimerCounterMutex);
-    pthread_mutex_unlock(&Device_TimeStampMutex);
+    pthread_mutex_unlock(&MUTEX_HORODATAGE_COMPTEUR);
+    pthread_mutex_unlock(&MUTEX_HORODATAGE);
 }
 
 void * UpdateDeviceTimeStampFunc(void *){
     std::cout<<"EnterThread_UpdateDeviceTimeStamp"<<std::endl;
     while(1){
 
-        pthread_mutex_lock(&Device_TimeStampMutex);
-        pthread_cond_wait(&Device_TimeStampCond,&Device_TimeStampMutex);
+        pthread_mutex_lock(&MUTEX_HORODATAGE);
+        pthread_cond_wait(&SIGNAL_RENOUVELER_HORODATAGE,&MUTEX_HORODATAGE);
 
         pthread_mutex_lock(& TimeStampBaseReNewMutex );
-            pthread_mutex_lock(&Device_TimerCounterMutex);
+            pthread_mutex_lock(&MUTEX_HORODATAGE_COMPTEUR);
 
-                pthread_mutex_lock(&RW_Device_TimeStampMutex);
+                pthread_mutex_lock(&RW_MUTEX_HORODATAGE);
                     pthread_mutex_lock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
 
-                    AssembleDevice.DeviceTimeStamp=Device_TimerCounter*(1.0/(double)TimerDeviceFre)+ \
+                    AssembleDevice.DeviceTimeStamp=HORODATAGE_COMPTEUR*(1.0/(double)TimerDeviceFre)+ \
                                     AssembleDevice.GPS.GpsTimeGetted;
                     pthread_mutex_unlock(&(AssembleDevice.GPS.GpsTimeGettedMutex));
 
-//        std::cout<<"Device_TimerCounter: "<<Device_TimerCounter<<std::endl;
-                pthread_mutex_unlock(&RW_Device_TimeStampMutex);
+//        std::cout<<"HORODATAGE_COMPTEUR: "<<HORODATAGE_COMPTEUR<<std::endl;
+                pthread_mutex_unlock(&RW_MUTEX_HORODATAGE);
 //
 //        std::cout<<"DeviceTimeStamp: "<<std::setiosflags(std::ios::fixed)\
 //                        <<std::setprecision(4)<<AssembleDevice.DeviceTimeStamp<<std::endl;
 
-            pthread_mutex_unlock(&Device_TimerCounterMutex);
+            pthread_mutex_unlock(&MUTEX_HORODATAGE_COMPTEUR);
         pthread_mutex_unlock(& TimeStampBaseReNewMutex );
 
-        pthread_mutex_unlock(&Device_TimeStampMutex);
+        pthread_mutex_unlock(&MUTEX_HORODATAGE);
     }
 
 }
@@ -223,21 +219,15 @@ void InitTimerIMU(){
     IMU_Timer_trigger.it_interval.tv_nsec=(long)(Nano10_9/TimerIMUFre);
     IMU_Timer_trigger.it_value.tv_sec=0;
     IMU_Timer_trigger.it_value.tv_nsec=1;
-//    IMU_TimerCounter=0;
     timer_settime(IMU_Timer,0,&IMU_Timer_trigger,NULL);
 
 }
 
 void TimerIMU_Feedback(union sigval sv){
 
-    pthread_mutex_lock(&IMU_RawDataMutex);
-//    pthread_mutex_lock(&IMU_TimerCounterMutex);
-
+    pthread_mutex_lock(&MUTEX_SIGNAL_LIRE_IMU_BRUT);
     pthread_cond_signal(&IMU_RawDataCond);
-//    IMU_TimerCounter++;
-
-//    pthread_mutex_unlock(&IMU_TimerCounterMutex);
-    pthread_mutex_unlock(&IMU_RawDataMutex);
+    pthread_mutex_unlock(&MUTEX_SIGNAL_LIRE_IMU_BRUT);
 
 }
 
@@ -276,10 +266,10 @@ void *GPS_UpdateFIFOFunc(void *){
             TempGPS_Data.satellites=0;
         }
 
-        pthread_mutex_lock(&GPS_DataFifoMutex);
+        pthread_mutex_lock(&MUTEX_FIFO_INFO_GPS);
         AssembleDevice.GPS_DataFifo.push(TempGPS_Data);
-        sem_post(&GPS_DataFifoSem);
-        pthread_mutex_unlock(&GPS_DataFifoMutex);
+        sem_post(&SEM_ FIFO_INFO_GPS);
+        pthread_mutex_unlock(&MUTEX_FIFO_INFO_GPS);
 
         pthread_mutex_unlock(&Update_GPS_FifoMutex);
     }
@@ -289,12 +279,12 @@ void * IMU_UpdateRawDataFunc(void *){
 
     while(1){
 
-        pthread_mutex_lock(&IMU_RawDataMutex);
-        pthread_cond_wait(&IMU_RawDataCond,&IMU_RawDataMutex);
+        pthread_mutex_lock(&MUTEX_SIGNAL_LIRE_IMU_BRUT);
+        pthread_cond_wait(&SIGNAL_LIRE_IMU_BRUT,&MUTEX_SIGNAL_LIRE_IMU_BRUT);
 
         UpdateIMU_RawData();
 
-        pthread_mutex_unlock(&IMU_RawDataMutex);
+        pthread_mutex_unlock(&MUTEX_SIGNAL_LIRE_IMU_BRUT);
     }
 
 }
@@ -304,28 +294,28 @@ void OpenCSVfile(){
 
     pthread_mutex_lock(& bCSV_PointerPreparedMutex );
 
-    pthread_mutex_lock(&RW_Device_TimeStampMutex);
+    pthread_mutex_lock(&RW_MUTEX_HORODATAGE);
     double timestamp=AssembleDevice.DeviceTimeStamp;
-    pthread_mutex_unlock(&RW_Device_TimeStampMutex);
+    pthread_mutex_unlock(&RW_MUTEX_HORODATAGE);
 
     std::string pIMU_CSV_FileNameTemp=std::to_string((long)(timestamp*Nano10_9))\
                         + "imu0.csv";
     const char *pIMU_CSV_FileName=pIMU_CSV_FileNameTemp.c_str();
 
-    pthread_mutex_lock(&Write2EmmcMutex);
+    pthread_mutex_lock(&MUTEX_CARTE_MEMOIRE);
 
     AssembleDevice.pSaveRawIMU_Data.open(pIMU_CSV_FileName,std::ios::out|std::ios::trunc);
     AssembleDevice.pSaveRawIMU_Data<<"timestamp"<<","\
                     <<"omega_x"<<","<<"omega_y"<<","<<"omega_z"<<","\
                     <<"alpha_x"<<","<<"alpha_y"<<","<<"alpha_z"<<std::endl;
 
-    pthread_mutex_unlock(&Write2EmmcMutex);
+    pthread_mutex_unlock(&MUTEX_CARTE_MEMOIRE);
 
     std::string pGPS_CSV_FileNameTemp=std::to_string((unsigned long long int)(timestamp*Nano10_9))\
                         + "GPS.csv";
     const char *pGPS_CSV_FileName=pGPS_CSV_FileNameTemp.c_str();
 
-    pthread_mutex_lock(&Write2EmmcMutex);
+    pthread_mutex_lock(&MUTEX_CARTE_MEMOIRE);
 
     AssembleDevice.pSaveGPS_Data.open(pGPS_CSV_FileName,std::ios::out|std::ios::trunc);
     AssembleDevice.pSaveGPS_Data<<"timestamp"<<","\
@@ -334,19 +324,19 @@ void OpenCSVfile(){
                     <<"speed"<<","<<"angle"<<","<<"satellites"\
                     <<std::endl;
 
-    pthread_mutex_unlock(&Write2EmmcMutex);
+    pthread_mutex_unlock(&MUTEX_CARTE_MEMOIRE);
 
         std::string pCamera_IMU_CSV_FileNameTemp=std::to_string((unsigned long long int)(timestamp*Nano10_9))\
                         + "Camera_IMU.csv";
     const char *pCamera_IMU_CSV_FileName=pCamera_IMU_CSV_FileNameTemp.c_str();
 
-    pthread_mutex_lock(&Write2EmmcMutex);
+    pthread_mutex_lock(&MUTEX_CARTE_MEMOIRE);
 
     AssembleDevice.pSaveCamera_IMU_Data.open(pCamera_IMU_CSV_FileName,std::ios::out|std::ios::trunc);
     AssembleDevice.pSaveCamera_IMU_Data<<"timestamp"<<","<<"SystèmeCaliLevel"<<","\
                     <<"x"<<","<<"y"<<","<<"z"<<std::endl;
 
-    pthread_mutex_unlock(&Write2EmmcMutex);
+    pthread_mutex_unlock(&MUTEX_CARTE_MEMOIRE);
 
     AssembleDevice.bCSV_PointerPrepared=true;
     pthread_cond_broadcast(&bCSV_PointerPreparedCond);
@@ -372,9 +362,9 @@ void UpdateIMU_RawData(){
     pthread_mutex_unlock(& bIMU_Data_StableMutex );
 
     if(!TempbIMU_Data_Stable){
-        pthread_mutex_lock(&ReadIMU_Mutex);
+        pthread_mutex_lock(&MUTEX_I2C);
         AssembleDevice.IMU_BNO055.getCalibration(&system, &gyro, &accel, &mag);
-        pthread_mutex_unlock(&ReadIMU_Mutex);
+        pthread_mutex_unlock(&MUTEX_I2C);
 
 
         std::cout<<"System "<<(int)system<<"gyro "<<(int)gyro << \
@@ -395,9 +385,9 @@ void UpdateIMU_RawData(){
 
 
         static double oldTimeStamp=0.0f;
-        pthread_mutex_lock(&RW_Device_TimeStampMutex);
+        pthread_mutex_lock(&RW_MUTEX_HORODATAGE);
         TempIMU_RawData.timestamp=AssembleDevice.DeviceTimeStamp;
-        pthread_mutex_unlock(&RW_Device_TimeStampMutex);
+        pthread_mutex_unlock(&RW_MUTEX_HORODATAGE);
 
         if((TempIMU_RawData.timestamp-oldTimeStamp)<0.005f){
             return;
@@ -406,9 +396,9 @@ void UpdateIMU_RawData(){
 
         sensors_event_t event;
 
-        pthread_mutex_lock(&ReadIMU_Mutex);
+        pthread_mutex_lock(&MUTEX_I2C);
         AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_ACCELEROMETER);
-        pthread_mutex_unlock(&ReadIMU_Mutex);
+        pthread_mutex_unlock(&MUTEX_I2C);
 
 
         TempIMU_RawData.acceleration.x=(float)event.acceleration.z;
@@ -418,9 +408,9 @@ void UpdateIMU_RawData(){
     //                           " "<<(float)event.acceleration.y<<\
     //                           " "<<(float)event.acceleration.z<<std::endl;
 
-        pthread_mutex_lock(&ReadIMU_Mutex);
+        pthread_mutex_lock(&MUTEX_I2C);
         AssembleDevice.IMU_BNO055.getEvent(& event,Adafruit_BNO055::VECTOR_GYROSCOPE);
-        pthread_mutex_unlock(&ReadIMU_Mutex);
+        pthread_mutex_unlock(&MUTEX_I2C);
 
         TempIMU_RawData.gyro.x=(float)event.gyro.z/RADIAN2DEG;
         TempIMU_RawData.gyro.y=0.0f-(float)event.gyro.y/RADIAN2DEG;
@@ -430,10 +420,10 @@ void UpdateIMU_RawData(){
     //                       " "<<(float)event.gyro.z<<std::endl;
 
 
-        pthread_mutex_lock(&IMU_RawDataFifoMutex);
+        pthread_mutex_lock(&MUTEX_FIFO_BRUT_IMU);
         AssembleDevice.IMU_RawDataFifo.push(TempIMU_RawData);
-        sem_post(&IMU_RawDataFifoSem);
-        pthread_mutex_unlock(&IMU_RawDataFifoMutex);
+        sem_post(&SEM_FIFO_BRUT_IMU);
+        pthread_mutex_unlock(&MUTEX_FIFO_BRUT_IMU);
 
         #endif // KALIBR
 
@@ -495,19 +485,19 @@ void * SaveIMU_RawDataFunc(void *){
     std::cout<<"Get bCSV_PointerPreparedCond signal"<<std::endl;
 
     while(1){
-        sem_wait(&IMU_RawDataFifoSem);
+        sem_wait(&SEM_FIFO_BRUT_IMU);
 
-        pthread_mutex_lock(&IMU_RawDataFifoMutex);
+        pthread_mutex_lock(&MUTEX_FIFO_BRUT_IMU);
             if(AssembleDevice.IMU_RawDataFifo.empty()){
-                pthread_mutex_unlock(&IMU_RawDataFifoMutex);
+                pthread_mutex_unlock(&MUTEX_FIFO_BRUT_IMU);
                 continue;
             }
             IMU_RawData_t TempIMU_RawData=AssembleDevice.IMU_RawDataFifo.front();
             AssembleDevice.IMU_RawDataFifo.pop();
-        pthread_mutex_unlock(&IMU_RawDataFifoMutex);
+        pthread_mutex_unlock(&MUTEX_FIFO_BRUT_IMU);
 
-        pthread_mutex_lock(&pSaveRawIMU_DataMutex);
-        pthread_mutex_lock(&Write2EmmcMutex);
+        pthread_mutex_lock(&MUTEX_CSV_BRUT_IMU);
+        pthread_mutex_lock(&MUTEX_CARTE_MEMOIRE);
 
         AssembleDevice.pSaveRawIMU_Data
                         <<std::to_string((unsigned long long int )(TempIMU_RawData.timestamp*Nano10_9))<<"," \
@@ -520,8 +510,8 @@ void * SaveIMU_RawDataFunc(void *){
                         << TempIMU_RawData.acceleration.y<<","\
                         << TempIMU_RawData.acceleration.z<<std::endl;
 
-        pthread_mutex_unlock(&Write2EmmcMutex);
-        pthread_mutex_unlock(&pSaveRawIMU_DataMutex);
+        pthread_mutex_unlock(&MUTEX_CARTE_MEMOIRE);
+        pthread_mutex_unlock(&MUTEX_CSV_BRUT_IMU);
     }
 }
 
@@ -538,19 +528,19 @@ void * SaveGPS_DataFunc(void *){
     std::cout<<"Get bCSV_PointerPreparedCond signal"<<std::endl;
 
     while(1){
-        sem_wait(&GPS_DataFifoSem);
+        sem_wait(&SEM_ FIFO_INFO_GPS);
 
-        pthread_mutex_lock(&GPS_DataFifoMutex);
+        pthread_mutex_lock(&MUTEX_FIFO_INFO_GPS);
             if(AssembleDevice.GPS_DataFifo.empty()){
-                pthread_mutex_unlock(&GPS_DataFifoMutex);
+                pthread_mutex_unlock(&MUTEX_FIFO_INFO_GPS);
                 continue;
             }
             GPS_data_t TempGPS_data=AssembleDevice.GPS_DataFifo.front();
             AssembleDevice.GPS_DataFifo.pop();
-        pthread_mutex_unlock(&GPS_DataFifoMutex);
+        pthread_mutex_unlock(&MUTEX_FIFO_INFO_GPS);
 
-        pthread_mutex_lock(&pSaveGPS_DataMutex);
-        pthread_mutex_lock(&Write2EmmcMutex);
+        pthread_mutex_lock(&POINTEUR_CSV_INFO_GPS);
+        pthread_mutex_lock(&MUTEX_CARTE_MEMOIRE);
 
         AssembleDevice.pSaveGPS_Data
                         <<std::to_string((unsigned long long int )(TempGPS_data.TimeStamp*Nano10_9))<<"," \
@@ -565,8 +555,8 @@ void * SaveGPS_DataFunc(void *){
                         << TempGPS_data.satellites<<","\
                         <<std::endl;
 
-        pthread_mutex_unlock(&Write2EmmcMutex);
-        pthread_mutex_unlock(&pSaveGPS_DataMutex);
+        pthread_mutex_unlock(&MUTEX_CARTE_MEMOIRE);
+        pthread_mutex_unlock(&POINTEUR_CSV_INFO_GPS);
     }
 }
 
@@ -575,7 +565,7 @@ void * SaveGPS_DataFunc(void *){
 /*A new image received save into fifo*/
 void CreatAndSaveImag(const FramePtr pFrame ){
     std::cout<<"Received one new frame"<<std::endl;
-    pthread_mutex_lock(&SaveCamera_IMU_DataMutex);
+    pthread_mutex_lock(&MUTEX_SIGNAL_REV_IMAGE);
 
     pthread_mutex_lock(&pNewFrameMutex);
 
@@ -583,8 +573,8 @@ void CreatAndSaveImag(const FramePtr pFrame ){
 
     pthread_mutex_unlock(&pNewFrameMutex);
 
-    pthread_cond_signal(&SaveCamera_IMU_DataCond);
-    pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
+    pthread_cond_signal(&SIGNAL_REV_IMAGE);
+    pthread_mutex_unlock(&MUTEX_SIGNAL_REV_IMAGE);
 }
 
 #define RECORD_IMU_ANG_DATA
@@ -605,8 +595,8 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
     AssembleDevice.PhotoFormatInfo.bFormatGetted=true;
 #endif // UseDefaultPhotoFormat
     while(1){
-        pthread_mutex_lock(&SaveCamera_IMU_DataMutex);
-        pthread_cond_wait(&SaveCamera_IMU_DataCond,&SaveCamera_IMU_DataMutex);
+        pthread_mutex_lock(&MUTEX_SIGNAL_REV_IMAGE);
+        pthread_cond_wait(&SIGNAL_REV_IMAGE,&MUTEX_SIGNAL_REV_IMAGE);
 
         //    std::cout<<"Received one new frame"<<std::endl;
         /*use PhotoFormatInfo to save frame format*/
@@ -614,12 +604,12 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
         Camera_IMU_Data_t TempCamera_IMU_Data;
 
         static double OldTimeStamp=0.0f;
-        pthread_mutex_lock(&RW_Device_TimeStampMutex);
+        pthread_mutex_lock(&RW_MUTEX_HORODATAGE);
         TempCamera_IMU_Data.timestamp=AssembleDevice.DeviceTimeStamp;
-        pthread_mutex_unlock(&RW_Device_TimeStampMutex);
+        pthread_mutex_unlock(&RW_MUTEX_HORODATAGE);
 
 //        if((TempCamera_IMU_Data.timestamp-OldTimeStamp)<0.005f){
-//            pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
+//            pthread_mutex_unlock(&MUTEX_SIGNAL_REV_IMAGE);
 //            continue;
 //        }
 //        OldTimeStamp=TempCamera_IMU_Data.timestamp;
@@ -627,9 +617,9 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
         #ifdef RECORD_IMU_ANG_DATA
         sensors_event_t event;
 
-        pthread_mutex_lock(&ReadIMU_Mutex);
+        pthread_mutex_lock(&MUTEX_I2C);
         AssembleDevice.IMU_BNO055.getEvent(& event);
-        pthread_mutex_unlock(&ReadIMU_Mutex);
+        pthread_mutex_unlock(&MUTEX_I2C);
 
         event.orientation.x=event.orientation.x+90.0f;
         if(event.orientation.x>360.0f){
@@ -641,13 +631,13 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
 
         uint8_t Temp_Sys_cali_level,Temp_Gyro_cali_level,Temp_Acc_cali_level,Temp_Magn_cali_level=0;
 
-        pthread_mutex_lock(&ReadIMU_Mutex);
+        pthread_mutex_lock(&MUTEX_I2C);
         AssembleDevice.IMU_BNO055.getCalibration(&Temp_Sys_cali_level,
                                                     &Temp_Gyro_cali_level,
                                                     &Temp_Acc_cali_level,
                                                     &Temp_Magn_cali_level
                                                     );
-        pthread_mutex_unlock(&ReadIMU_Mutex);
+        pthread_mutex_unlock(&MUTEX_I2C);
 
         TempCamera_IMU_Data.Sys_cali_level=Temp_Sys_cali_level;
         #endif // RECORD_IMU_ANG_DATA
@@ -722,12 +712,12 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
             memcpy(TempCamera_IMU_Data.pImage,pImage,Default_Size);
         }
 #endif // UseDefaultPhotoFormat
-        pthread_mutex_lock(&Camera_IMU_DataFifoMutex);
+        pthread_mutex_lock(&MUTEX_FIFO_IMAGE_IMU);
         AssembleDevice.Camera_IMU_DataFifo.push(TempCamera_IMU_Data);
-        sem_post(&Camera_IMUDataFifoSem);
-        pthread_mutex_unlock(&Camera_IMU_DataFifoMutex);
+        sem_post(&SEM_FIFO_IMAGE_IMU);
+        pthread_mutex_unlock(&MUTEX_FIFO_IMAGE_IMU);
 
-        pthread_mutex_unlock(&SaveCamera_IMU_DataMutex);
+        pthread_mutex_unlock(&MUTEX_SIGNAL_REV_IMAGE);
     }
 }
 
@@ -764,19 +754,19 @@ void * SaveCamera_IMU_DataFunc(void *){
     while(1){
 
 
-        sem_wait(&Camera_IMUDataFifoSem);
+        sem_wait(&SEM_FIFO_IMAGE_IMU);
 
-        pthread_mutex_lock(&Camera_IMU_DataFifoMutex);
+        pthread_mutex_lock(&MUTEX_FIFO_IMAGE_IMU);
             if( AssembleDevice.Camera_IMU_DataFifo.empty()){
-                pthread_mutex_unlock(&Camera_IMU_DataFifoMutex);
+                pthread_mutex_unlock(&MUTEX_FIFO_IMAGE_IMU);
                 continue;
             }
             Camera_IMU_Data_t TempCamera_IMU_Data=AssembleDevice.Camera_IMU_DataFifo.front();
             AssembleDevice.Camera_IMU_DataFifo.pop();
-        pthread_mutex_unlock(&Camera_IMU_DataFifoMutex);
+        pthread_mutex_unlock(&MUTEX_FIFO_IMAGE_IMU);
 
-        pthread_mutex_lock(&pSaveCamera_IMU_DataMutex);
-        pthread_mutex_lock(&Write2EmmcMutex);
+        pthread_mutex_lock(&MUTEX_CSV_POSE_IMU);
+        pthread_mutex_lock(&MUTEX_CARTE_MEMOIRE);
 
         AssembleDevice.pSaveCamera_IMU_Data
                         <<std::to_string((unsigned long long int)(TempCamera_IMU_Data.timestamp*Nano10_9))<<"," \
@@ -787,14 +777,13 @@ void * SaveCamera_IMU_DataFunc(void *){
                         << TempCamera_IMU_Data.CameraPose.orientation.y<<","\
                         << TempCamera_IMU_Data.CameraPose.orientation.z<<std::endl;
 
-        pthread_mutex_unlock(&Write2EmmcMutex);
-        pthread_mutex_unlock(&pSaveCamera_IMU_DataMutex);
+        pthread_mutex_unlock(&MUTEX_CARTE_MEMOIRE);
+        pthread_mutex_unlock(&MUTEX_CSV_POSE_IMU);
 
 
 
 
 #ifdef SaveImagAsJPEG
-//        pthread_mutex_lock(&OnlySaveCamera_IMU_DataPthreadMutex);
 
         std::string pFileNametemp="./cam0/"+std::to_string((unsigned long long int)(TempCamera_IMU_Data.timestamp*Nano10_9))\
                         + ".jpg";
@@ -830,7 +819,7 @@ void * SaveCamera_IMU_DataFunc(void *){
 
 
         /* Write the JPEG image to disk. */
-        pthread_mutex_lock(&Write2EmmcMutex);
+        pthread_mutex_lock(&MUTEX_CARTE_MEMOIRE);
 
         if ((jpegFile = fopen(pFileName, "wb")) == NULL)
           THROW_UNIX("opening output file");
@@ -839,7 +828,7 @@ void * SaveCamera_IMU_DataFunc(void *){
         #ifdef EnableConsoleDisplay
         std::cout<<"write one jpg"<<std::endl;
         #endif // EnableConsoleDisplay
-        pthread_mutex_unlock(&Write2EmmcMutex);
+        pthread_mutex_unlock(&MUTEX_CARTE_MEMOIRE);
 
         tjDestroy(tjInstance);
         tjInstance = NULL;
@@ -853,11 +842,10 @@ void * SaveCamera_IMU_DataFunc(void *){
           if (tjInstance) tjDestroy(tjInstance);
           if (jpegBuf) tjFree(jpegBuf);
           if (jpegFile) fclose(jpegFile);
-//        pthread_mutex_unlock(&OnlySaveCamera_IMU_DataPthreadMutex);
 #endif // SaveImagAsJPEG
 #ifndef SaveImagAsJPEG
 
-//    pthread_mutex_lock(&OnlySaveCamera_IMU_DataPthreadMutex);
+
 
         AVTBitmap bitmap;
 
@@ -884,7 +872,7 @@ void * SaveCamera_IMU_DataFunc(void *){
             err = VmbErrorResources;
         }
         else{
-            pthread_mutex_lock(&Write2EmmcMutex);
+            pthread_mutex_lock(&MUTEX_CARTE_MEMOIRE);
             // Save the bitmap
             if ( 0 == AVTWriteBitmapToFile( &bitmap, pFileName )){
                 std::cout << "Could not write bitmap to file.\n";
@@ -894,10 +882,10 @@ void * SaveCamera_IMU_DataFunc(void *){
                     std::cout << "Could not release the bitmap.\n";
                     err = VmbErrorInternalFault;
                 }
-                pthread_mutex_unlock(&Write2EmmcMutex);
+                pthread_mutex_unlock(&MUTEX_CARTE_MEMOIRE);
             }
             else{
-                pthread_mutex_unlock(&Write2EmmcMutex);
+                pthread_mutex_unlock(&MUTEX_CARTE_MEMOIRE);
                 #ifdef EnableConsoleDisplay
                     std::cout << "Bitmap successfully written to file \"" << pFileName << "\"\n" ;
                 #endif // EnableConsoleDisplay
@@ -909,7 +897,6 @@ void * SaveCamera_IMU_DataFunc(void *){
                 }
             }
         }
-//        pthread_mutex_unlock(&OnlySaveCamera_IMU_DataPthreadMutex);
 #endif // SaveImagAsJPEG
 
     }

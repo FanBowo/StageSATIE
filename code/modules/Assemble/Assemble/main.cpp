@@ -35,9 +35,9 @@ void init()
 //    AssembleDevice.InitGPS_Module();
     AssembleDevice.GPS.begin(9600);
     delay(1000);
-    sem_init(&IMU_RawDataFifoSem,0,0);
-    sem_init(&Camera_IMUDataFifoSem,0,0);
-    sem_init(&GPS_DataFifoSem,0,0);
+    sem_init(&SEM_FIFO_BRUT_IMU,0,0);
+    sem_init(&SEM_FIFO_IMAGE_IMU,0,0);
+    sem_init(&SEM_ FIFO_INFO_GPS,0,0);
 
 
     AssembleDevice.InitIMU_Module();

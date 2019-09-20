@@ -18,12 +18,12 @@
 #define Nano10_9 1000000000
 extern Assemble AssembleDevice;
 
-extern pthread_mutex_t GPS_DataFifoMutex;
-extern sem_t GPS_DataFifoSem;
-extern pthread_mutex_t pSaveGPS_DataMutex;
+extern pthread_mutex_t MUTEX_FIFO_INFO_GPS;
+extern sem_t SEM_ FIFO_INFO_GPS;
+extern pthread_mutex_t POINTEUR_CSV_INFO_GPS;
 void * SaveGPS_DataFunc(void *);
 
-extern pthread_mutex_t Write2EmmcMutex;
+extern pthread_mutex_t MUTEX_CARTE_MEMOIRE;
 extern pthread_mutex_t Write2TerminalMutex;
 
 extern pthread_mutex_t bIMU_Data_StableMutex;
@@ -32,40 +32,38 @@ extern pthread_cond_t bIMU_Data_StableCond;
 extern pthread_mutex_t bCSV_PointerPreparedMutex;
 extern pthread_cond_t bCSV_PointerPreparedCond;
 
-extern pthread_mutex_t Camera_IMU_DataFifoMutex;
-extern pthread_mutex_t IMU_RawDataFifoMutex;
-extern pthread_mutex_t pSaveRawIMU_DataMutex;
-extern pthread_mutex_t pSaveCamera_IMU_DataMutex;
+extern pthread_mutex_t MUTEX_FIFO_IMAGE_IMU;
+extern pthread_mutex_t MUTEX_FIFO_BRUT_IMU;
+extern pthread_mutex_t MUTEX_CSV_BRUT_IMU;
+extern pthread_mutex_t MUTEX_CSV_POSE_IMU;
 
-extern pthread_mutex_t Device_TimerCounterMutex;
-extern pthread_cond_t Device_TimeStampCond;
-extern pthread_mutex_t Device_TimeStampMutex;
-extern pthread_mutex_t RW_Device_TimeStampMutex;
+extern pthread_mutex_t MUTEX_HORODATAGE_COMPTEUR;
+extern pthread_cond_t SIGNAL_RENOUVELER_HORODATAGE;
+extern pthread_mutex_t MUTEX_HORODATAGE;
+extern pthread_mutex_t RW_MUTEX_HORODATAGE;
 
 extern timer_t Device_Timer;
-extern long Device_TimerCounter;
+extern long HORODATAGE_COMPTEUR;
 extern struct itimerspec Device_Timer_trigger;
 #define TimerDeviceFre 157
 void InitTimerDevice();
 void TimerDevice_Feedback(union sigval sv);
 void * UpdateDeviceTimeStampFunc(void *);
 
-extern pthread_mutex_t ReadIMU_Mutex;
-extern pthread_mutex_t TimeStampBaseMutex;
-extern pthread_cond_t TimeStampBaseCond;
+extern pthread_mutex_t MUTEX_I2C;
+extern pthread_mutex_t MUTEX_SIGNAL_RENOUVELER_BASE_HORODATAGE;
+extern pthread_cond_t SIGNAL_RENOUVELER_BASE_HORODATAGE;
 void * UpdateTimeStampBaseFunc(void *);
 
 void * GPS_UpdateFIFOFunc(void *);
 extern pthread_cond_t Update_GPS_FifoMutexCond;
 extern pthread_mutex_t Update_GPS_FifoMutex;
 
-//extern pthread_mutex_t IMU_TimerCounterMutex;
-extern pthread_cond_t IMU_RawDataCond;
-extern pthread_mutex_t IMU_RawDataMutex;
+extern pthread_cond_t SIGNAL_LIRE_IMU_BRUT;
+extern pthread_mutex_t MUTEX_SIGNAL_LIRE_IMU_BRUT;
 extern timer_t IMU_Timer;
-extern sem_t IMU_RawDataFifoSem;
+extern sem_t SEM_FIFO_BRUT_IMU;
 extern struct itimerspec IMU_Timer_trigger;
-extern int IMU_TimerCounter;
 void InitTimerIMU();//IMU data frequncy 50hz
 void TimerIMU_Feedback(union sigval sv);
 void * IMU_UpdateRawDataFunc(void *);
@@ -73,25 +71,18 @@ void UpdateIMU_RawData();
 void OpenCSVfile();
 void * SaveIMU_RawDataFunc(void *);
 //void * SaveIMU_RawDataToFifoFunc(void *);
-//extern pthread_mutex_t SaveIMU_RawDataMutex;
-//extern pthread_cond_t SaveIMU_RawDataCond;
+//extern pthread_mutex_t SaveMUTEX_SIGNAL_LIRE_IMU_BRUT;
+//extern pthread_cond_t SaveSIGNAL_LIRE_IMU_BRUT;
 
 #define TimerIMUFre 80
 
 /*cameras*/
 void *SaveCamera_IMU_DataToFifoFunc(void *);
 void * SaveCamera_IMU_DataFunc(void *);
-//extern pthread_mutex_t Camera_TimerCounterMutex;
-//extern pthread_cond_t Camera_TimeStampCond;
-//extern pthread_mutex_t Camera_TimeStampMutex;
-//extern int Camera_TimerCounter;
-extern sem_t Camera_IMUDataFifoSem;
 
-//extern sem_t PhotoSem;
-//extern sem_t PhotoPositionSem;
-extern pthread_mutex_t OnlySaveCamera_IMU_DataPthreadMutex;
-extern pthread_mutex_t SaveCamera_IMU_DataMutex;
-extern pthread_cond_t SaveCamera_IMU_DataCond;
+extern sem_t SEM_FIFO_IMAGE_IMU;
+extern pthread_mutex_t MUTEX_SIGNAL_REV_IMAGE;
+extern pthread_cond_t SIGNAL_REV_IMAGE;
 
 extern pthread_mutex_t pNewFrameMutex;
 extern FramePtr pNewFrame;
