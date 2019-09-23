@@ -23,8 +23,9 @@ void CameraFailed(int sign_no){
         timer_delete(Device_Timer);
         timer_delete(IMU_Timer);
         AssembleDevice.TheCamera.CameraFailed();
-        AssembleDevice.pSaveRawIMU_Data.close();
-        AssembleDevice.pSaveCamera_IMU_Data.close();
+        AssembleDevice.POINTEUR_CSV_BRUT_IMU.close();
+        AssembleDevice.POINTEUR_CSV_POSE_IMU.close();
+		AssembleDevice.POINTEUR_CSV_INFO_GPS.close();
     }
 }
 

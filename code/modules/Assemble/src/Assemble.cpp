@@ -14,8 +14,9 @@ Assemble::Assemble()
 }
 
 Assemble::~Assemble(){
-    pSaveRawIMU_Data.close();
-    pSaveCamera_IMU_Data.close();
+    POINTEUR_CSV_BRUT_IMU.close();
+    POINTEUR_CSV_POSE_IMU.close();
+	POINTEUR_CSV_INFO_GPS.close();
 }
 
 LinuxSerialPackage Assemble::GPSSerial(SERIAL_PORT_1);

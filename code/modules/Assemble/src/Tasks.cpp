@@ -267,7 +267,7 @@ void *GPS_UpdateFIFOFunc(void *){
         }
 
         pthread_mutex_lock(&MUTEX_FIFO_INFO_GPS);
-        AssembleDevice.GPS_DataFifo.push(TempGPS_Data);
+        AssembleDevice.FIFO_INFO_GPS.push(TempGPS_Data);
         sem_post(&SEM_FIFO_INFO_GPS);
         pthread_mutex_unlock(&MUTEX_FIFO_INFO_GPS);
 
@@ -304,8 +304,8 @@ void OpenCSVfile(){
 
     pthread_mutex_lock(&MUTEX_CARTE_MEMOIRE);
 
-    AssembleDevice.pSaveRawIMU_Data.open(pIMU_CSV_FileName,std::ios::out|std::ios::trunc);
-    AssembleDevice.pSaveRawIMU_Data<<"timestamp"<<","\
+    AssembleDevice.POINTEUR_CSV_BRUT_IMU.open(pIMU_CSV_FileName,std::ios::out|std::ios::trunc);
+    AssembleDevice.POINTEUR_CSV_BRUT_IMU<<"timestamp"<<","\
                     <<"omega_x"<<","<<"omega_y"<<","<<"omega_z"<<","\
                     <<"alpha_x"<<","<<"alpha_y"<<","<<"alpha_z"<<std::endl;
 
@@ -317,8 +317,8 @@ void OpenCSVfile(){
 
     pthread_mutex_lock(&MUTEX_CARTE_MEMOIRE);
 
-    AssembleDevice.pSaveGPS_Data.open(pGPS_CSV_FileName,std::ios::out|std::ios::trunc);
-    AssembleDevice.pSaveGPS_Data<<"timestamp"<<","\
+    AssembleDevice.POINTEUR_CSV_INFO_GPS.open(pGPS_CSV_FileName,std::ios::out|std::ios::trunc);
+    AssembleDevice.POINTEUR_CSV_INFO_GPS<<"timestamp"<<","\
                     <<"fix"<<","<<"fixquality"<<","<<"latitude"<<","\
                     <<"lat"<<","<<"longitude"<<","<<"lon"<<","\
                     <<"speed"<<","<<"angle"<<","<<"satellites"\
@@ -332,8 +332,8 @@ void OpenCSVfile(){
 
     pthread_mutex_lock(&MUTEX_CARTE_MEMOIRE);
 
-    AssembleDevice.pSaveCamera_IMU_Data.open(pCamera_IMU_CSV_FileName,std::ios::out|std::ios::trunc);
-    AssembleDevice.pSaveCamera_IMU_Data<<"timestamp"<<","<<"SystèmeCaliLevel"<<","\
+    AssembleDevice.POINTEUR_CSV_POSE_IMU.open(pCamera_IMU_CSV_FileName,std::ios::out|std::ios::trunc);
+    AssembleDevice.POINTEUR_CSV_POSE_IMU<<"timestamp"<<","<<"SystèmeCaliLevel"<<","\
                     <<"x"<<","<<"y"<<","<<"z"<<std::endl;
 
     pthread_mutex_unlock(&MUTEX_CARTE_MEMOIRE);
@@ -421,7 +421,7 @@ void UpdateIMU_RawData(){
 
 
         pthread_mutex_lock(&MUTEX_FIFO_BRUT_IMU);
-        AssembleDevice.IMU_RawDataFifo.push(TempIMU_RawData);
+        AssembleDevice.FIFO_BRUT_IMU.push(TempIMU_RawData);
         sem_post(&SEM_FIFO_BRUT_IMU);
         pthread_mutex_unlock(&MUTEX_FIFO_BRUT_IMU);
 
@@ -488,18 +488,18 @@ void * SaveIMU_RawDataFunc(void *){
         sem_wait(&SEM_FIFO_BRUT_IMU);
 
         pthread_mutex_lock(&MUTEX_FIFO_BRUT_IMU);
-            if(AssembleDevice.IMU_RawDataFifo.empty()){
+            if(AssembleDevice.FIFO_BRUT_IMU.empty()){
                 pthread_mutex_unlock(&MUTEX_FIFO_BRUT_IMU);
                 continue;
             }
-            IMU_RawData_t TempIMU_RawData=AssembleDevice.IMU_RawDataFifo.front();
-            AssembleDevice.IMU_RawDataFifo.pop();
+            IMU_RawData_t TempIMU_RawData=AssembleDevice.FIFO_BRUT_IMU.front();
+            AssembleDevice.FIFO_BRUT_IMU.pop();
         pthread_mutex_unlock(&MUTEX_FIFO_BRUT_IMU);
 
         pthread_mutex_lock(&MUTEX_CSV_BRUT_IMU);
         pthread_mutex_lock(&MUTEX_CARTE_MEMOIRE);
 
-        AssembleDevice.pSaveRawIMU_Data
+        AssembleDevice.POINTEUR_CSV_BRUT_IMU
                         <<std::to_string((unsigned long long int )(TempIMU_RawData.timestamp*Nano10_9))<<"," \
                         <<std::setiosflags(std::ios::fixed)\
                         <<std::setprecision(4)\
@@ -531,18 +531,18 @@ void * SaveGPS_DataFunc(void *){
         sem_wait(&SEM_FIFO_INFO_GPS);
 
         pthread_mutex_lock(&MUTEX_FIFO_INFO_GPS);
-            if(AssembleDevice.GPS_DataFifo.empty()){
+            if(AssembleDevice.FIFO_INFO_GPS.empty()){
                 pthread_mutex_unlock(&MUTEX_FIFO_INFO_GPS);
                 continue;
             }
-            GPS_data_t TempGPS_data=AssembleDevice.GPS_DataFifo.front();
-            AssembleDevice.GPS_DataFifo.pop();
+            GPS_data_t TempGPS_data=AssembleDevice.FIFO_INFO_GPS.front();
+            AssembleDevice.FIFO_INFO_GPS.pop();
         pthread_mutex_unlock(&MUTEX_FIFO_INFO_GPS);
 
         pthread_mutex_lock(&MUTEX_CSV_INFO_GPS);
         pthread_mutex_lock(&MUTEX_CARTE_MEMOIRE);
 
-        AssembleDevice.pSaveGPS_Data
+        AssembleDevice.POINTEUR_CSV_INFO_GPS
                         <<std::to_string((unsigned long long int )(TempGPS_data.TimeStamp*Nano10_9))<<"," \
                         << (int)TempGPS_data.fix<<","\
                         << TempGPS_data.fixquality<<","\
@@ -713,7 +713,7 @@ void *SaveCamera_IMU_DataToFifoFunc(void *){
         }
 #endif // UseDefaultPhotoFormat
         pthread_mutex_lock(&MUTEX_FIFO_IMAGE_IMU);
-        AssembleDevice.Camera_IMU_DataFifo.push(TempCamera_IMU_Data);
+        AssembleDevice.FIFO_IMAGE_IMU.push(TempCamera_IMU_Data);
         sem_post(&SEM_FIFO_IMAGE_IMU);
         pthread_mutex_unlock(&MUTEX_FIFO_IMAGE_IMU);
 
@@ -757,18 +757,18 @@ void * SaveCamera_IMU_DataFunc(void *){
         sem_wait(&SEM_FIFO_IMAGE_IMU);
 
         pthread_mutex_lock(&MUTEX_FIFO_IMAGE_IMU);
-            if( AssembleDevice.Camera_IMU_DataFifo.empty()){
+            if( AssembleDevice.FIFO_IMAGE_IMU.empty()){
                 pthread_mutex_unlock(&MUTEX_FIFO_IMAGE_IMU);
                 continue;
             }
-            Camera_IMU_Data_t TempCamera_IMU_Data=AssembleDevice.Camera_IMU_DataFifo.front();
-            AssembleDevice.Camera_IMU_DataFifo.pop();
+            Camera_IMU_Data_t TempCamera_IMU_Data=AssembleDevice.FIFO_IMAGE_IMU.front();
+            AssembleDevice.FIFO_IMAGE_IMU.pop();
         pthread_mutex_unlock(&MUTEX_FIFO_IMAGE_IMU);
 
         pthread_mutex_lock(&MUTEX_CSV_POSE_IMU);
         pthread_mutex_lock(&MUTEX_CARTE_MEMOIRE);
 
-        AssembleDevice.pSaveCamera_IMU_Data
+        AssembleDevice.POINTEUR_CSV_POSE_IMU
                         <<std::to_string((unsigned long long int)(TempCamera_IMU_Data.timestamp*Nano10_9))<<"," \
                         << (int) TempCamera_IMU_Data.Sys_cali_level<<","\
                         <<std::setiosflags(std::ios::fixed)\

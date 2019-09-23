@@ -76,12 +76,12 @@ class Assemble{
     bool bCSV_PointerPrepared;
 //    double IMU_TimeStamp;
     double DeviceTimeStamp;
-    std::queue <IMU_RawData_t>IMU_RawDataFifo;
-    std::ofstream pSaveRawIMU_Data;
-    std::ofstream pSaveCamera_IMU_Data;
-    std::ofstream pSaveGPS_Data;
-    std::queue <Camera_IMU_Data_t>Camera_IMU_DataFifo;
-    std::queue <GPS_data_t>GPS_DataFifo;
+    std::queue <IMU_RawData_t>FIFO_BRUT_IMU;
+    std::ofstream POINTEUR_CSV_BRUT_IMU;
+    std::ofstream POINTEUR_CSV_POSE_IMU;
+    std::ofstream POINTEUR_CSV_INFO_GPS;
+    std::queue <Camera_IMU_Data_t>FIFO_IMAGE_IMU;
+    std::queue <GPS_data_t>FIFO_INFO_GPS;
     ~Assemble();
 };
 
