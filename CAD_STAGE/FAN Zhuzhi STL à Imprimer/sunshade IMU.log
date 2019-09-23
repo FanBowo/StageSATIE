@@ -1,0 +1,30 @@
+Solid Edge Translation to STL
+Date: lundi,septembre 23,2019 01:48
+Source File:C:\Users\fanzh\Desktop\CAD_STAGE\Parts\sunshade IMU.par
+Output File: C:\Users\fanzh\Desktop\CAD_STAGE\FAN Zhuzhi STL à Imprimer\sunshade IMU.stl
+Source System: SOLID EDGE
+
+Hardware:
+Processor: Intel(R) Core(TM) i7-6500U CPU @ 2.50GHz
+Operating System: Windows 8 Professional
+Memory: 7,45 GB
+
+Software Information:
+Parasolid Version: 30.1.256
+Bodyshop Version: 30.1.94
+Solid Edge Version: 219.00.00.091 x64
+
+STL Export Options:
+Output File Format:BINARY
+Export Displayed Parts:Off
+structureOption: Monolithic
+Export Units:Millimeter
+Export Tolerance Value:0,050000
+Export Tolerance Type:Custom
+Export Surface Plane Angle Value:0,785398
+
+Translation progress:
+Phase 1 of 2 Fetching Parasolid information...
+Number of STL file Created : 1
+Translation process completed
+Time required to translate:00 : 00 : 00
