@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG  -rdynamic CMakeFiles/jcstest.dir/__/jcstest.c.o  -o ../jcstest -Wl,-rpath,/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/build ../libjpeg.so.62.3.0 

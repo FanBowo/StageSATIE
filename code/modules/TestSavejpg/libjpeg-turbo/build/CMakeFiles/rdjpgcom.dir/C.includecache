@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/jinclude.h
+jconfig.h
+/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/jconfig.h
+stddef.h
+-
+stdlib.h
+-
+sys/types.h
+-
+stdio.h
+-
+strings.h
+-
+string.h
+-
+
+/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/rdjpgcom.c
+jinclude.h
+/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/jinclude.h
+locale.h
+-
+ctype.h
+-
+fcntl.h
+-
+io.h
+-
+SIOUX.h
+-
+console.h
+-
+console.h
+-
+
+jconfig.h
+

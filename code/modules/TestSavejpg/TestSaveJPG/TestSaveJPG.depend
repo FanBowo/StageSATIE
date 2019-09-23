@@ -1,0 +1,92 @@
+# depslib dependency file v1.0
+1563481053 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/turbojpeg.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	<jinclude.h>
+	<jpeglib.h>
+	<jerror.h>
+	<setjmp.h>
+	<errno.h>
+	"./turbojpeg.h"
+	"./tjutil.h"
+	"transupp.h"
+	"./jpegcomp.h"
+	"./cdjpeg.h"
+	"cderror.h"
+
+1563481053 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/jinclude.h
+	"jconfig.h"
+	<stddef.h>
+	<stdlib.h>
+	<sys/types.h>
+	<stdio.h>
+	<strings.h>
+	<string.h>
+
+1563481053 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/jpeglib.h
+	"jconfig.h"
+	"jmorecfg.h"
+	"jpegint.h"
+	"jerror.h"
+
+1563481053 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/jmorecfg.h
+
+1563481053 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/jpegint.h
+
+1563481053 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/jerror.h
+
+1563481053 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/turbojpeg.h
+
+1563481053 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/tjutil.h
+	<stdio.h>
+
+1563481053 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/transupp.h
+
+1563481053 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/jpegcomp.h
+
+1563481053 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/cdjpeg.h
+	"jinclude.h"
+	"jpeglib.h"
+	"jerror.h"
+	"cderror.h"
+
+1563481053 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/cderror.h
+
+1564997336 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/TestSaveJPG/main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<errno.h>
+	<turbojpeg.h>
+
+1563481053 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/cdjpeg.c
+	"cdjpeg.h"
+	<ctype.h>
+	<fcntl.h>
+	<io.h>
+
+1563481053 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/jerror.c
+	"jinclude.h"
+	"jpeglib.h"
+	"jversion.h"
+	"jerror.h"
+	<windows.h>
+	"jerror.h"
+
+1563481053 /home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/jversion.h
+
+1563481053 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/tjutil.c
+	<windows.h>
+	"tjutil.h"
+	<stdlib.h>
+	<sys/time.h>
+	"tjutil.h"
+
+1563481053 source:/home/fanzhuzhi/Bureau/StageSATIE/code/modules/TestSavejpg/libjpeg-turbo/transupp.c
+	"jinclude.h"
+	"jpeglib.h"
+	"transupp.h"
+	"jpegcomp.h"
+	<ctype.h>
+
