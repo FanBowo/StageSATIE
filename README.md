@@ -6,8 +6,8 @@ For the reason that the GPS costs few minutes to search for satellites  when res
 Meanwhile, if we need to restart the  Motherboard, we  plug out  and then re-plug in its  own cable USB instead.
 
 When plug in the cable USB of Motherboard, the LED of camera will blink one time, it means that the motherboard get the power supply. 
-Then it will rest unlit for about 10 seconds.
-After that, il will remain bright about 3 seconds, which depends on the value of sleep time defined in StageSATIE/code/modules/Assemble/Assemble.sh.
+Then it will rest unlit for about 10 seconds. During that period, the system is starting itself.
+After that, il will remain bright, about 3 seconds, which depends on the value of sleep time defined in StageSATIE/code/modules/Assemble/Assemble.sh.
 Then we will notice that it will blink one time, it means our main program begin to execute.
 When watched that phenomenon, we let our platform rest quiet about 3 seconds to calibrate the gyroscope,
 then we move it in the space with the track of  '' 8 '' to calibrate the magnetometer.
