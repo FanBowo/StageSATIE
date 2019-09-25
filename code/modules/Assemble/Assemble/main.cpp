@@ -117,7 +117,7 @@ int main() // run over and over again
     pthread_t THREAD_RENOUVELER_HORODATAGE;
     struct sched_param THREAD_RENOUVELER_HORODATAGEPara;
     memset(&THREAD_RENOUVELER_HORODATAGEPara,0,sizeof(sched_param));
-    THREAD_RENOUVELER_HORODATAGEPara.__sched_priority=sched_get_priority_max(SCHED_RR)-3;
+    THREAD_RENOUVELER_HORODATAGEPara.__sched_priority=sched_get_priority_max(SCHED_RR)-2;
     pthread_attr_t THREAD_RENOUVELER_HORODATAGEParaAttr;
     pthread_attr_init(&THREAD_RENOUVELER_HORODATAGEParaAttr);
     pthread_attr_setinheritsched(&THREAD_RENOUVELER_HORODATAGEParaAttr,PTHREAD_EXPLICIT_SCHED);
@@ -128,7 +128,7 @@ int main() // run over and over again
     pthread_t THREAD_RENOUVELER_GPS_FIFO;
     struct sched_param THREAD_RENOUVELER_GPS_FIFOPara;
     memset(&THREAD_RENOUVELER_GPS_FIFOPara,0,sizeof(sched_param));
-    THREAD_RENOUVELER_GPS_FIFOPara.__sched_priority=sched_get_priority_max(SCHED_RR)-6;
+    THREAD_RENOUVELER_GPS_FIFOPara.__sched_priority=sched_get_priority_max(SCHED_RR)-2;
     pthread_attr_t THREAD_RENOUVELER_GPS_FIFOParaAttr;
     pthread_attr_init(&THREAD_RENOUVELER_GPS_FIFOParaAttr);
     pthread_attr_setinheritsched(&THREAD_RENOUVELER_GPS_FIFOParaAttr,PTHREAD_EXPLICIT_SCHED);

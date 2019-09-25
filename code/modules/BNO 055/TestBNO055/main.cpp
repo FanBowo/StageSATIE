@@ -95,15 +95,15 @@ void loop(void)
   // - VECTOR_GRAVITY       - m/s^2
   sensors_event_t event;
   bno.getEvent(& event);
-//  std::cout<<"Orientation :"<<(float)event.orientation.x<<\
-//                       " "<<(float)event.orientation.y<<\
-//                       " "<<(float)event.orientation.z\
-//                       <<std::endl;
+  std::cout<<"Orientation :"<<(float)event.orientation.x<<\
+                       " "<<(float)event.orientation.y<<\
+                       " "<<(float)event.orientation.z\
+                       <<std::endl;
 
-  bno.getEvent(& event,Adafruit_BNO055::VECTOR_GYROSCOPE);
-  std::cout<<"omega :"<<(float)event.gyro.x<<\
-                       " "<<(float)event.gyro.y<<\
-                       " "<<(float)event.gyro.z<<std::endl;
+//  bno.getEvent(& event,Adafruit_BNO055::VECTOR_GYROSCOPE);
+//  std::cout<<"omega :"<<(float)event.gyro.x<<\
+//                       " "<<(float)event.gyro.y<<\
+//                       " "<<(float)event.gyro.z<<std::endl;
 //  bno.getEvent(& event,Adafruit_BNO055::VECTOR_MAGNETOMETER);
 //  std::cout<<"omega :"<<(float)event.magnetic.x<<\
 //                       " "<<(float)event.magnetic.y<<\
@@ -144,11 +144,11 @@ void loop(void)
   Serial.print("\t\t");
   */
 
-  /* Display calibration status for each sensor. */
-//  uint8_t system, gyro, accel, mag = 0;
-//  bno.getCalibration(&system, &gyro, &accel, &mag);
-//  std::cout<<"System "<<(int)system<<"gyro "<<(int)gyro << \
-//            "accel "<<(int)accel<<"mag "<<(int)mag<<std::endl;
+   //Display calibration status for each sensor.
+  uint8_t system, gyro, accel, mag = 0;
+  bno.getCalibration(&system, &gyro, &accel, &mag);
+  std::cout<<"System "<<(int)system<<"gyro "<<(int)gyro << \
+            "accel "<<(int)accel<<"mag "<<(int)mag<<std::endl;
   #ifdef ManuCaliMagn
     if(system>=1){
         imu::Vector<3> magn = bno.getVector(Adafruit_BNO055::VECTOR_MAGNETOMETER);
