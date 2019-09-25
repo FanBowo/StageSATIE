@@ -71,34 +71,34 @@ int main() // run over and over again
         Interrupt: Cameras Timer interrupt to send signal to take photo
         Interrupt: Receiving a frame of photo Interrupt to save photo into RAM and
                     to read IMU direction data
-        
+
 
         Task:
-		
+
         Task1:THREAD_RENOUVELER_BASE_HORODATAGE:Update base time stamp
 		MaxPriorityRR-2
-		
+
 		Task2: THREAD_RENOUVELER_HORODATAGE:Update time stamp
 		MaxPriorityRR-6
-		
+
 		Task3:THREAD_RENOUVELER_GPS_FIFO:Update GPS Data fifo
 		MaxPriorityRR-6
-		
+
 		Task4:THREAD_LIRE_IMU_BRU:Read IMU raw data and save into fifo
 		MaxPriorityRR-10
-		
+
 		Task5:THREAD_SAUVEGARDER_BRUT_IMU:Save raw IMU data to csv file
 		MaxPriorityRR-30
-		
+
 		Task6-9:THREAD_SAUVEGARDER_BRUT_IMU:Save photos and save IMU direction data to csv file
 		MaxPriorityRR-30
-		
+
 		Task10:THREAD_LIRE_IMAGE:Get photos and save IMU direction data to fifo
 		MaxPriorityRR-12
-		
+
 		Task11:THREAD_SAUVEGARDER_INFO_GPS:Save raw GPS data to csv file
         MaxPriorityRR-30
-   
+
     */
 
     std::cout<<"Initialization finished"<<std::endl;
@@ -117,7 +117,7 @@ int main() // run over and over again
     pthread_t THREAD_RENOUVELER_HORODATAGE;
     struct sched_param THREAD_RENOUVELER_HORODATAGEPara;
     memset(&THREAD_RENOUVELER_HORODATAGEPara,0,sizeof(sched_param));
-    THREAD_RENOUVELER_HORODATAGEPara.__sched_priority=sched_get_priority_max(SCHED_RR)-6;
+    THREAD_RENOUVELER_HORODATAGEPara.__sched_priority=sched_get_priority_max(SCHED_RR)-3;
     pthread_attr_t THREAD_RENOUVELER_HORODATAGEParaAttr;
     pthread_attr_init(&THREAD_RENOUVELER_HORODATAGEParaAttr);
     pthread_attr_setinheritsched(&THREAD_RENOUVELER_HORODATAGEParaAttr,PTHREAD_EXPLICIT_SCHED);
@@ -128,7 +128,7 @@ int main() // run over and over again
     pthread_t THREAD_RENOUVELER_GPS_FIFO;
     struct sched_param THREAD_RENOUVELER_GPS_FIFOPara;
     memset(&THREAD_RENOUVELER_GPS_FIFOPara,0,sizeof(sched_param));
-    THREAD_RENOUVELER_GPS_FIFOPara.__sched_priority=sched_get_priority_max(SCHED_RR)-3;
+    THREAD_RENOUVELER_GPS_FIFOPara.__sched_priority=sched_get_priority_max(SCHED_RR)-6;
     pthread_attr_t THREAD_RENOUVELER_GPS_FIFOParaAttr;
     pthread_attr_init(&THREAD_RENOUVELER_GPS_FIFOParaAttr);
     pthread_attr_setinheritsched(&THREAD_RENOUVELER_GPS_FIFOParaAttr,PTHREAD_EXPLICIT_SCHED);

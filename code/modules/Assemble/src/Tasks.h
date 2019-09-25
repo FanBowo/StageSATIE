@@ -45,7 +45,7 @@ extern pthread_mutex_t RW_MUTEX_HORODATAGE;
 extern timer_t Device_Timer;
 extern long HORODATAGE_COMPTEUR;
 extern struct itimerspec Device_Timer_trigger;
-#define TimerDeviceFre 157
+#define TimerDeviceFre 200
 void InitTimerDevice();
 void TimerDevice_Feedback(union sigval sv);
 void * UpdateDeviceTimeStampFunc(void *);
