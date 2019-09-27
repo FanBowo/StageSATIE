@@ -1,11 +1,22 @@
 # StageSATIE Version  on board
 ##Note:
 
+If we start with a blank board, it might be useful to glance over https://roc-rk3328-cc.readthedocs.io/en/latest/intro.html to get know how to intall systemes in emmc module, 
+or read StageSATIE/doc/rock3328/roc-rk3328-cc-zh-cn.pdf in chinese.
+We can find ofially imag file in https://libre.computer/products/boards/roc-rk3328-cc/ 
+or one backup in my googledrive https://drive.google.com/drive/folders/1wMkQ4YDOPzxj1toXsm-93rsR1YK7MMoE?usp=sharing 
+
+To connect the module IMU with the Motherboard, 4 pins used: SDA1 SCL1 5V(VCC) GND, to connect the trigger pin of camera, two pins used: SDO1(as Trigger pin) and gnd. 
+
+If we install a new ubuntu on one blank board, we need to update all library by sudo apt-get update and sudo apt-get upgrade. 
+Then the library eigen3 should be installed and also the driver of camera, Vimba. 
+Vimba can be found in https://www.alliedvision.com/en/products/software.html . We install the driver in default folder /opt as mentioned in release note of Vimba. 
+
 The battery used has two ports USB, one supplies the module of GPS and the rest for the Motherboard.
 For the reason that the GPS costs few minutes to search for satellites  when restart it, it’s better not to plug out the cable USB of GPS or to cut off the power supply by pressing the button of battery.
 Meanwhile, if we need to restart the  Motherboard, we  plug out  and then re-plug in its  own cable USB instead.
 
-When plug in the cable USB of Motherboard, the LED of camera will blink one time, it means that the motherboard get the power supply. 
+When plug in the cable USB of Motherboard, the LED of camera will blink one time, it means that the motherboard get the power supply.
 Then it will rest unlit for about 10 seconds. During that period, the system is starting itself.
 After that, il will remain bright, about 3 seconds, which depends on the value of sleep time defined in StageSATIE/code/modules/Assemble/Assemble.sh.
 Then we will notice that it will blink one time, it means our main program begin to execute.
@@ -63,6 +74,9 @@ We can change this value as we want.
 
 
  
+
+
+
 
 
 
